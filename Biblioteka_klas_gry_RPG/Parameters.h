@@ -1,4 +1,23 @@
 #pragma once
+enum class DangerLvL
+{
+	Boss,
+	Very_dangerous,
+	Dangerous,
+	Medium,
+	Easy,
+	Begginer
+
+};
+enum class Role
+{
+	ArmorSmith,
+	WeponSmith,
+	PotionSeller,
+	MiscSeller,
+	SpellSeller,
+	InnKeeper,
+};
 enum class GameCharacterRace
 {
 	Human,

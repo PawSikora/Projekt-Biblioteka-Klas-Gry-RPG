@@ -55,6 +55,11 @@ int GameCharacter::getInitiative()
 }
 
 
+void GameCharacter::setGold(int gold)
+{
+	this->gold = gold;
+}
+
 std::string GameCharacter::getName()
 {
 	return name;
@@ -75,6 +80,11 @@ std::vector<Item*> GameCharacter::getItems()
 	return items;
 }
 
+void GameCharacter::deleteItem(int i)
+{
+	items.erase(items.begin() + i);
+}
+
 void GameCharacter::setHp(int hp)
 {
 	if (hp < 0) throw std::invalid_argument("Hp musi byc liczba dodatnia");
@@ -90,6 +100,11 @@ void GameCharacter::setMp(int mp)
 void GameCharacter::setInitiative(int initiative)
 {
 	this->initiative = initiative;
+}
+
+int GameCharacter::getGold()
+{
+	return gold;
 }
 
 void GameCharacter::setLvl(unsigned int lvl)

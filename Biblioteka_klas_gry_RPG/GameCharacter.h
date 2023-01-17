@@ -28,6 +28,7 @@ class GameCharacter : public IActions
 	GameCharacterClass characterClass;
 	Statistics stats;
 	Alignment alignment;
+	int gold=0;
 	int hp;
 	int mp;
 	int initiative;
@@ -43,11 +44,13 @@ protected:
 	Armor* armor = nullptr;
 
 public:
+	void deleteItem(int i);
 	void setHp(int hp);
 	void setMp(int mp);
 	void setLvl(unsigned int lvl);
 	void setInitiative(int initiative);
-
+	int getGold();
+	void setGold(int gold);
 	std::string getName();
 	int getHp();
 	int getMp();
