@@ -14,6 +14,30 @@ void Weapon::setArmorPenetration(int armorPenetration)
 	this->armorPenetration = armorPenetration;
 }
 
+int Weapon::getDmg()
+{
+	return dmg;
+}
+
+bool Weapon::equipWeapon()
+{
+	if(!equip)
+		equip = true;
+	return equip;
+}
+
+bool Weapon::unequipWeapon()
+{
+	if (equip)
+		equip = false;
+	return equip;
+}
+
+bool Weapon::isEquipped()
+{
+	return equip;
+}
+
 Weapon::Weapon(std::string name, int value, int dmg, int armorPenetration)
 	:Item(name,value)
 {

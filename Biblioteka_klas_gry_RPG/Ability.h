@@ -6,7 +6,7 @@
 class Ability
 {
 	std::string name;
-	bool unlocked;
+	bool unlocked = false;
 	AbilityType type;
 	int damage;
 	Effect effect;
@@ -19,7 +19,6 @@ public:
 	int getDmg();
 	Effect getEffect();
 
-	//??
 	void unlockAbility();
 };
 

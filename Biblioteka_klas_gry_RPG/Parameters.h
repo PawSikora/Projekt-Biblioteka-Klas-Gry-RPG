@@ -14,9 +14,25 @@ enum class Alignment
 	Evil,
 };
 
-enum class AbilityType
+enum class AbilityType //Offensive itp czy Physical, magical itp
 {
 	Offensive,
 	Defensive,
 	Supportive,
+};
+
+enum class EffectType
+{
+	Bleeding,
+	Poisoning,
+	Healing,
+	Defending,
+	Burning,
+	Shocked,
+	Freezing,
+	FireResistBoost,
+	ColdResistBoost,
+	PoisonResistBoost,
+	MagicResistBoost,
+	None
 };

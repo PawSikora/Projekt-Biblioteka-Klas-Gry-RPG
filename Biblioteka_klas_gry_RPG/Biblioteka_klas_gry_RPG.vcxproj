@@ -133,10 +133,12 @@
     <ClCompile Include="Consumables.cpp" />
     <ClCompile Include="Dice.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="Encounter.cpp" />
     <ClCompile Include="GameCharacter.cpp" />
     <ClCompile Include="GameCharacterClass.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="MainGameCharacter.cpp" />
+    <ClCompile Include="Mob.cpp" />
     <ClCompile Include="Resistances.cpp" />
     <ClCompile Include="Statistics.cpp" />
     <ClCompile Include="Weapon.cpp" />
@@ -147,11 +149,13 @@
     <ClInclude Include="Consumables.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="Encounter.h" />
     <ClInclude Include="GameCharacter.h" />
     <ClInclude Include="GameCharacterClass.h" />
     <ClInclude Include="IActions.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="MainGameCharacter.h" />
+    <ClInclude Include="Mob.h" />
     <ClInclude Include="Parameters.h" />
     <ClInclude Include="Resistances.h" />
     <ClInclude Include="Statistics.h" />

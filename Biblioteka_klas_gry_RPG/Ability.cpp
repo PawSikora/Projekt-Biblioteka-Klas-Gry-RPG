@@ -36,5 +36,5 @@ Effect Ability::getEffect()
 
 void Ability::unlockAbility()
 {
-    //??
+    unlocked = true;
 }

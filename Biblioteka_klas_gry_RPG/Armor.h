@@ -4,7 +4,7 @@
 
 class Armor : public Item
 {
-	bool equip;
+	bool equip = false;
 	int defense;
 	int mobilityPenalty;
 	Resistances resistances;
@@ -17,5 +17,9 @@ public:
 	int getDefense();
 	int getMobilityPenalty();
 	Resistances getResistances();
+
+	bool equipArmor();
+	bool unequipArmor();
+	bool isEquipped();
 };
 

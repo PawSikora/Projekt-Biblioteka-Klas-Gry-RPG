@@ -13,9 +13,6 @@ public:
 	GameCharacterClass(std::string name, std::vector<Ability*> abilities);
 	std::string getName();
 	Ability* getAbility(int index);
-
-
-	//??
-	void levelUp();
+	std::string getAbilities();
 };
 

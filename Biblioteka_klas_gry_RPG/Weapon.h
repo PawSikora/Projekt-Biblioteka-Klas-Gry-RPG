@@ -2,7 +2,7 @@
 #include "Item.h"
 class Weapon : public Item
 {
-	bool equip;
+	bool equip = false;
 	int dmg;
 	int armorPenetration;
 
@@ -10,5 +10,10 @@ public:
 	Weapon(std::string name, int value, int dmg, int armorPenetration);
 	void setDmg(int dmg);
 	void setArmorPenetration(int armorPenetration);
+	int getDmg();
+
+	bool equipWeapon();
+	bool unequipWeapon();
+	bool isEquipped();
 };
 

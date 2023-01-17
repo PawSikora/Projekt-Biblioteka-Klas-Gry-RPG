@@ -1,20 +1,21 @@
 #pragma once
 #include <string>
+#include "Parameters.h"
 
 class Effect
 {
 	std::string name;
-	int posivite;
-	int negative;
-	// ? Timer timeOffEffect;
+	EffectType effectType;
+	int valueOfEffect;
+	int timeOfEffect;
 
 public:
-	Effect(std::string name, int posivite, int negative);
+	Effect(std::string name, EffectType effect, int valueOfEffect, int timeOfEffect);
+
 	std::string getName();
-
-	//??
+	EffectType getType();
 	int getEffect();
-
-	// ? Timer getTime();
+	int getTime();
+	bool passTime();
 };
 

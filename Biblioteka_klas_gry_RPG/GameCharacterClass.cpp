@@ -21,3 +21,19 @@ Ability* GameCharacterClass::getAbility(int index)
 	throw std::out_of_range("Przekroczono rozmiar tablicy");
 }
 
+std::string GameCharacterClass::getAbilities()
+{
+	if(abilities.size() > 0)
+	{
+		std::string abilitiesList = "";
+		int count = 0;
+		for (auto ability : abilities)
+		{
+			count++;
+			abilitiesList += std::to_string(count) + ". " + ability->getName() + '\n';
+		}
+		return abilitiesList;
+	}
+	throw std::out_of_range("Tablica jest pusta");
+}
+

@@ -15,7 +15,7 @@ void Armor::setDefense(int defense)
 	this->defense = defense;
 }
 
-void Armor::setMobilityPenalty(int MobilityPenalty)
+void Armor::setMobilityPenalty(int mobilityPenalty)
 {
 	if (mobilityPenalty < 0) throw std::invalid_argument("Kara do poruszania sie  nie moze byc ujemna");
 	this->mobilityPenalty = mobilityPenalty;
@@ -34,4 +34,23 @@ int Armor::getMobilityPenalty()
 Resistances Armor::getResistances()
 {
 	return resistances;
+}
+
+bool Armor::equipArmor()
+{
+	if (!equip)
+		equip = true;
+	return equip;
+}
+
+bool Armor::unequipArmor()
+{
+	if (equip)
+		equip = false;
+	return equip;
+}
+
+bool Armor::isEquipped()
+{
+	return equip;
 }

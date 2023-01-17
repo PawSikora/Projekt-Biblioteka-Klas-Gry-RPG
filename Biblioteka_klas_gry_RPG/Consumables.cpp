@@ -1,7 +1,7 @@
 #include "Consumables.h"
 
-Consumables::Consumables(Effect effect, Ability ability)
-	:effect(effect),ability(ability)
+Consumables::Consumables(std::string name, int value, Effect effect, Ability ability)
+	: Item(name, value), effect(effect),ability(ability)
 {
 }
 
