@@ -36,7 +36,7 @@ std::string NPC::myRole()
 void NPC::printItems(std::vector<Item*> items)
 {
 	std::cout << "this is what i got :" << std::endl;
-	int i = 0;
+	int i = 1;
 	for(auto x : items)
 	{
 		std::cout<<i <<" " << x->getName() << " " << " For : " << x->getValue() << std::endl;
@@ -53,18 +53,29 @@ void NPC::SellItem(MainGameCharacter &character)
 {
 	Item *selectedItem = nullptr;
 	int selectedItemId;
-	std::string anwser;
+	std::string answer;
 	printItems(itemList);
-	std::cout << "Do you wish to buy anything ? (if you want to buy something type number next to it, else type bye" << std::endl;
-	std::cin >> anwser;
-	if (anwser.find("bye") == 0)
+	std::cout << "Do you wish to buy anything ? (if you want to buy something type number next to it, else type bye)" << std::endl;
+	std::cin >> answer;
+	if (answer.find("bye") == 0)
 	{
 		std::cout << "Bye then." << std::endl;
 		
 	}
 	else
 	{
-		selectedItemId = std::stoi(anwser);
+		selectedItemId = forceNumberInput(answer);
+		while(selectedItemId > itemList.size() || selectedItemId < 1)
+		{
+			std::cout << "your mind's beacon doesn't shine too bright, doesn't it ?" << std::endl;
+			std::cout << "(if you want to buy something type number next to it, else type bye)" << std::endl << '\n' << '\n';
+			printItems(itemList);
+			std::cin >> answer;
+			selectedItemId = forceNumberInput(answer);
+
+		}
+		selectedItemId--;
+		
 		selectedItem = itemList[selectedItemId];
 		if (character.getGold() < selectedItem->getValue())
 		{
@@ -86,19 +97,30 @@ void NPC::SellItem(MainGameCharacter &character)
 void NPC::BuyItem(MainGameCharacter &character)
 {
 	Item* selectedItem = nullptr;
-	std::string anwser;
+	std::string answer;
 	int selectedItemId;
 	printItems(character.getItems());
-	std::cout << "Do you wish to sell anything ? (if you want to buy something type number next to it, else type bye" << std::endl;
-	std::cin >> anwser;
-	if (anwser.find("bye") == 0)
+	std::cout << "Do you wish to sell anything ? (if you want to buy something type number next to it, else type bye)" << std::endl;
+	std::cin >> answer;
+	if (answer.find("bye") == 0)
 	{
 		std::cout << "Bye then." << std::endl;
 	
 	}
 	else
 	{
-		selectedItemId = std::stoi(anwser);
+		selectedItemId=forceNumberInput(answer);
+		while ( selectedItemId > itemList.size() || selectedItemId < 1 )
+		{
+			
+			std::cout << "your mind's beacon doesn't shine too bright, doesn't it ?" << std::endl<<'\n';
+			std::cout << "(if you want to buy something type number next to it, else type bye)" << std::endl<<'\n'<<'\n';
+			printItems(itemList);
+			std::cin >> answer;
+			selectedItemId = forceNumberInput(answer);
+
+		}
+		selectedItemId--;
 		selectedItem = itemList[selectedItemId];
 		if (this->getGold() < selectedItem->getValue())
 		{
@@ -162,7 +184,7 @@ void NPC::DialogInnKeeper(MainGameCharacter& character)
 {
 	std::string anwser;
 	std::cin >> anwser;
-	while (anwser.find("sleep") == 0 && anwser.find("drink") == 0 && anwser.find("bye") == 0)
+	while (anwser.find("sleep") != 0 && anwser.find("drink") != 0 && anwser.find("bye") != 0)
 	{
 		std::cout << "I didn't catch that out. Can you repeat? (use statement yes or bye to advance)"; //zlleeeeee
 		std::cin >> anwser;
@@ -175,6 +197,7 @@ void NPC::DialogInnKeeper(MainGameCharacter& character)
 	}
 	else
 	{
+
 		if(anwser.find("sleep")==0)
 		{
 			std::cout << "This will cost you about 50 gold [yes/bye]" << std::endl;
@@ -198,7 +221,7 @@ void NPC::DialogInnKeeper(MainGameCharacter& character)
 			}
 			
 		}
-		else
+		else if (anwser.find("drink")==0)
 		{
 			std::cout << "Do you wish to sell or buy ?";
 			std::cin >> anwser;
@@ -219,6 +242,8 @@ void NPC::DialogInnKeeper(MainGameCharacter& character)
 		
 	}
 }
+
+
 
 
 

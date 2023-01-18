@@ -63,7 +63,8 @@ public:
 	GameCharacterClass getClass();
 	std::vector<Effect*> getEffects();
 	std::vector<Item*> getItems();
-
+	bool isNumber(std::string& s);
+	int forceNumberInput(std::string& answer);
 	void equipWeapon(Weapon weapon);
 	void equipArmor(Armor armor);
 	void takeDamage(EffectType effectType,int dmg);

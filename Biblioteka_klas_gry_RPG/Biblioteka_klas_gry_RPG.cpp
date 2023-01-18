@@ -10,8 +10,8 @@
 #include "NPC.h"
 #include "Weapon.h"
 
-#define CombatMechanicTest
-//#define TradingMechanicTest
+//#define CombatMechanicTest
+#define TradingMechanicTest
 
 #ifdef CombatMechanicTest
 int main()

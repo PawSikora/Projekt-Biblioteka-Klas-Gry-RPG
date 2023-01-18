@@ -1,7 +1,27 @@
 #include "GameCharacter.h"
 #include <cmath>
+#include <iostream>
 
 #include <stdexcept>
+bool GameCharacter::isNumber(std::string& s)
+{
+	return s.find_first_not_of("0123456789-+") == std::string::npos;
+}
+
+int GameCharacter::forceNumberInput(std::string& answer)
+{
+
+	while (!isNumber(answer))
+	{
+		std::cout << "Please type number" << std::endl;
+		std::cin >> answer;
+
+	}
+	int resoult = std::stoi(answer);
+	return resoult;
+}
+
+
 
 GameCharacter::GameCharacter(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats, Alignment alignment, int hp, int mp, std::vector<Item*> items, unsigned int lvl)
 	:name(name),race(race),characterClass(characterClass), stats(stats), alignment(alignment), items(items)

@@ -70,6 +70,7 @@ void MainGameCharacter::useItem()
 		std::cout << "Nie masz zadnych przedmiotow!\n";
 	else
 	{
+		std::string anwser;
 		int choice;
 		std::cout << "Z jakiego przedmiotu w plecaku chcialbys skorzystac?\n";
 		for(int i = 0; i < getItems().size(); i++)
@@ -79,7 +80,8 @@ void MainGameCharacter::useItem()
 
 		do
 		{
-			std::cin >> choice;
+			std::cin >> anwser;
+			choice = forceNumberInput(anwser);
 			if (choice > getItems().size() || choice < 1)
 				std::cout << "Wybierz poprawny przedmiot!(1-" << getItems().size() << ")\n";
 		} while (choice < 1 || choice > getItems().size());
