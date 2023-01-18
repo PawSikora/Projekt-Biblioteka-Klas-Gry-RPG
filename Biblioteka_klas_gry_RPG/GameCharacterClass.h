@@ -6,12 +6,13 @@
 
 class GameCharacterClass
 {
-	std::string name;
+	ClassType classType;
 	std::vector<Ability*> abilities;
 
 public:
-	GameCharacterClass(std::string name, std::vector<Ability*> abilities);
+	GameCharacterClass(ClassType classType, std::vector<Ability*> abilities);
 	std::string getName();
+	ClassType getClassType();
 	Ability* getAbility(int index);
 	std::string getAbilities();
 };

@@ -26,6 +26,13 @@ enum class GameCharacterRace
 	Orc,
 };
 
+enum class ClassType
+{
+	Warrior,
+	Mage,
+	Rogue,
+};
+
 enum class Alignment
 {
 	Good,
@@ -49,6 +56,8 @@ enum class EffectType
 	Burning,
 	Shocked,
 	Freezing,
+	PhysicalDmg,
+	MagicDmg,
 	FireResistBoost,
 	ColdResistBoost,
 	PoisonResistBoost,

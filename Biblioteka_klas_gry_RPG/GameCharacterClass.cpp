@@ -2,14 +2,25 @@
 
 #include <stdexcept>
 
-GameCharacterClass::GameCharacterClass(std::string name, std::vector<Ability*> abilities)
-	:name(name), abilities(abilities)
+GameCharacterClass::GameCharacterClass(ClassType classType, std::vector<Ability*> abilities)
+	:classType(classType), abilities(abilities)
 {
 }
 
 std::string GameCharacterClass::getName()
 {
-	return name;
+	switch(classType)
+	{
+		  case ClassType::Warrior: return "Warrior";
+		  case ClassType::Rogue: return "Rogue";
+		  case ClassType::Mage: return "Mage";
+		  default: throw std::runtime_error("Unsupported type");
+	}
+}
+
+ClassType GameCharacterClass::getClassType()
+{
+	return classType;
 }
 
 Ability* GameCharacterClass::getAbility(int index)

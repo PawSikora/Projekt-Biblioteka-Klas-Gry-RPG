@@ -31,3 +31,8 @@ bool Effect::passTime()
 		return false;
 	return true;
 }
+
+bool Effect::operator==(const Effect& other) const
+{
+	return this->effectType == other.effectType;
+}

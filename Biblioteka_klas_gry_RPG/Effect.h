@@ -17,5 +17,6 @@ public:
 	int getEffect();
 	int getTime();
 	bool passTime();
+	bool operator==(const Effect& other) const;
 };
 

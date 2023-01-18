@@ -12,24 +12,24 @@ std::string NPC::myRole()
 	switch (role_)
 	{
 	case Role::ArmorSmith:
-		return "Armor Smith";
+		return "Armorsmith";
 
 	case Role::WeponSmith:
-		return "Wepon Smith";
+		return "Weaponsmith";
 
 	case Role::SpellSeller:
-		return "Spell Smith";
+		return "Spellsmith";
 
 	case Role::MiscSeller:
-		return "Misc Smith";
+		return "Miscsmith";
 
 	case Role::PotionSeller:
-		return "Potion Smith";
+		return "Potionsmith";
 
 	case Role::InnKeeper:
-		return "Inn Keeper";
+		return "Innkeeper";
 
-
+	  default: throw std::runtime_error("Unsupported Role type");
 	}
 }
 
@@ -46,7 +46,7 @@ void NPC::printItems(std::vector<Item*> items)
 
 void NPC::greet()
 {
-	std::cout << "Hi my name is " << this->getName() << " im " << myRole() << std::endl; 
+	std::cout << "Hi my name is " << this->getName() << " i'm " << myRole() << std::endl; 
 }
 
 void NPC::SellItem(MainGameCharacter &character)
@@ -55,7 +55,7 @@ void NPC::SellItem(MainGameCharacter &character)
 	int selectedItemId;
 	std::string anwser;
 	printItems(itemList);
-	std::cout << "Do you wish to buy anthing ? (if you want to buy something type nubmer next to it, else type bye" << std::endl;
+	std::cout << "Do you wish to buy anything ? (if you want to buy something type number next to it, else type bye" << std::endl;
 	std::cin >> anwser;
 	if (anwser.find("bye") == 0)
 	{
@@ -73,7 +73,7 @@ void NPC::SellItem(MainGameCharacter &character)
 		}
 		else
 		{
-			std::cout << "Nice to do buissnes with you" << std::endl;
+			std::cout << "Nice to do business with you" << std::endl;
 			character.setGold(character.getGold() - selectedItem->getValue());
 			this->deleteItem(selectedItemId);
 			character.addItem(selectedItem);
@@ -89,7 +89,7 @@ void NPC::BuyItem(MainGameCharacter &character)
 	std::string anwser;
 	int selectedItemId;
 	printItems(character.getItems());
-	std::cout << "Do you wish to sell anthing ? (if you want to buy something type nubmer next to it, else type bye" << std::endl;
+	std::cout << "Do you wish to sell anything ? (if you want to buy something type number next to it, else type bye" << std::endl;
 	std::cin >> anwser;
 	if (anwser.find("bye") == 0)
 	{
@@ -102,12 +102,12 @@ void NPC::BuyItem(MainGameCharacter &character)
 		selectedItem = itemList[selectedItemId];
 		if (this->getGold() < selectedItem->getValue())
 		{
-			std::cout << "Sorry i dont have enought money " << std::endl;
+			std::cout << "Sorry i don't have enough money " << std::endl;
 		
 		}
 		else
 		{
-			std::cout << "Nice to do buissnes with you" << std::endl;
+			std::cout << "Nice to do business with you" << std::endl;
 			character.setGold(int(((double)character.getGold() + double(selectedItem->getValue())) * 0.8));
 			this->addItem(selectedItem);
 			character.deleteItem(selectedItemId);
@@ -126,7 +126,7 @@ void NPC::Dialog(MainGameCharacter &character)
 	
 	while (anwser.find("yes") != 0 && anwser.find("bye") != 0)
 	{
-		std::cout << "I didnt catch that out. Can you repeat? (use statment yes or bye to advance)"; 
+		std::cout << "I didn't catch that out. Can you repeat? (use statement yes or bye to advance)"; 
 		
 		std::cin >> anwser;
 	}
@@ -164,7 +164,7 @@ void NPC::DialogInnKeeper(MainGameCharacter& character)
 	std::cin >> anwser;
 	while (anwser.find("sleep") == 0 && anwser.find("drink") == 0 && anwser.find("bye") == 0)
 	{
-		std::cout << "I didnt catch that out. Can you repeat? (use statment yes or bye to advance)"; //zlleeeeee
+		std::cout << "I didn't catch that out. Can you repeat? (use statement yes or bye to advance)"; //zlleeeeee
 		std::cin >> anwser;
 	}
 	if (anwser.find("bye") == 0)
@@ -229,7 +229,7 @@ void NPC::whatCanIDo(MainGameCharacter &character)
 	{
 	case Role::ArmorSmith:
 		greet();
-		std::cout << "Perhaps you are looking for a fine piece of arrmor ? "<< " [yes,bye] " << std::endl;
+		std::cout << "Perhaps you are looking for a fine piece of armor ? "<< " [yes,bye] " << std::endl;
 		Dialog(character);
 			break;
 	case Role::WeponSmith:
@@ -239,12 +239,12 @@ void NPC::whatCanIDo(MainGameCharacter &character)
 		break;
 	case Role::SpellSeller:
 		greet();
-		std::cout << "Perhaps you are looking for a powerfull spells ? " << " [yes,bye] " << std::endl;
+		std::cout << "Perhaps you are looking for a powerful spells ? " << " [yes,bye] " << std::endl;
 		Dialog(character);
 		break;
 	case Role::MiscSeller:
 		greet();
-		std::cout << "Perhaps you are looking for a varius items ? " << " [yes,bye] " << std::endl;
+		std::cout << "Perhaps you are looking for a various items ? " << " [yes,bye] " << std::endl;
 		Dialog(character);
 		break;
 	case Role::PotionSeller:

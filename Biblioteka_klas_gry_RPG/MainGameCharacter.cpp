@@ -39,16 +39,18 @@ bool MainGameCharacter::run()
 int MainGameCharacter::attack()
 {
 	int damage = 0;
-	damage += weapon->getDmg();
-	if (getClass().getName() == "Wojownik")
+	if (weapon != nullptr)
+		damage += weapon->getDmg();
+
+	if (getClass().getClassType() == ClassType::Warrior)
 	{
 		damage += (getStats().getStrength() + addModifiers(buffs.strengthBuffs) / 2.0);
 	}
-	else if (getClass().getName() == "Czarodziej")
+	else if (getClass().getClassType() == ClassType::Mage)
 	{
 		damage += (getStats().getIntelligence() + addModifiers(buffs.intelligenceBuffs) / 2.0);
 	}
-	else if (getClass().getName() == "Lotrzyk")
+	else if (getClass().getClassType() == ClassType::Rogue)
 	{
 		damage += (getStats().getDexterity() + addModifiers(buffs.dexterityBuffs)/2.0);
 	}
@@ -90,25 +92,22 @@ void MainGameCharacter::useItem()
 			Effect effect = item_->getEffect();
 			addEffect(&effect);
 		}
-			
 
 		if (dynamic_cast<Weapon*>(item))
 		{
-			//if (weapon != nullptr && weapon->isEquipped())
-				//weapon->unequipWeapon();
-			dynamic_cast<Weapon*>(item)->equipWeapon();
+			if (weapon != nullptr && weapon->isEquipped())
+				weapon->unequipWeapon();
+			weapon = dynamic_cast<Weapon*>(item);
 			weapon->equipWeapon();
 		}
-			
 
 		if (dynamic_cast<Armor*>(item))
 		{
-			if (weapon != nullptr || armor->isEquipped())
+			if (armor != nullptr && armor->isEquipped())
 				armor->unequipArmor();
-			dynamic_cast<Armor*>(item)->equipArmor();
+			armor = dynamic_cast<Armor*>(item);
 			armor->equipArmor();
 		}
-			
 	}
 }
 

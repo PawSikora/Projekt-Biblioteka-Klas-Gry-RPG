@@ -10,17 +10,20 @@ GameCharacter::GameCharacter(std::string name, GameCharacterRace race, GameChara
 	setMp(mp);
 	setLvl(lvl);
 
-	if (getClass().getName() == "Wojownik")
+	if (getClass().getClassType() == ClassType::Warrior)
 	{
 		setInitiative(4);
+		// Ustawic Def
 	}
-	else if (getClass().getName() == "Czarodziej")
+	else if (getClass().getClassType() == ClassType::Mage)
 	{
 		setInitiative(3);
+		// Ustawic Def
 	}
-	else if (getClass().getName() == "Lotrzyk")
+	else if (getClass().getClassType() == ClassType::Rogue)
 	{
 		setInitiative(5);
+		// Ustawic Def
 	}
 }
 
@@ -36,7 +39,9 @@ int GameCharacter::getMp()
 
 int GameCharacter::getDefense()
 {
-	return defense + armor->getDefense();
+	if(armor != nullptr)
+		return defense + armor->getDefense();
+	return defense;
 }
 
 Statistics GameCharacter::getStats()
@@ -57,6 +62,7 @@ int GameCharacter::getInitiative()
 
 void GameCharacter::setGold(int gold)
 {
+	if (gold < 0) throw std::invalid_argument("Posiadane zloto nie moze byc ujemne");
 	this->gold = gold;
 }
 
@@ -87,8 +93,13 @@ void GameCharacter::deleteItem(int i)
 
 void GameCharacter::setHp(int hp)
 {
-	if (hp < 0) throw std::invalid_argument("Hp musi byc liczba dodatnia");
-	this->hp = hp;
+	if (hp <= 0)
+	{
+		this->hp = 0;
+		consciousness = false;
+	}
+	else	
+		this->hp = hp;
 }
 
 void GameCharacter::setMp(int mp)
@@ -102,6 +113,12 @@ void GameCharacter::setInitiative(int initiative)
 	this->initiative = initiative;
 }
 
+void GameCharacter::setDefense(int defense)
+{
+	if (defense < 0) throw std::invalid_argument("Obrona musi byc liczba dodatnia");
+	this->defense = defense;
+}
+
 int GameCharacter::getGold()
 {
 	return gold;
@@ -109,7 +126,6 @@ int GameCharacter::getGold()
 
 void GameCharacter::setLvl(unsigned int lvl)
 {
-	if (lvl < 0) throw std::invalid_argument("Lvl musi byc liczba dodatnia");
 	this->lvl = lvl;
 }
 
@@ -123,10 +139,45 @@ void GameCharacter::equipArmor(Armor armor)
 	this->armor = &armor;
 }
 
-void GameCharacter::takeDamage(int dmg)
+void GameCharacter::takeDamage(EffectType effectType, int dmg)
 {
-	if (hp > dmg)
-		setHp(hp - dmg);
+	int dmgDealt = 0;
+	if(armor->isEquipped())
+	{
+		switch (effectType)
+		{
+			case EffectType::Bleeding:
+			{
+				dmgDealt = dmg - armor->getResistances().getBleedResistance();
+				break;
+			}
+			case EffectType::Burning:
+			{
+				dmgDealt = dmg - armor->getResistances().getFireResistance();
+				break;
+			}
+			case EffectType::Poisoning:
+			{
+				dmgDealt = dmg - armor->getResistances().getPoisonResistance();
+				break;
+			}
+			case EffectType::MagicDmg:
+			{
+				dmgDealt = dmg - armor->getResistances().getMagicResistance();
+				break;
+			}
+			case EffectType::Freezing:
+			{
+				dmgDealt = dmg - armor->getResistances().getColdResistance();
+				break;
+			}
+		}
+	}
+
+	if(effectType == EffectType::PhysicalDmg)
+		dmgDealt = dmg - getDefense();
+
+	setHp(hp - dmgDealt);
 }
 
 bool GameCharacter::useMP(int mpCost)
@@ -162,13 +213,13 @@ void GameCharacter::effectsInfluence()
 		switch (effect->getType())
 		{
 		case EffectType::Bleeding:
-			takeDamage(4);
+			takeDamage(EffectType::Bleeding,4);
 			buffs.strengthBuffs.insert({effect->getType(), effect->getEffect()});
 			buffs.consitutionBuffs.insert({ effect->getType(), effect->getEffect() });
 			break;
 
 		case  EffectType::Poisoning:
-			takeDamage(5);
+			takeDamage(EffectType::Poisoning,5);
 			buffs.strengthBuffs.insert({ effect->getType(), effect->getEffect() });
 			buffs.consitutionBuffs.insert({ effect->getType(), effect->getEffect() });
 			buffs.intelligenceBuffs.insert({effect->getType(), effect->getEffect()});
@@ -184,19 +235,19 @@ void GameCharacter::effectsInfluence()
 			break;
 
 		case EffectType::Burning:
-			takeDamage(5);
+			takeDamage(EffectType::Burning,5);
 			buffs.intelligenceBuffs.insert({ effect->getType(), effect->getEffect() });
 			buffs.wisdomBuffs.insert({ effect->getType(), effect->getEffect() });
 			break;
 
 		case EffectType::Shocked:
-			takeDamage(3);
+			takeDamage(EffectType::MagicDmg,3);
 			buffs.dexterityBuffs.insert({ effect->getType(), effect->getEffect() });
 			buffs.wisdomBuffs.insert({ effect->getType(), effect->getEffect() });
 			break;
 
 		case EffectType::Freezing:
-			takeDamage(4);
+			takeDamage(EffectType::Freezing,3);
 			buffs.strengthBuffs.insert({ effect->getType(), effect->getEffect() });
 			buffs.dexterityBuffs.insert({ effect->getType(), effect->getEffect() });
 			break;
@@ -226,9 +277,11 @@ void GameCharacter::effectsInfluence()
 			buffs.intelligenceBuffs.erase(effect->getType());
 			buffs.wisdomBuffs.erase(effect->getType());
 			buffs.charismaBuffs.erase(effect->getType());
+
 			if (effect->getType() == EffectType::Defending)
 				defense -= 3;
-			//effects.erase(std::remove(effects.begin(), effects.end(), effect->getType()), effects.end());
+
+			effects.erase(std::remove(effects.begin(), effects.end(), effect), effects.end());
 		}
 	}
 }

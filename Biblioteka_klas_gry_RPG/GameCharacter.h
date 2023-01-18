@@ -36,6 +36,7 @@ class GameCharacter : public IActions
 	std::vector<Effect*> effects;
 	std::vector<Item*> items;
 	unsigned int lvl;
+	bool consciousness = true;
 
 protected:
 	GameCharacter(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats, Alignment alignment, int hp, int mp, std::vector<Item*> items, unsigned int lvl);
@@ -49,6 +50,7 @@ public:
 	void setMp(int mp);
 	void setLvl(unsigned int lvl);
 	void setInitiative(int initiative);
+	void setDefense(int defense);
 	int getGold();
 	void setGold(int gold);
 	std::string getName();
@@ -64,7 +66,7 @@ public:
 
 	void equipWeapon(Weapon weapon);
 	void equipArmor(Armor armor);
-	void takeDamage(int dmg);
+	void takeDamage(EffectType effectType,int dmg);
 	bool useMP(int mpCost);
 	void addEffect(Effect* effect);
 	int addModifiers(std::map<EffectType, int> buffs_);

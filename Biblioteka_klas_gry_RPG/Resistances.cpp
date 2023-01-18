@@ -2,12 +2,13 @@
 
 #include <stdexcept>
 
-Resistances::Resistances(int fireResistance, int coldResistance, int poisonResistance, int magicResistance)
+Resistances::Resistances(int fireResistance, int coldResistance, int poisonResistance, int magicResistance, int bleedResistance)
 {
 	setFireResistance(fireResistance);
 	setColdResistance(coldResistance);
 	setPoisonResistance(poisonResistance);
 	setMagicResistance(magicResistance);
+	setBleedResistance(bleedResistance);
 }
 
 void Resistances::setFireResistance(int fireResistance)
@@ -34,6 +35,12 @@ void Resistances::setMagicResistance(int magicResistance)
 	this->magicResistance = magicResistance;
 }
 
+void Resistances::setBleedResistance(int bleedResistance)
+{
+	if (bleedResistance < 0) throw std::invalid_argument("Odpornosc na krwawienie musi byc liczba dodatnia");
+	this->bleedResistance = bleedResistance;
+}
+
 int Resistances::getFireResistance()
 {
 	return fireResistance;
@@ -53,3 +60,9 @@ int Resistances::getMagicResistance()
 {
 	return magicResistance;
 }
+
+int Resistances::getBleedResistance()
+{
+	return bleedResistance;
+}
+

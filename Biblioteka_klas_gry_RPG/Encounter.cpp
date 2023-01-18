@@ -71,8 +71,7 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Mob*>
 							std::cout << "Wybierz poprawnego przeciwnika!(1-" << enemies.size() << ")\n";
 					} while (choice < 1 || choice > enemies.size());
 
-					hero->attack();
-					enemies[choice-1]->takeDamage(hero->attack() - enemies[choice-1]->getDefense());
+					enemies[choice-1]->takeDamage(EffectType::PhysicalDmg,hero->attack());
 					break;
 
 				case 2: //Zabezpieczyc je¿eli bohater ju¿ siê broni???
