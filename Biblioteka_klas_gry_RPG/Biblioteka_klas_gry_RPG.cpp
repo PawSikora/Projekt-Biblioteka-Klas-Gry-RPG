@@ -9,9 +9,11 @@
 #include "Mob.h"
 #include "NPC.h"
 #include "Weapon.h"
+#include "GeneratorHistorii.h"
 
 //#define CombatMechanicTest
-#define TradingMechanicTest
+//#define TradingMechanicTest
+#define WorldHistoryTest
 
 #ifdef CombatMechanicTest
 int main()
@@ -94,3 +96,14 @@ int main()
 
 
 #endif
+#ifdef WorldHistoryTest
+int main()
+{
+	GeneratorHistorii generator;
+	std::cout << generator.GenerujHistorie();
+
+}
+
+
+#endif
+
