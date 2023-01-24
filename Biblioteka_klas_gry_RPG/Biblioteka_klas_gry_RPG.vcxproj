@@ -137,6 +137,7 @@
     <ClCompile Include="Evil_Mob.cpp" />
     <ClCompile Include="GameCharacter.cpp" />
     <ClCompile Include="GameCharacterClass.cpp" />
+    <ClCompile Include="GeneratorHistorii.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="MainGameCharacter.cpp" />
     <ClCompile Include="Mob.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Evil_Mob.h" />
     <ClInclude Include="GameCharacter.h" />
     <ClInclude Include="GameCharacterClass.h" />
+    <ClInclude Include="GeneratorHistorii.h" />
     <ClInclude Include="IActions.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="MainGameCharacter.h" />
