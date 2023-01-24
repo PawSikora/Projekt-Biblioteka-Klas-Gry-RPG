@@ -72,7 +72,7 @@ int GameCharacter::getDefense()
 	return defense;
 }
 
-Statistics GameCharacter::getStats()
+Statistics& GameCharacter::getStats()
 {
 	return stats;
 }

@@ -7,11 +7,6 @@ class MainGameCharacter :public GameCharacter
 	int nextLvl = 50;
 public:
 	MainGameCharacter(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats, Alignment alignment, int health, int mana, std::vector<Item*> items, unsigned int lvl);
-<<<<<<< Updated upstream
-	MainGameCharacter() = default;
-
-=======
->>>>>>> Stashed changes
 	int getExp();
 	void increaseExp(int exp);
 	void increaseExpCap();

@@ -220,14 +220,6 @@ void CharacterDesigner::statsDistribution(MainGameCharacter& character_t )
 	character_t.setHp(character_t.getStats().getConsitution() * 2);
 	character_t.setMp(character_t.getStats().getWisdom() * 2);
 
-	std::cout << character_t.getMp();
-	std::cout << character_t.getHp();
-	std::cout << character_t.getStats().getCharisma();
-	std::cout << character_t.getStats().getConsitution();
-	std::cout << character_t.getStats().getDexterity();
-	std::cout << character_t.getStats().getIntelligence();
-	std::cout << character_t.getStats().getStrength();
-	std::cout << character_t.getStats().getWisdom();
 
 }
 

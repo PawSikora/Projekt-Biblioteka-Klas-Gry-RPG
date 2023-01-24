@@ -16,7 +16,7 @@ class CharacterDesigner
 public:
 	CharacterDesigner() {};
 
-	MainGameCharacter& createCharacter() {
+	MainGameCharacter createCharacter() {
 
 		std::string name_t;
 		std::cout << "Jak sie nazywasz" << '\n';
@@ -27,9 +27,9 @@ public:
 
 		MainGameCharacter player_t(name_t, race_t, class_t, 
 			Statistics(10, 10, 10, 10, 10, 10), all_t, 3, 3,
-			{ new Weapon("Kamien", 0, 1, 1) }, 1);
+			{ new Weapon("Kamien", 0, 1, 1),new Weapon("Kamien", 0, 1, 1) }, 1);
 		statsDistribution(player_t);
-		std::cout << "WESZLO;";
+
 
 		return player_t;
 

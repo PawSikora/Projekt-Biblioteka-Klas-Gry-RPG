@@ -59,7 +59,7 @@ public:
 	int getHp();
 	int getMp();
 	int getDefense();
-	Statistics getStats();
+	Statistics& getStats();
 	int getInitiative();
 	unsigned int getLvl();
 	GameCharacterClass getClass();
