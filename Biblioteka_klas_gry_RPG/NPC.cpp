@@ -12,22 +12,22 @@ std::string NPC::myRole()
 	switch (role_)
 	{
 	case Role::ArmorSmith:
-		return "Armorsmith";
+		return "Platnerz ";
 
 	case Role::WeponSmith:
-		return "Weaponsmith";
+		return "Zbrojmistrz";
 
 	case Role::SpellSeller:
-		return "Spellsmith";
+		return "Sprzedawca zaklec";
 
 	case Role::MiscSeller:
-		return "Miscsmith";
+		return "Hadlarze roznosciami";
 
 	case Role::PotionSeller:
-		return "Potionsmith";
+		return "Alchemikiem ";
 
 	case Role::InnKeeper:
-		return "Innkeeper";
+		return "Karczmarzem ";
 
 	  default: throw std::runtime_error("Unsupported Role type");
 	}
@@ -35,18 +35,18 @@ std::string NPC::myRole()
 
 void NPC::printItems(std::vector<Item*> items)
 {
-	std::cout << "this is what i got :" << std::endl;
+	std::cout << "Oto moja oferta :" << std::endl;
 	int i = 1;
 	for(auto x : items)
 	{
-		std::cout<<i <<" " << x->getName() << " " << " For : " << x->getValue() << std::endl;
+		std::cout<<i <<" " << x->getName() << " " << " Za : " << x->getValue() << std::endl;
 		i++;
 	}
 }
 
 void NPC::greet()
 {
-	std::cout << "Hi my name is " << this->getName() << " i'm " << myRole() << std::endl; 
+	std::cout << "Nazwam sie  " << this->getName() << " i jestem " << myRole() << std::endl; 
 }
 
 void NPC::SellItem(MainGameCharacter &character)
@@ -55,11 +55,11 @@ void NPC::SellItem(MainGameCharacter &character)
 	int selectedItemId;
 	std::string answer;
 	printItems(itemList);
-	std::cout << "Do you wish to buy anything ? (if you want to buy something type number next to it, else type bye)" << std::endl;
+	std::cout << "Co chcialbys kupic ? (Jesli chcesz cos kupic napisz numer obok przedmiotu, jezeli nic nie chcesz sprzedawac napisz zegnaj)" << std::endl;
 	std::cin >> answer;
-	if (answer.find("bye") == 0)
+	if (answer.find("zegnaj") == 0)
 	{
-		std::cout << "Bye then." << std::endl;
+		std::cout << "Wiec zegnaj" << std::endl;
 		
 	}
 	else
@@ -67,8 +67,8 @@ void NPC::SellItem(MainGameCharacter &character)
 		selectedItemId = forceNumberInput(answer);
 		while(selectedItemId > itemList.size() || selectedItemId < 1)
 		{
-			std::cout << "your mind's beacon doesn't shine too bright, doesn't it ?" << std::endl;
-			std::cout << "(if you want to buy something type number next to it, else type bye)" << std::endl << '\n' << '\n';
+			std::cout << "Latarnia twojego intelektu nie swieci zbyt jasno ?" << std::endl;
+			std::cout << "(Jesli chcesz cos kupic napisz numer obok przedmiotu, jezeli nic nie chcesz sprzedawac napisz zegnaj)" << std::endl << '\n' << '\n';
 			printItems(itemList);
 			std::cin >> answer;
 			selectedItemId = forceNumberInput(answer);
@@ -79,12 +79,12 @@ void NPC::SellItem(MainGameCharacter &character)
 		selectedItem = itemList[selectedItemId];
 		if (character.getGold() < selectedItem->getValue())
 		{
-			std::cout << "Come back when you have some money !";
+			std::cout << "Wroc kiedy bedziesz miec troche zlota!";
 
 		}
 		else
 		{
-			std::cout << "Nice to do business with you" << std::endl;
+			std::cout << "Interesy z toba to przyjemnosc" << std::endl;
 			character.setGold(character.getGold() - selectedItem->getValue());
 			this->deleteItem(selectedItemId);
 			character.addItem(selectedItem);
@@ -100,11 +100,11 @@ void NPC::BuyItem(MainGameCharacter &character)
 	std::string answer;
 	int selectedItemId;
 	printItems(character.getItems());
-	std::cout << "Do you wish to sell anything ? (if you want to buy something type number next to it, else type bye)" << std::endl;
+	std::cout << "Chcesz cos sprzedac ? (Jesli chcesz cos sprzedac napisz numer obok przedmiotu, jezeli nic nie chcesz sprzedawac napisz zegnaj)" << std::endl;
 	std::cin >> answer;
-	if (answer.find("bye") == 0)
+	if (answer.find("zegnaj") == 0)
 	{
-		std::cout << "Bye then." << std::endl;
+		std::cout << "Wiec zegnaj." << std::endl;
 	
 	}
 	else
@@ -113,8 +113,8 @@ void NPC::BuyItem(MainGameCharacter &character)
 		while ( selectedItemId > itemList.size() || selectedItemId < 1 )
 		{
 			
-			std::cout << "your mind's beacon doesn't shine too bright, doesn't it ?" << std::endl<<'\n';
-			std::cout << "(if you want to buy something type number next to it, else type bye)" << std::endl<<'\n'<<'\n';
+			std::cout << "Latarnia twojego intelektu nie swieci zbyt jasno?" << std::endl<<'\n';
+			std::cout << "(Jesli chcesz cos sprzedac napisz numer obok przedmiotu, jezeli nic nie chcesz sprzedawac napisz zegnaj)" << std::endl<<'\n'<<'\n';
 			printItems(itemList);
 			std::cin >> answer;
 			selectedItemId = forceNumberInput(answer);
@@ -124,12 +124,12 @@ void NPC::BuyItem(MainGameCharacter &character)
 		selectedItem = itemList[selectedItemId];
 		if (this->getGold() < selectedItem->getValue())
 		{
-			std::cout << "Sorry i don't have enough money " << std::endl;
+			std::cout << "Wybacz nie mam wystarczajacej ilosci zlota " << std::endl;
 		
 		}
 		else
 		{
-			std::cout << "Nice to do business with you" << std::endl;
+			std::cout << "Interesy z toba to przyjemnosc" << std::endl;
 			character.setGold(int(((double)character.getGold() + double(selectedItem->getValue())) * 0.8));
 			this->addItem(selectedItem);
 			character.deleteItem(selectedItemId);
@@ -146,33 +146,33 @@ void NPC::Dialog(MainGameCharacter &character)
 	std::cin >> anwser;
 	std::cerr << anwser;
 	
-	while (anwser.find("yes") != 0 && anwser.find("bye") != 0)
+	while (anwser.find("tak") != 0 && anwser.find("zegnaj") != 0)
 	{
-		std::cout << "I didn't catch that out. Can you repeat? (use statement yes or bye to advance)"; 
+		std::cout << "Nie zrozumialem czy mozesz powtorzyc ? (napisz tak lub zegnaj zeby przejsc dalej)"; 
 		
 		std::cin >> anwser;
 	}
-	if (anwser.find("bye") == 0)
+	if (anwser.find("zegnaj") == 0)
 	{
-		std::cout << "Bye then." << std::endl;
+		std::cout << "Wiec zegnaj." << std::endl;
 		
 
 	}
 	else
 	{
-		std::cout << "Do you wish to sell or buy ?";
+		std::cout << "Chcesz cos kupic czy sprzedac?";
 		std::cin >> anwser;
-		if (anwser.find("sell") == 0)
+		if (anwser.find("sprzedac") == 0)
 		{
 			BuyItem(character);
 		}
-		else if (anwser.find("buy") == 0)
+		else if (anwser.find("kupic") == 0)
 		{
 			SellItem(character);
 		}
 		else
 		{
-			std::cout << "Bye then." << std::endl;
+			std::cout << "Wiec zegnaj." << std::endl;
 
 		}
 	}
@@ -184,25 +184,25 @@ void NPC::DialogInnKeeper(MainGameCharacter& character)
 {
 	std::string anwser;
 	std::cin >> anwser;
-	while (anwser.find("sleep") != 0 && anwser.find("drink") != 0 && anwser.find("bye") != 0)
+	while (anwser.find("nocleg") != 0 && anwser.find("handel") != 0 && anwser.find("zegnaj") != 0)
 	{
-		std::cout << "I didn't catch that out. Can you repeat? (use statement yes or bye to advance)"; //zlleeeeee
+		std::cout << "Nie zrozumialem czy mozesz powtorzyc ? (napisz tak lub zegnaj zeby przejsc dalej)"; //zlleeeeee
 		std::cin >> anwser;
 	}
-	if (anwser.find("bye") == 0)
+	if (anwser.find("zegnaj") == 0)
 	{
-		std::cout << "Bye then." << std::endl;
+		std::cout << "Wiec zegnaj." << std::endl;
 
 
 	}
 	else
 	{
 
-		if(anwser.find("sleep")==0)
+		if(anwser.find("nocleg")==0)
 		{
-			std::cout << "This will cost you about 50 gold [yes/bye]" << std::endl;
+			std::cout << "To bedziesz cie kosztowac 50 sztuk zlota [tak/zegnaj]" << std::endl;
 			std::cin >> anwser;
-			if (anwser.find("yes")==0)
+			if (anwser.find("tak")==0)
 			{
 				if(character.getGold()>50)
 				{
@@ -211,31 +211,31 @@ void NPC::DialogInnKeeper(MainGameCharacter& character)
 				}
 				else
 				{
-					std::cout << "Come back when you have some money !";
+					std::cout << "Wroc kiedy bedziesz miec troche zlota !";
 				}
 				
 			}
 			else
 			{
-				std::cout << "Bye then." << std::endl;
+				std::cout << "Wiec zegnaj." << std::endl;
 			}
 			
 		}
-		else if (anwser.find("drink")==0)
+		else if (anwser.find("handel")==0)
 		{
-			std::cout << "Do you wish to sell or buy ?";
+			std::cout << "Chcesz cos kupic czy sprzedac?";
 			std::cin >> anwser;
-			if (anwser.find("sell") == 0)
+			if (anwser.find("sprzedac") == 0)
 			{
 				BuyItem(character);
 			}
-			else if (anwser.find("buy") == 0)
+			else if (anwser.find("kupic") == 0)
 			{
 				SellItem(character);
 			}
 			else
 			{
-				std::cout << "Bye then." << std::endl;
+				std::cout << "Wiec zegnaj." << std::endl;
 
 			}
 		}
@@ -254,32 +254,32 @@ void NPC::whatCanIDo(MainGameCharacter &character)
 	{
 	case Role::ArmorSmith:
 		greet();
-		std::cout << "Perhaps you are looking for a fine piece of armor ? "<< " [yes,bye] " << std::endl;
+		std::cout << "Szukasz moze porzadnej zbroji ? "<< " [tak,zegnaj] " << std::endl;
 		Dialog(character);
 			break;
 	case Role::WeponSmith:
 		greet();
-		std::cout << "Perhaps you are looking for a deadly weapon ? " << " [yes,bye] " << std::endl;
+		std::cout << "Miecze, luki, sztylety? Mam wszystko czym mozna zabic. " << " [tak,zegnaj] " << std::endl;
 		Dialog(character);
 		break;
 	case Role::SpellSeller:
 		greet();
-		std::cout << "Perhaps you are looking for a powerful spells ? " << " [yes,bye] " << std::endl;
+		std::cout << "Poszkujesz pradawnej wiedzy? A moze poteznych zaklec ? " << " [tak,zegnaj] " << std::endl;
 		Dialog(character);
 		break;
 	case Role::MiscSeller:
 		greet();
-		std::cout << "Perhaps you are looking for a various items ? " << " [yes,bye] " << std::endl;
+		std::cout << "Kielichy, skory i inne roznosci! Nigdzie nie znajdziesz lepszych cen ! " << " [tak,zegnaj] " << std::endl;
 		Dialog(character);
 		break;
 	case Role::PotionSeller:
 		greet();
-		std::cout << "Perhaps you are looking for a good potions ? " << " [yes,bye] " << std::endl;
+		std::cout << "Tajemnicze wywary i sekrety alchemi na wyciagniecie dloni. Oczywiscie za oplata... " << " [tak,zegnaj] " << std::endl;
 		Dialog(character);
 		break;
 	case Role::InnKeeper:
 		greet();
-		std::cout << "Are u here for a drink or too sleep in one of my rooms ? " << " [sleep,drink,bye] " << std::endl;
+		std::cout << "Przyszedles sie napic ? Czy moze szukasz nocelgu ? " << " [nocleg,handel,zegnaj] " << std::endl;
 		DialogInnKeeper(character);
 		break;
 

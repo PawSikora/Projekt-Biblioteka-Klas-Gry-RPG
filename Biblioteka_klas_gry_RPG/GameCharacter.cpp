@@ -13,7 +13,7 @@ int GameCharacter::forceNumberInput(std::string& answer)
 
 	while (!isNumber(answer))
 	{
-		std::cout << "Please type number" << std::endl;
+		std::cout << "Prosze wprowadzic numer" << std::endl;
 		std::cin >> answer;
 
 	}

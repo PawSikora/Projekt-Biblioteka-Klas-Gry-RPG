@@ -84,7 +84,7 @@ int main()
 	GameCharacterClass rogue(ClassType::Rogue, { new Ability("Backstab", AbilityType::Offensive, 1000, Effect("Bleed", EffectType::Bleeding, 2, 5)), new Ability("Poison Blade", AbilityType::Offensive, 700, Effect("Poison", EffectType::PoisonResistBoost, 4, 6)) });
 	MainGameCharacter player1("Alistair", GameCharacterRace::Human, warrior, Statistics(14, 10, 12, 10, 10, 12), Alignment::Good, 120, 0, { new Weapon("Miecz templariusza", 220, 16, 5), new Armor("Zbroja templariusza", 450, 5, 3, Resistances(10, 10, 10, 10,10)) }, 1);
 	player1.setGold(1000000);
-	NPC WeponSmith("Alistair", GameCharacterRace::Human, warrior, Statistics(14, 10, 12, 10, 10, 12), 120, 0, { new Weapon("Miecz templariusza", 220, 16, 5), new Armor("Zbroja templariusza", 450, 5, 3, Resistances(10, 10, 10, 10,10)) }, 1,Role::InnKeeper);
+	NPC WeponSmith("Alistair", GameCharacterRace::Human, warrior, Statistics(14, 10, 12, 10, 10, 12), 120, 0, { new Weapon("Miecz templariusza", 220, 16, 5), new Armor("Zbroja templariusza", 450, 5, 3, Resistances(10, 10, 10, 10,10)) }, 1,Role::ArmorSmith);
 	WeponSmith.whatCanIDo(player1);
 
 	/*NPC(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats
