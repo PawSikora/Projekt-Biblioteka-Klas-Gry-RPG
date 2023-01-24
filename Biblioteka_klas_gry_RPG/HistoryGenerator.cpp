@@ -1,6 +1,6 @@
-#include "GeneratorHistorii.h"
+#include "HistoryGenerator.h"
 
-void GeneratorHistorii::addAdjective()
+void HistoryGenerator::addAdjective()
 {
 	adjective.push_back("Mroczny");
 	adjective.push_back("Piekny");
@@ -11,7 +11,7 @@ void GeneratorHistorii::addAdjective()
 
 }
 
-void GeneratorHistorii::addWhoRule()
+void HistoryGenerator::addWhoRule()
 {
 	whoRule.push_back("mial wiecej pieniadzy");
 	whoRule.push_back("potrafil zjednac ludzi");
@@ -21,7 +21,7 @@ void GeneratorHistorii::addWhoRule()
 	whoRule.push_back("byl abmitny");
 }
 
-void GeneratorHistorii::addDiplomacy()
+void HistoryGenerator::addDiplomacy()
 {
 	diplomacy.push_back("w stanie wojny z ");
 	diplomacy.push_back("w sojuszu ");
@@ -31,7 +31,7 @@ void GeneratorHistorii::addDiplomacy()
 	diplomacy.push_back("w trwalym sojuszu ");
 }
 
-void GeneratorHistorii::addKingdoms()
+void HistoryGenerator::addKingdoms()
 {
 	kingdoms.push_back("Ksiestwo Azol");
 	kingdoms.push_back("Krolestwo Manutha");

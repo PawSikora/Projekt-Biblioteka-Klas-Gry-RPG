@@ -6,7 +6,7 @@
 #include"Parameters.h"
 #include<ctime>
 //zmiany beda konieczne przy dodaniu ras problem polega na tym zeby rasy w wektorze trzymac
-class GeneratorHistorii
+class HistoryGenerator
 {
 	std::vector<std::string> adjective;
 	std::vector<std::string> diplomacy;
@@ -18,7 +18,7 @@ class GeneratorHistorii
 	void addDiplomacy();
 	void addKingdoms();
 public:
-	GeneratorHistorii()
+	HistoryGenerator()
 	{
 		addAdjective();
 		addWhoRule();
