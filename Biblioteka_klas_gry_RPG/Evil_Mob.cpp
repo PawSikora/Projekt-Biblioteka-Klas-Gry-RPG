@@ -7,14 +7,7 @@
 
 bool Evil_Mob::run()
 {
-	std::cout << "Czy na pewno chcesz uciec?[t/n]";
-	std::string choice;
-	std::cin.clear();
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	std::getline(std::cin, choice);
-	if (choice.find('t'))
-		return true;
-	return false;
+	return true;
 }
 
 int Evil_Mob::attack()
@@ -53,31 +46,40 @@ void Evil_Mob::useItem()
 
 		Item* item;
 		std::mt19937 mt(time(nullptr));
-		int numberOfItem = (mt() % getItems().size()) -1;
+		int numberOfItem = (mt() % getItems().size());
+		std::cout << numberOfItem << "\n\n\n";
 		item = getItems()[numberOfItem];
 
 
 		if (dynamic_cast<Consumables*>(item))
 		{
 			Consumables* item_ = dynamic_cast<Consumables*>(item);
-			Effect effect = item_->getEffect();
-			addEffect(&effect);
+			addEffect(&item_->getEffect());
+			std::cout << this->getName() << " uzywa " << item_->getName() << " nakladajac na siebie efekt: " << enumEffectConversion(item_->getEffect().getType()) << " +" << std::to_string(item_->getEffect().getEffect()) << std::endl;
 		}
 
 		if (dynamic_cast<Weapon*>(item))
 		{
 			if (weapon != nullptr && weapon->isEquipped())
+			{
+				std::cout << this->getName() << " odklada " << item->getName() << std::endl;
 				weapon->unequipWeapon();
+			}
 			weapon = dynamic_cast<Weapon*>(item);
 			weapon->equipWeapon();
+			std::cout << this->getName() << " ekwipuje " << weapon->getName() << std::endl;
 		}
 
 		if (dynamic_cast<Armor*>(item))
 		{
 			if (armor != nullptr && armor->isEquipped())
+			{
+				std::cout << this->getName() << " sciaga " << item->getName() << std::endl;
 				armor->unequipArmor();
+			}
 			armor = dynamic_cast<Armor*>(item);
 			armor->equipArmor();
+			std::cout << this->getName() << " zaklada " << armor->getName() << std::endl;
 		}
 	}
 }
@@ -88,10 +90,10 @@ Evil_Mob::Evil_Mob(std::string name, GameCharacterRace race, GameCharacterClass 
 {
 }
 
-void Evil_Mob::doSomething()
+int Evil_Mob::chooseAction(int numOfChoices)
 {
 	std::mt19937 mt(time(nullptr));
-	if(mt()%4==0)
+	/*if(mt()%4==0)
 	{
 		run();
 	}
@@ -106,7 +108,8 @@ void Evil_Mob::doSomething()
 	if (mt() % 4 == 3)
 	{
 		
-	}
+	}*/
 
+	return mt() % numOfChoices;
 
 }

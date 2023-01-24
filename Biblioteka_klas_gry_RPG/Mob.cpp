@@ -12,14 +12,7 @@ Mob::Mob(std::string name, GameCharacterRace race, GameCharacterClass characterC
 
 bool Mob::run()
 {
-	std::cout << "Czy na pewno chcesz uciec?[t/n]";
-	std::string choice;
-	std::cin.clear();
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	std::getline(std::cin, choice);
-	if (choice.find('t'))
-		return true;
-	return false;
+	return true;
 }
 
 int Mob::attack()

@@ -5,11 +5,9 @@
 class Consumables : public Item
 {
 	Effect effect;
-	Ability ability;
 
 public:
-	Consumables(std::string name, int value, Effect effect, Ability ability);
-	Effect getEffect();
-	Ability getAbility();
+	Consumables(std::string name, int value, Effect effect);
+	Effect& getEffect();
 };
 

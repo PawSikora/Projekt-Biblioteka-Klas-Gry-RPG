@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "Dice.h"
+#include "Evil_Mob.h"
 #include "MainGameCharacter.h"
 #include "Mob.h"
 
@@ -12,5 +13,9 @@ class Encounter
 
 public:
 	Encounter();
-	void combat(std::vector<MainGameCharacter*> heroes, std::vector<Mob*> enemies);
+
+	void combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_Mob*> enemies);
+
+	bool isNumber(std::string& s);
+	int forceNumberInput(std::string& answer);
 };

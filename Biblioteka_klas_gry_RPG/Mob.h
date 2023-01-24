@@ -9,5 +9,7 @@ public:
 	int attack() override;
 	void defend() override;
 	void useItem() override;
+
+	virtual ~Mob(){}
 };
 

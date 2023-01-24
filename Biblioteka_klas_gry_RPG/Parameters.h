@@ -49,13 +49,13 @@ enum class AbilityType //Offensive itp czy Physical, magical itp
 
 enum class EffectType
 {
-	Bleeding,
-	Poisoning,
-	Healing,
-	Defending,
-	Burning,
-	Shocked,
-	Freezing,
+	Bleeding = 0,
+	Poisoning = 1,
+	Healing = 2,
+	Defending = 3,
+	Burning = 4,
+	Shocked = 5,
+	Freezing = 6,
 	PhysicalDmg,
 	MagicDmg,
 	FireResistBoost,
@@ -64,3 +64,13 @@ enum class EffectType
 	MagicResistBoost,
 	None
 };
+
+std::string enumEffectConversion(EffectType effect);
+
+inline std::string enumEffectConversion(EffectType effect)
+{
+	{
+		std::string effects[] = { "Krwawienie", "Zatrucie", "Leczenie", "Obrona", "Podpalenie", "Porazenie", "Zamrozenie" };
+		return effects[(int)effect];
+	}
+}

@@ -12,7 +12,7 @@ public:
 	Evil_Mob(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats,
 	         int health, int mana, std::vector<Item*> items, unsigned lvl, DangerLvL danger_);
 
-	void doSomething();
+	int chooseAction(int numOfChoices);
 
 	DangerLvL danger() const
 	{

@@ -46,11 +46,13 @@ protected:
 
 public:
 	void deleteItem(int i);
+
 	void setHp(int hp);
 	void setMp(int mp);
 	void setLvl(unsigned int lvl);
 	void setInitiative(int initiative);
 	void setDefense(int defense);
+
 	int getGold();
 	void setGold(int gold);
 	std::string getName();
@@ -61,12 +63,13 @@ public:
 	int getInitiative();
 	unsigned int getLvl();
 	GameCharacterClass getClass();
-	std::vector<Effect*> getEffects();
+	std::vector<Effect*>& getEffects();
 	std::vector<Item*> getItems();
+
 	bool isNumber(std::string& s);
 	int forceNumberInput(std::string& answer);
-	void equipWeapon(Weapon weapon);
-	void equipArmor(Armor armor);
+	void equipWeapon(Weapon* weapon);
+	void equipArmor(Armor* armor);
 	void takeDamage(EffectType effectType,int dmg);
 	bool useMP(int mpCost);
 	void addEffect(Effect* effect);

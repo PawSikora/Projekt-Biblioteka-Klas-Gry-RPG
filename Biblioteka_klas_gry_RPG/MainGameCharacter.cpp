@@ -31,7 +31,7 @@ bool MainGameCharacter::run()
 	std::cin.clear();
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::getline(std::cin, choice);
-	if (choice.find('t'))
+	if (!choice.find('t'))
 		return true;
 	return false;
 }
@@ -60,8 +60,7 @@ int MainGameCharacter::attack()
 
 void MainGameCharacter::defend()
 {
-	Effect defend("Defending", EffectType::Defending, 3, 3);
-	addEffect(&defend);
+	addEffect(new Effect("Defending", EffectType::Defending, 3, 3));
 }
 
 void MainGameCharacter::useItem()
@@ -70,7 +69,7 @@ void MainGameCharacter::useItem()
 		std::cout << "Nie masz zadnych przedmiotow!\n";
 	else
 	{
-		std::string anwser;
+		std::string answer;
 		int choice;
 		std::cout << "Z jakiego przedmiotu w plecaku chcialbys skorzystac?\n";
 		for(int i = 0; i < getItems().size(); i++)
@@ -80,8 +79,8 @@ void MainGameCharacter::useItem()
 
 		do
 		{
-			std::cin >> anwser;
-			choice = forceNumberInput(anwser);
+			std::cin >> answer;
+			choice = forceNumberInput(answer);
 			if (choice > getItems().size() || choice < 1)
 				std::cout << "Wybierz poprawny przedmiot!(1-" << getItems().size() << ")\n";
 		} while (choice < 1 || choice > getItems().size());
@@ -91,24 +90,32 @@ void MainGameCharacter::useItem()
 		if (dynamic_cast<Consumables*>(item))
 		{
 			Consumables* item_ = dynamic_cast<Consumables*>(item);
-			Effect effect = item_->getEffect();
-			addEffect(&effect);
+			addEffect(&item_->getEffect());
+			std::cout << this->getName() << " uzywa " << item_->getName() << " nakladajac na siebie efekt: " << enumEffectConversion(item_->getEffect().getType()) << " +" << std::to_string(item_->getEffect().getEffect()) << std::endl;
 		}
 
 		if (dynamic_cast<Weapon*>(item))
 		{
 			if (weapon != nullptr && weapon->isEquipped())
+			{
+				std::cout << this->getName() << " odklada " << item->getName() << std::endl;
 				weapon->unequipWeapon();
+			}
 			weapon = dynamic_cast<Weapon*>(item);
 			weapon->equipWeapon();
+			std::cout << this->getName() << " ekwipuje " << weapon->getName() << std::endl;
 		}
 
 		if (dynamic_cast<Armor*>(item))
 		{
 			if (armor != nullptr && armor->isEquipped())
+			{
+				std::cout << this->getName() << " sciaga " << item->getName() << std::endl;
 				armor->unequipArmor();
+			}
 			armor = dynamic_cast<Armor*>(item);
 			armor->equipArmor();
+			std::cout << this->getName() << " zaklada " << armor->getName() << std::endl;
 		}
 	}
 }
@@ -165,4 +172,9 @@ void MainGameCharacter::levelUp()
 	std::cout << "Odblokowano nowa zdolnosc: " << getClass().getAbility(wybor)->getName();
 	getClass().getAbility(wybor)->unlockAbility();
 	increaseExpCap();
+}
+
+bool MainGameCharacter::operator==(MainGameCharacter& other)
+{
+	return this->getName() == other.getName();
 }
