@@ -130,6 +130,7 @@
     <ClCompile Include="Ability.cpp" />
     <ClCompile Include="Armor.cpp" />
     <ClCompile Include="Biblioteka_klas_gry_RPG.cpp" />
+    <ClCompile Include="CharacterDesigner.cpp" />
     <ClCompile Include="Consumables.cpp" />
     <ClCompile Include="Dice.cpp" />
     <ClCompile Include="Effect.cpp" />
@@ -137,7 +138,6 @@
     <ClCompile Include="Evil_Mob.cpp" />
     <ClCompile Include="GameCharacter.cpp" />
     <ClCompile Include="GameCharacterClass.cpp" />
-    <ClCompile Include="GeneratorHistorii.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="MainGameCharacter.cpp" />
     <ClCompile Include="Mob.cpp" />
@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="Ability.h" />
     <ClInclude Include="Armor.h" />
+    <ClInclude Include="CharacterDesigner.h" />
     <ClInclude Include="Consumables.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="Effect.h" />
@@ -156,7 +157,6 @@
     <ClInclude Include="Evil_Mob.h" />
     <ClInclude Include="GameCharacter.h" />
     <ClInclude Include="GameCharacterClass.h" />
-    <ClInclude Include="GeneratorHistorii.h" />
     <ClInclude Include="IActions.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="MainGameCharacter.h" />

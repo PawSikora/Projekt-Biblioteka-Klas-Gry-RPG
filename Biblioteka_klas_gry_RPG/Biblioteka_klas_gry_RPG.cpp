@@ -1,15 +1,11 @@
 ﻿// Biblioteka_klas_gry_RPG.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
 //
 
-#include <iostream>
 
 
-#include "Encounter.h"
-#include "MainGameCharacter.h"
-#include "Mob.h"
-#include "NPC.h"
-#include "Weapon.h"
-#include "GeneratorHistorii.h"
+
+
+#include "CharacterDesigner.h"
 
 //#define CombatMechanicTest
 //#define TradingMechanicTest
@@ -99,8 +95,24 @@ int main()
 #ifdef WorldHistoryTest
 int main()
 {
-	GeneratorHistorii generator;
-	std::cout << generator.GenerujHistorie();
+	CharacterDesigner generator;
+	//generator.createCharacter();
+	MainGameCharacter temp( generator.createCharacter());
+	//std::cout << temp.getClass().getName();
+	//std::cout << temp.getName();
+	//std::cout << temp.getMp();
+	//std::cout << temp.getHp();
+	//std::cout << temp.getStats().getCharisma();
+	//std::cout << temp.getStats().getConsitution();
+	//std::cout << temp.getStats().getDexterity();
+	//std::cout << temp.getStats().getIntelligence();
+	//std::cout << temp.getStats().getStrength();
+	//std::cout << temp.getStats().getWisdom();
+
+
+	system("Pause");
+
+
 
 }
 
