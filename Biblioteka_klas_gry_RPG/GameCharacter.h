@@ -52,9 +52,9 @@ public:
 	void setLvl(unsigned int lvl);
 	void setInitiative(int initiative);
 	void setDefense(int defense);
+	void setGold(int gold);
 
 	int getGold();
-	void setGold(int gold);
 	std::string getName();
 	int getHp();
 	int getMp();

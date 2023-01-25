@@ -90,8 +90,8 @@ void MainGameCharacter::useItem()
 		if (dynamic_cast<Consumables*>(item))
 		{
 			Consumables* item_ = dynamic_cast<Consumables*>(item);
-			addEffect(&item_->getEffect());
-			std::cout << this->getName() << " uzywa " << item_->getName() << " nakladajac na siebie efekt: " << enumEffectConversion(item_->getEffect().getType()) << " +" << std::to_string(item_->getEffect().getEffect()) << std::endl;
+			addEffect(item_->getEffect());
+			std::cout << this->getName() << " uzywa " << item_->getName() << " nakladajac na siebie efekt: " << enumEffectConversion(item_->getEffect()->getType()) << " +" << std::to_string(item_->getEffect()->getEffect()) << std::endl;
 		}
 
 		if (dynamic_cast<Weapon*>(item))

@@ -28,11 +28,9 @@ int Effect::getTime()
 bool Effect::passTime()
 {
 	if (timeOfEffect > 0)
+	{
+		timeOfEffect--;
 		return false;
+	}
 	return true;
-}
-
-bool Effect::operator==(const Effect& other) const
-{
-	return this->effectType == other.effectType;
 }

@@ -34,8 +34,7 @@ int Evil_Mob::attack()
 
 void Evil_Mob::defend()
 {
-	Effect defend("Defending", EffectType::Defending, 3, 3);
-	addEffect(&defend);
+	addEffect(new Effect("Defending", EffectType::Defending, 3, 3));
 }
 
 void Evil_Mob::useItem()
@@ -54,8 +53,8 @@ void Evil_Mob::useItem()
 		if (dynamic_cast<Consumables*>(item))
 		{
 			Consumables* item_ = dynamic_cast<Consumables*>(item);
-			addEffect(&item_->getEffect());
-			std::cout << this->getName() << " uzywa " << item_->getName() << " nakladajac na siebie efekt: " << enumEffectConversion(item_->getEffect().getType()) << " +" << std::to_string(item_->getEffect().getEffect()) << std::endl;
+			addEffect(item_->getEffect());
+			std::cout << this->getName() << " uzywa " << item_->getName() << " nakladajac na siebie efekt: " << enumEffectConversion(item_->getEffect()->getType()) << " +" << std::to_string(item_->getEffect()->getEffect()) << std::endl;
 		}
 
 		if (dynamic_cast<Weapon*>(item))

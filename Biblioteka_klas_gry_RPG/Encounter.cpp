@@ -115,7 +115,7 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 				if (enemy->getHp() > 30)
 				{
 					//std::cout << "dziala1\n\n";
-					selectedAction = 3; //enemy->chooseAction(3) + 1;
+					selectedAction = 1; //enemy->chooseAction(3) + 1;
 				}
 				else
 				{

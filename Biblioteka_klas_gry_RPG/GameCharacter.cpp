@@ -3,6 +3,9 @@
 #include <iostream>
 
 #include <stdexcept>
+
+#include "Consumables.h"
+
 bool GameCharacter::isNumber(std::string& s)
 {
 	return s.find_first_not_of("0123456789-+") == std::string::npos;
@@ -41,17 +44,17 @@ GameCharacter::GameCharacter(std::string name, GameCharacterRace race, GameChara
 	if (getClass().getClassType() == ClassType::Warrior)
 	{
 		setInitiative(4);
-		// Ustawic Def
+		setDefense(3 + getStats().getDexterity() / 2.0);
 	}
 	else if (getClass().getClassType() == ClassType::Mage)
 	{
 		setInitiative(3);
-		// Ustawic Def
+		setDefense(1 + getStats().getDexterity() / 2.0);
 	}
 	else if (getClass().getClassType() == ClassType::Rogue)
 	{
 		setInitiative(5);
-		// Ustawic Def
+		setDefense(5 + getStats().getDexterity() / 2.0);
 	}
 }
 
@@ -205,6 +208,7 @@ void GameCharacter::takeDamage(EffectType effectType, int dmg)
 	if(effectType == EffectType::PhysicalDmg)
 		dmgDealt = dmg - getDefense();
 
+	dmgDealt = dmgDealt > 0 ? dmgDealt : 5;
 	setHp(hp - dmgDealt);
 }
 
@@ -215,20 +219,6 @@ bool GameCharacter::useMP(int mpCost)
 
 void GameCharacter::addEffect(Effect* effect)
 {
-	/*auto it = std::find(effects.begin(), effects.end(), effect);
-	if (it != effects.end())
-	{
-		std::cout << effect->getName() << " jest juz nalozony!\n";
-	}
-	else
-	{
-		effects.push_back(effect);
-		for (auto effect : effects)
-		{
-			std::cout << "Efekt: " << effect->getName() << "\n\n";
-		}
-	}*/
-
 	bool effectAlreadyAdded = false;
 
 	for (auto eff : effects) {
@@ -338,7 +328,27 @@ void GameCharacter::effectsInfluence()
 			if (effect->getType() == EffectType::Defending)
 				defense -= 3;
 
-			effects.erase(std::remove(effects.begin(), effects.end(), effect), effects.end());
+			//effects.erase(std::remove(effects.begin(), effects.end(), effect), effects.end());
+
+			//usuwanie
+			int i = 0;
+			bool effectAlreadyAdded = false;
+
+			for (auto eff : effects) {
+				if (eff->getType() == effect->getType()) {
+					effectAlreadyAdded = true;
+				}
+				else 
+					i++;
+			}
+
+
+			if (effectAlreadyAdded)
+			{
+				delete effects.at(i);
+				effects.erase(effects.begin()+i);
+			}
+				
 		}
 	}
 }

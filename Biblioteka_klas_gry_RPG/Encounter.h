@@ -4,7 +4,6 @@
 #include "Dice.h"
 #include "Evil_Mob.h"
 #include "MainGameCharacter.h"
-#include "Mob.h"
 
 
 class Encounter

@@ -4,10 +4,10 @@
 
 class Consumables : public Item
 {
-	Effect effect;
+	Effect* effect = nullptr;
 
 public:
-	Consumables(std::string name, int value, Effect effect);
-	Effect& getEffect();
+	Consumables(std::string name, int value, Effect* effect);
+	Effect* getEffect();
 };
 
