@@ -112,7 +112,7 @@ std::vector<Effect*>& GameCharacter::getEffects()
 	return effects;
 }
 
-std::vector<Item*> GameCharacter::getItems()
+std::vector<Item*>& GameCharacter::getItems()
 {
 	return items;
 }
@@ -163,11 +163,13 @@ void GameCharacter::setLvl(unsigned int lvl)
 void GameCharacter::equipWeapon(Weapon* weapon)
 {
 	this->weapon = weapon;
+	this->weapon->equipWeapon();
 }
 
 void GameCharacter::equipArmor(Armor* armor)
 {
 	this->armor = armor;
+	this->armor->equipArmor();
 }
 
 void GameCharacter::takeDamage(EffectType effectType, int dmg)

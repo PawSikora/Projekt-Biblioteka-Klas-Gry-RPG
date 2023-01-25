@@ -64,7 +64,7 @@ public:
 	unsigned int getLvl();
 	GameCharacterClass getClass();
 	std::vector<Effect*>& getEffects();
-	std::vector<Item*> getItems();
+	std::vector<Item*>& getItems();
 
 	bool isNumber(std::string& s);
 	int forceNumberInput(std::string& answer);
