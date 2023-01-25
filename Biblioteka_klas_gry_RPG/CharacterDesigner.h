@@ -3,13 +3,14 @@
 #include<iostream>
 class CharacterDesigner
 {
-	bool isNumber(std::string& s);
-	int forceNumberInput(std::string& answer);
+	static bool isNumber(std::string& s);
+	static int forceNumberInput(std::string& answer);
 	GameCharacterRace raceChoice();
 	GameCharacterClass classChoice();
 	Alignment alignmentChoice();
 	void statsDistribution(MainGameCharacter& temp);
 	GameCharacterRace race;
+	static int selectNumber(int a, int b);
 
 public:
 

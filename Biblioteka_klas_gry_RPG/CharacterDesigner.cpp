@@ -1,6 +1,7 @@
 #include "CharacterDesigner.h"
 
 
+
 bool CharacterDesigner::isNumber(std::string& s)
 {
 	
@@ -24,16 +25,35 @@ int CharacterDesigner::forceNumberInput(std::string& answer)
 	
 }
 
+
+int CharacterDesigner::selectNumber(int a, int b)
+{
+	std::string temp;
+	std::cin >> temp;
+	int temp_int = forceNumberInput(temp);
+	while (temp_int > b || temp_int < a)
+	{
+		
+		std::cout << "Wprowadzono numer z poza zakresu " << '\n';
+		std::cin >> temp;
+		temp_int=forceNumberInput(temp);
+	}
+	return temp_int;
+
+}
+
+
+
 GameCharacterRace CharacterDesigner::raceChoice()
 {
-	std::string temp = " ";
+
 	std::cout << " Oto rasy do wyboru" << '\n';
 	std::cout << "1 Czlowiek (  )" << '\n';
 	std::cout << "2 Elf (+1 wisdom, +1 intelligence, +1 dexterity ,-2 consitution ,-1 strength" << '\n';
 	std::cout << "3 Krasnolud(+1 strength, +3 consitution, +1 charisma, -3 dexterity, -2 wisdom " << '\n';
 	std::cout << "4 Ork ( +5 strength, +3 consitution, -4 intelligence,-3 charisma, -2 wisdom  " << '\n';
 	
-	switch (forceNumberInput(temp))
+	switch (selectNumber(1,4))
 	{
 	case 1:
 		race = GameCharacterRace::Human;
@@ -59,7 +79,7 @@ GameCharacterClass CharacterDesigner::classChoice()
 {
 	
 
-	std::string temp = " ";
+
 	system("cls");
 	std::cout << " Teraz wybierz klase " << '\n';
 	std::cout << "1 Wojownik ( +2 sila )" << '\n';
@@ -71,7 +91,7 @@ GameCharacterClass CharacterDesigner::classChoice()
 	GameCharacterClass mage(ClassType::Mage, {});
 
 	GameCharacterClass rogue(ClassType::Rogue, { });
-	switch (forceNumberInput(temp))
+	switch (selectNumber(1, 3))
 	{
 	case 1:
 		return warrior;
@@ -89,13 +109,12 @@ GameCharacterClass CharacterDesigner::classChoice()
 
 Alignment CharacterDesigner::alignmentChoice()
 {
-	std::string temp=" ";
-	//system("cls");
+
 	std::cout << " Teraz wybierz Strone " << '\n';
 	std::cout << "1 Zlo" << '\n';
 	std::cout << "2 Neutralny" << '\n';
 	std::cout << "3 Dobro " << '\n';
-	switch (forceNumberInput(temp))
+	switch (selectNumber(1, 3))
 	{
 	case 1:
 		return Alignment::Evil;
@@ -173,7 +192,6 @@ void CharacterDesigner::statsDistribution(MainGameCharacter& character_t )
 		break;
 
 	}
-	std::string temp = " ";
 	for (size_t i = 6; i > 0; i--)
 	{
 		system("cls");
@@ -184,8 +202,8 @@ void CharacterDesigner::statsDistribution(MainGameCharacter& character_t )
 		std::cout << "4 Intelekt :" << intelligence << '\n';
 		std::cout << "5 Madrosc :" << wisdom << '\n';
 		std::cout << "6 Charyzma :" << charisma << '\n';
-		std::cin >> temp;
-		switch (forceNumberInput(temp))
+
+		switch (selectNumber(1, 6))
 		{
 		case 1:
 			strength++;
