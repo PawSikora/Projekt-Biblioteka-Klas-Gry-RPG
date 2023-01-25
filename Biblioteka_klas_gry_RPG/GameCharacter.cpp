@@ -70,9 +70,11 @@ int GameCharacter::getMp()
 
 int GameCharacter::getDefense()
 {
+	int def = defense + addModifiers(buffs.defenseBuffs);
+
 	if(armor != nullptr)
-		return defense + armor->getDefense();
-	return defense;
+		return def + armor->getDefense();
+	return def;
 }
 
 Statistics& GameCharacter::getStats()
@@ -117,9 +119,15 @@ std::vector<Item*>& GameCharacter::getItems()
 	return items;
 }
 
+bool GameCharacter::getConsciousness()
+{
+	return consciousness;
+}
+
 void GameCharacter::deleteItem(int i)
 {
-	items.erase(items.begin() + i);
+	if(items.size() > 0)
+		items.erase(items.begin() + i);
 }
 
 void GameCharacter::setHp(int hp)
@@ -175,7 +183,7 @@ void GameCharacter::equipArmor(Armor* armor)
 void GameCharacter::takeDamage(EffectType effectType, int dmg)
 {
 	int dmgDealt = 0;
-	if(armor->isEquipped())
+	if(armor != nullptr && armor->isEquipped())
 	{
 		switch (effectType)
 		{
@@ -186,22 +194,22 @@ void GameCharacter::takeDamage(EffectType effectType, int dmg)
 			}
 			case EffectType::Burning:
 			{
-				dmgDealt = dmg - armor->getResistances().getFireResistance();
+				dmgDealt = dmg - armor->getResistances().getFireResistance() - addModifiers(buffs.fireResistanceBuffs);
 				break;
 			}
 			case EffectType::Poisoning:
 			{
-				dmgDealt = dmg - armor->getResistances().getPoisonResistance();
+				dmgDealt = dmg - armor->getResistances().getPoisonResistance() - addModifiers(buffs.poisonResistanceBuffs);
 				break;
 			}
 			case EffectType::MagicDmg:
 			{
-				dmgDealt = dmg - armor->getResistances().getMagicResistance();
+				dmgDealt = dmg - armor->getResistances().getMagicResistance() - addModifiers(buffs.magicResistanceBuffs);
 				break;
 			}
 			case EffectType::Freezing:
 			{
-				dmgDealt = dmg - armor->getResistances().getColdResistance();
+				dmgDealt = dmg - armor->getResistances().getColdResistance() - addModifiers(buffs.coldResistanceBuffs);
 				break;
 			}
 		}
@@ -245,7 +253,8 @@ int GameCharacter::addModifiers(std::map<EffectType, int> buffs_)
 
 void GameCharacter::addItem(Item* item)
 {
-	items.push_back(item);
+	if(item != nullptr)
+		items.push_back(item);
 }
 
 void GameCharacter::effectsInfluence()
@@ -270,13 +279,13 @@ void GameCharacter::effectsInfluence()
 			break;
 
 		case  EffectType::Healing:
-			//int heal = hp * 0.3;
 			hp += effect->getEffect();
 			std::cout << this->getName() << " odzysukuje " << effect->getEffect() << "hp!\n\n";
 			break;
 
 		case EffectType::Defending:
-			defense += effect->getEffect();
+			
+			buffs.defenseBuffs.insert({ effect->getType(), effect->getEffect() });
 			std::cout << this->getName() << " zyskuje bonus +" << effect->getEffect() << " do obrony dzieki swojej postawie!\n\n";
 			break;
 
@@ -302,19 +311,19 @@ void GameCharacter::effectsInfluence()
 			break;
 
 		case EffectType::FireResistBoost:
-			//Jakos z resistem z armoru polaczyc
+			buffs.fireResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
 			break;
 
 		case EffectType::ColdResistBoost:
-			//Jakos z resistem z armoru polaczyc
+			buffs.coldResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
 			break;
 
 		case EffectType::PoisonResistBoost:
-			//Jakos z resistem z armoru polaczyc
+			buffs.poisonResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
 			break;
 
 		case EffectType::MagicResistBoost:
-			//Jakos z resistem z armoru polaczyc
+			buffs.magicResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
 			break;
 		}
 
@@ -327,12 +336,13 @@ void GameCharacter::effectsInfluence()
 			buffs.wisdomBuffs.erase(effect->getType());
 			buffs.charismaBuffs.erase(effect->getType());
 
-			if (effect->getType() == EffectType::Defending)
-				defense -= 3;
+			buffs.defenseBuffs.erase(effect->getType());
+			buffs.fireResistanceBuffs.erase(effect->getType());
+			buffs.coldResistanceBuffs.erase(effect->getType());
+			buffs.poisonResistanceBuffs.erase(effect->getType());
+			buffs.magicResistanceBuffs.erase(effect->getType());
 
-			//effects.erase(std::remove(effects.begin(), effects.end(), effect), effects.end());
-
-			//usuwanie
+			
 			int i = 0;
 			bool effectAlreadyAdded = false;
 

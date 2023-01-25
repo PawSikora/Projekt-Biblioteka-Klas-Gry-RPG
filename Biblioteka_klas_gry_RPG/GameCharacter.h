@@ -19,6 +19,12 @@ struct StatBuffs
 	std::map<EffectType, int> intelligenceBuffs;
 	std::map<EffectType, int> wisdomBuffs;
 	std::map<EffectType, int> charismaBuffs;
+
+	std::map<EffectType, int> defenseBuffs;
+	std::map<EffectType, int> fireResistanceBuffs;
+	std::map<EffectType, int> coldResistanceBuffs;
+	std::map<EffectType, int> poisonResistanceBuffs;
+	std::map<EffectType, int> magicResistanceBuffs;
 };
 
 class GameCharacter : public IActions
@@ -37,7 +43,6 @@ class GameCharacter : public IActions
 	std::vector<Item*> items;
 	unsigned int lvl;
 	bool consciousness = true;
-
 protected:
 	GameCharacter(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats, Alignment alignment, int hp, int mp, std::vector<Item*> items, unsigned int lvl);
 	StatBuffs buffs;
@@ -45,6 +50,7 @@ protected:
 	Armor* armor = nullptr;
 
 public:
+	bool getConsciousness();
 	void deleteItem(int i);
 
 	void setHp(int hp);

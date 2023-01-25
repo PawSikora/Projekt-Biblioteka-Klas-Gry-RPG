@@ -138,11 +138,7 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 					break;
 
 				case 2:
-
-					//if (!(std::find(enemy->getEffects().begin(), enemy->getEffects().end(), Effect("", EffectType::Defending, 0, 0)) != enemy->getEffects().end()))
-						enemy->defend();
-					//else
-						//std::cout << enemy->getName() << " Probuje sie bronic ale juz to robi!" << std::endl; //Moze w ogole tego nie uwzgledniac
+					enemy->defend();
 					break;
 
 				case 3:
@@ -167,16 +163,17 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 
 		for (auto hero : heroes)
 		{
-			if (hero->getHp() == 0)
+			if (!hero->getConsciousness())
 				heroDeathCounter++;
 			std::cout << hero->getName() << " ma jeszcze " << hero->getHp() << " hp!" << std::endl << std::endl;
 			if(hero->getEffects().size() > 0)
 				hero->effectsInfluence();
+			std::cerr << "Hero def: " << hero->getDefense() << std::endl;
 		}
 
 		for (auto enemy : enemies)
 		{
-			if (enemy->getHp() == 0)
+			if (!enemy->getConsciousness())
 				enemyDeathCounter++;
 			std::cout << enemy->getName() << " ma jeszcze " << enemy->getHp() << " hp!" << std::endl << std::endl;
 			if (enemy->getEffects().size() > 0)
@@ -186,7 +183,7 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 		if (heroDeathCounter == heroes.size() || enemyDeathCounter == enemies.size())
 			break;
 		turn = !turn; // Blokuje przejscie do sprawdzenia warunku while i zaczyna kolejna ture mimo ze przeciwnik ma 0 hp!
-		std::cout << std::endl;
+		std::cout << std::string(20,'=') << "\n\n";
 	}
 	while (heroDeathCounter < heroes.size() || enemyDeathCounter < enemies.size());
 

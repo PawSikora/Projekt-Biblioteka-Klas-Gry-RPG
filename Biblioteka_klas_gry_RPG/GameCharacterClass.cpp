@@ -23,6 +23,12 @@ ClassType GameCharacterClass::getClassType()
 	return classType;
 }
 
+void GameCharacterClass::addAbility(Ability* ability)
+{
+	if(ability != nullptr)
+		abilities.push_back(ability);
+}
+
 Ability* GameCharacterClass::getAbility(int index)
 {
 	if(index > 0 && index < abilities.size())

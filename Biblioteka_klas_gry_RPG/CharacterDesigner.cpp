@@ -66,11 +66,11 @@ GameCharacterClass CharacterDesigner::classChoice()
 	std::cout << "2 Mage (+3 wisdom, +3 intelligence, -2 dexterity ,-2 consitution ,-3 strength" << '\n';
 	std::cout << "3 Rogue(+3 charisma, +3 dexterity, -1 strength, -1 consitution,  -1 wisdom, -1 intelligence " << '\n';
 
-	GameCharacterClass warrior(ClassType::Warrior, { new Ability("Whirl", AbilityType::Offensive, 550, Effect("None", EffectType::None, 0, 0)), new Ability("Rend", AbilityType::Offensive, 1100, Effect("None", EffectType::None, 0, 0)) });
+	GameCharacterClass warrior(ClassType::Warrior, {});
 
-	GameCharacterClass mage(ClassType::Mage, { new Ability("Fireball", AbilityType::Offensive, 340, Effect("Burning", EffectType::Burning, 5, 4)), new Ability("Lightning", AbilityType::Offensive, 310, Effect("Shock", EffectType::Shocked, 4, 3)) });
+	GameCharacterClass mage(ClassType::Mage, {});
 
-	GameCharacterClass rogue(ClassType::Rogue, { new Ability("Backstab", AbilityType::Offensive, 1000, Effect("Bleed", EffectType::Bleeding, 2, 5)), new Ability("Poison Blade", AbilityType::Offensive, 700, Effect("Poison", EffectType::PoisonResistBoost, 4, 6)) });
+	GameCharacterClass rogue(ClassType::Rogue, { });
 	switch (forceNumberInput(temp))
 	{
 	case 1:
