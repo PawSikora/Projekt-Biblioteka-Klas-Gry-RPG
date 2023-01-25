@@ -29,12 +29,18 @@ int Ability::getDmg()
     return damage;
 }
 
-Effect Ability::getEffect()
+Effect& Ability::getEffect()
 {
     return effect;
 }
 
-void Ability::unlockAbility()
+bool Ability::getStatus()
+{
+    return unlocked;
+}
+
+Ability* Ability::unlockAbility()
 {
     unlocked = true;
+    return this;
 }

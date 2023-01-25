@@ -1,16 +1,14 @@
 #pragma once
 #include "MainGameCharacter.h"
+#include "Parameters.h"
 #include<iostream>
 class CharacterDesigner
 {
-	static bool isNumber(std::string& s);
-	static int forceNumberInput(std::string& answer);
 	GameCharacterRace raceChoice();
 	GameCharacterClass classChoice();
 	Alignment alignmentChoice();
 	void statsDistribution(MainGameCharacter& temp);
 	GameCharacterRace race;
-	static int selectNumber(int a, int b);
 
 public:
 

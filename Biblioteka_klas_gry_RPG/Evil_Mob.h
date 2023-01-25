@@ -3,25 +3,24 @@
 
 class Evil_Mob : public Mob
 {
+	int exp;
 	DangerLvL danger_;
+	bool escaped = false;
 public:
+	Evil_Mob(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats,
+		int health, int mana, std::vector<Item*> items, unsigned lvl, DangerLvL danger_, int exp);
+
 	bool run() override;
 	int attack() override;
 	void defend() override;
 	void useItem() override;
-	Evil_Mob(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats,
-	         int health, int mana, std::vector<Item*> items, unsigned lvl, DangerLvL danger_);
-
 	int chooseAction(int numOfChoices);
 
-	DangerLvL danger() const
-	{
-		return danger_;
-	}
+	DangerLvL getDanger() const;
+	int getExp();
+	bool getEscaped();
 
-	void set_danger(DangerLvL danger)
-	{
-		danger_ = danger;
-	}
+	void setDanger(DangerLvL danger);
+	void setExp(int exp);
 };
 

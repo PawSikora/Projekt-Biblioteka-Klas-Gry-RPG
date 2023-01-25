@@ -1,49 +1,5 @@
 #include "CharacterDesigner.h"
 
-
-
-bool CharacterDesigner::isNumber(std::string& s)
-{
-	
-		return s.find_first_not_of("0123456789-+") == std::string::npos;
-	
-
-}
-
-int CharacterDesigner::forceNumberInput(std::string& answer)
-{
-
-
-		while (!isNumber(answer))
-		{
-			std::cout << "Prosze wprowadzic numer" << std::endl;
-			std::cin >> answer;
-
-		}
-		int resoult = std::stoi(answer);
-		return resoult;
-	
-}
-
-
-int CharacterDesigner::selectNumber(int a, int b)
-{
-	std::string temp;
-	std::cin >> temp;
-	int temp_int = forceNumberInput(temp);
-	while (temp_int > b || temp_int < a)
-	{
-		
-		std::cout << "Wprowadzono numer z poza zakresu " << '\n';
-		std::cin >> temp;
-		temp_int=forceNumberInput(temp);
-	}
-	return temp_int;
-
-}
-
-
-
 GameCharacterRace CharacterDesigner::raceChoice()
 {
 

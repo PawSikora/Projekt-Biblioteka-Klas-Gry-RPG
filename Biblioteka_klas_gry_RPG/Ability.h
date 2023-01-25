@@ -17,8 +17,9 @@ public:
 	std::string getName();
 	AbilityType getType();
 	int getDmg();
-	Effect getEffect();
+	Effect& getEffect();
+	bool getStatus();
 
-	void unlockAbility();
+	Ability* unlockAbility();
 };
 

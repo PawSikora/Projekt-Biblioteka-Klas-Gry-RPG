@@ -6,26 +6,6 @@
 
 #include "Consumables.h"
 
-bool GameCharacter::isNumber(std::string& s)
-{
-	return s.find_first_not_of("0123456789-+") == std::string::npos;
-}
-
-int GameCharacter::forceNumberInput(std::string& answer)
-{
-
-	while (!isNumber(answer))
-	{
-		std::cout << "Prosze wprowadzic numer" << std::endl;
-		std::cin >> answer;
-
-	}
-	int result = std::stoi(answer);
-	return result;
-}
-
-
-
 GameCharacter::GameCharacter(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats, Alignment alignment, int hp, int mp, std::vector<Item*> items, unsigned int lvl)
 	:name(name),race(race),characterClass(characterClass), stats(stats), alignment(alignment), items(items)
 {
@@ -104,7 +84,7 @@ std::string GameCharacter::getName()
 	return name;
 }
 
-GameCharacterClass GameCharacter::getClass()
+GameCharacterClass& GameCharacter::getClass()
 {
 	return characterClass;
 }
@@ -170,52 +150,117 @@ void GameCharacter::setLvl(unsigned int lvl)
 
 void GameCharacter::equipWeapon(Weapon* weapon)
 {
-	this->weapon = weapon;
-	this->weapon->equipWeapon();
+	if(weapon != nullptr)
+	{
+		this->weapon = weapon;
+		this->weapon->equipWeapon();
+	}
+	
+}
+
+void GameCharacter::unequipWeapon()
+{
+	this->weapon->unequipWeapon();
+	this->weapon = nullptr;
 }
 
 void GameCharacter::equipArmor(Armor* armor)
 {
-	this->armor = armor;
-	this->armor->equipArmor();
+	if(armor != nullptr)
+	{
+		this->armor = armor;
+		this->armor->equipArmor();
+	}
+	
 }
 
-void GameCharacter::takeDamage(EffectType effectType, int dmg)
+void GameCharacter::unequipArmor()
+{
+	this->armor->unequipArmor();
+	this->armor = nullptr;
+}
+
+
+void GameCharacter::takeDamage(Effect& effectType, int dmg)
 {
 	int dmgDealt = 0;
-	if(armor != nullptr && armor->isEquipped())
+	//if(true)
 	{
-		switch (effectType)
+		switch (effectType.getType())
 		{
+			//dmgDealt > 0 ? dmgDealt : 5;
+			
 			case EffectType::Bleeding:
 			{
-				dmgDealt = dmg - armor->getResistances().getBleedResistance();
+				addEffect(&effectType);
+				dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getBleedResistance() : 0) - addModifiers(buffs.consitutionBuffs);
 				break;
 			}
 			case EffectType::Burning:
 			{
-				dmgDealt = dmg - armor->getResistances().getFireResistance() - addModifiers(buffs.fireResistanceBuffs);
+				addEffect(&effectType);
+				dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getFireResistance() : 0) - addModifiers(buffs.fireResistanceBuffs);
 				break;
 			}
 			case EffectType::Poisoning:
 			{
-				dmgDealt = dmg - armor->getResistances().getPoisonResistance() - addModifiers(buffs.poisonResistanceBuffs);
+				addEffect(&effectType);
+				dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getPoisonResistance() : 0) - addModifiers(buffs.poisonResistanceBuffs);
 				break;
 			}
 			case EffectType::MagicDmg:
 			{
-				dmgDealt = dmg - armor->getResistances().getMagicResistance() - addModifiers(buffs.magicResistanceBuffs);
+				addEffect(&effectType);
+				dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getMagicResistance() : 0) - addModifiers(buffs.magicResistanceBuffs);
 				break;
 			}
 			case EffectType::Freezing:
 			{
-				dmgDealt = dmg - armor->getResistances().getColdResistance() - addModifiers(buffs.coldResistanceBuffs);
+				
+				addEffect(&effectType);
+				dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getColdResistance() : 0) - addModifiers(buffs.coldResistanceBuffs);
 				break;
 			}
 		}
 	}
+	/*else
+	{
+		switch (effectType.getType())
+		{
+		case EffectType::Bleeding:
+		{
+			addEffect(&effectType);
+			dmgDealt = dmg - addModifiers(buffs.consitutionBuffs);
+			break;
+		}
+		case EffectType::Burning:
+		{
+			addEffect(&effectType);
+			dmgDealt = dmg - addModifiers(buffs.fireResistanceBuffs);
+			break;
+		}
+		case EffectType::Poisoning:
+		{
+			addEffect(&effectType);
+			dmgDealt = dmg - addModifiers(buffs.poisonResistanceBuffs);
+			break;
+		}
+		case EffectType::MagicDmg:
+		{
+			addEffect(&effectType);
+			dmgDealt = dmg - addModifiers(buffs.magicResistanceBuffs);
+			break;
+		}
+		case EffectType::Freezing:
+		{
+			addEffect(&effectType);
+			dmgDealt = dmg - addModifiers(buffs.coldResistanceBuffs);
+			break;
+		}
+		}
+	}*/
 
-	if(effectType == EffectType::PhysicalDmg)
+	if(effectType.getType() == EffectType::PhysicalDmg)
 		dmgDealt = dmg - getDefense();
 
 	dmgDealt = dmgDealt > 0 ? dmgDealt : 5;
@@ -229,16 +274,20 @@ bool GameCharacter::useMP(int mpCost)
 
 void GameCharacter::addEffect(Effect* effect)
 {
-	bool effectAlreadyAdded = false;
+	Effect* effect_ = new Effect(*effect);
+	if(effect != nullptr)
+	{
+		bool effectAlreadyAdded = false;
 
-	for (auto eff : effects) {
-		if (eff->getType() == effect->getType()) {
-			effectAlreadyAdded = true;
+		for (auto eff : effects) {
+			if (eff->getType() == effect->getType()) {
+				effectAlreadyAdded = true;
+			}
 		}
-	}
 
-	if(!effectAlreadyAdded)
-		effects.push_back(effect);
+		if (!effectAlreadyAdded)
+			effects.push_back(effect_);
+	}
 }
 
 int GameCharacter::addModifiers(std::map<EffectType, int> buffs_)
@@ -264,14 +313,14 @@ void GameCharacter::effectsInfluence()
 		switch (effect->getType())
 		{
 		case EffectType::Bleeding:
-			takeDamage(EffectType::Bleeding,4);
+			takeDamage(*effect,4);
 			buffs.strengthBuffs.insert({effect->getType(), effect->getEffect()});
 			buffs.consitutionBuffs.insert({ effect->getType(), effect->getEffect() });
 			std::cout << this->getName() << " cierpi z powodu krwawienia! Traci " << -4 << "hp! I otrzymje kare do sily oraz wytrzymalosci!\n\n";
 			break;
 
 		case  EffectType::Poisoning:
-			takeDamage(EffectType::Poisoning,5);
+			takeDamage(*effect,5);
 			buffs.strengthBuffs.insert({ effect->getType(), effect->getEffect() });
 			buffs.consitutionBuffs.insert({ effect->getType(), effect->getEffect() });
 			buffs.intelligenceBuffs.insert({effect->getType(), effect->getEffect()});
@@ -290,21 +339,21 @@ void GameCharacter::effectsInfluence()
 			break;
 
 		case EffectType::Burning:
-			takeDamage(EffectType::Burning,5);
+			takeDamage(*effect,5);
 			buffs.intelligenceBuffs.insert({ effect->getType(), effect->getEffect() });
 			buffs.wisdomBuffs.insert({ effect->getType(), effect->getEffect() });
 			std::cout << this->getName() << " cierpi z powodu podpalenia! Traci " << -5 << "hp! I otrzymje kare do inteligencji oraz madrosci!\n\n";
 			break;
 
 		case EffectType::Shocked:
-			takeDamage(EffectType::MagicDmg,3);
+			takeDamage(*effect,3);
 			buffs.dexterityBuffs.insert({ effect->getType(), effect->getEffect() });
 			buffs.wisdomBuffs.insert({ effect->getType(), effect->getEffect() });
 			std::cout << this->getName() << " cierpi z powodu porazenia! Traci " << -3 << "hp! I otrzymje kare do zrecznosci oraz madrosci!\n\n";
 			break;
 
 		case EffectType::Freezing:
-			takeDamage(EffectType::Freezing,3);
+			takeDamage(*effect,3);
 			buffs.strengthBuffs.insert({ effect->getType(), effect->getEffect() });
 			buffs.dexterityBuffs.insert({ effect->getType(), effect->getEffect() });
 			std::cout << this->getName() << " cierpi z powodu zamrozenia! Traci " << -3 << "hp! I otrzymje kare do sily oraz zrecznosci!\n\n";
@@ -312,18 +361,22 @@ void GameCharacter::effectsInfluence()
 
 		case EffectType::FireResistBoost:
 			buffs.fireResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
+			std::cout << this->getName() << " zyskuje bonus +" << effect->getEffect() << " do odpornosci na ogien!\n\n";
 			break;
 
 		case EffectType::ColdResistBoost:
 			buffs.coldResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
+			std::cout << this->getName() << " zyskuje bonus +" << effect->getEffect() << " do odpornosci na mroz!\n\n";
 			break;
 
 		case EffectType::PoisonResistBoost:
 			buffs.poisonResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
+			std::cout << this->getName() << " zyskuje bonus +" << effect->getEffect() << " do odpornosci na trucizne!\n\n";
 			break;
 
 		case EffectType::MagicResistBoost:
 			buffs.magicResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
+			std::cout << this->getName() << " zyskuje bonus +" << effect->getEffect() << " do odpornosci na magie!\n\n";
 			break;
 		}
 

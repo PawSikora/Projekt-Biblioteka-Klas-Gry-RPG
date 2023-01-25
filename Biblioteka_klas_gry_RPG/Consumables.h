@@ -5,9 +5,15 @@
 class Consumables : public Item
 {
 	Effect* effect = nullptr;
+	bool used = false;
 
 public:
 	Consumables(std::string name, int value, Effect* effect);
 	Effect* getEffect();
+
+	void useItem();
+	bool getUsed();
+
+	~Consumables();
 };
 

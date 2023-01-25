@@ -43,6 +43,7 @@ class GameCharacter : public IActions
 	std::vector<Item*> items;
 	unsigned int lvl;
 	bool consciousness = true;
+
 protected:
 	GameCharacter(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats, Alignment alignment, int hp, int mp, std::vector<Item*> items, unsigned int lvl);
 	StatBuffs buffs;
@@ -68,15 +69,15 @@ public:
 	Statistics& getStats();
 	int getInitiative();
 	unsigned int getLvl();
-	GameCharacterClass getClass();
+	GameCharacterClass& getClass();
 	std::vector<Effect*>& getEffects();
 	std::vector<Item*>& getItems();
 
-	bool isNumber(std::string& s);
-	int forceNumberInput(std::string& answer);
 	void equipWeapon(Weapon* weapon);
+	void unequipWeapon();
 	void equipArmor(Armor* armor);
-	void takeDamage(EffectType effectType,int dmg);
+	void unequipArmor();
+	void takeDamage(Effect& effectType,int dmg);
 	bool useMP(int mpCost);
 	void addEffect(Effect* effect);
 	int addModifiers(std::map<EffectType, int> buffs_);

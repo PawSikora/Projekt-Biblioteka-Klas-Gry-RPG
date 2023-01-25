@@ -32,7 +32,10 @@ bool MainGameCharacter::run()
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::getline(std::cin, choice);
 	if (!choice.find('t'))
+	{
+		escaped = true;
 		return true;
+	}
 	return false;
 }
 
@@ -77,23 +80,21 @@ void MainGameCharacter::useItem()
 			std::cout << i+1 << ". " << getItems()[i]->getName() << std::endl;
 		}
 
-		do
-		{
-			std::cin >> answer;
-			choice = forceNumberInput(answer);
-			if (choice > getItems().size() || choice < 1)
-				std::cout << "Wybierz poprawny przedmiot!(1-" << getItems().size() << ")\n";
-		} while (choice < 1 || choice > getItems().size());
+		choice = selectNumber(1, getItems().size());
 
 		Item* item = getItems().at(choice-1);
 
 		if (dynamic_cast<Consumables*>(item))
 		{
 			Consumables* item_ = dynamic_cast<Consumables*>(item);
-			addEffect(item_->getEffect());
-			std::cout << this->getName() << " uzywa " << item_->getName() << " nakladajac na siebie efekt: " << enumEffectConversion(item_->getEffect()->getType()) << " +" << std::to_string(item_->getEffect()->getEffect()) << std::endl;
+			if (item_->getEffect() != nullptr && item_->getUsed() == false)
+			{
+				addEffect(item_->getEffect());
+				std::cout << this->getName() << " uzywa " << item_->getName() << " nakladajac na siebie efekt: " << enumEffectConversion(item_->getEffect()->getType()) << " +" << std::to_string(item_->getEffect()->getEffect()) << std::endl;
 
-			getItems().erase(getItems().begin() + choice - 1);
+				item_->useItem();
+				getItems().erase(getItems().begin() + choice - 1);
+			}
 		}
 
 		if (dynamic_cast<Weapon*>(item))
@@ -127,10 +128,10 @@ void MainGameCharacter::levelUp()
 	int wybor, lvl = getLvl();
 	setLvl(lvl++);
 
-	std::cout << "Zdobyles nowy poziom " + getClass().getName() + "!\n";
-	std::cout << "Twoje statystki rosna:\n";
+	std::cout << "Zdobyles nowy poziom klasy: " + getClass().getName() + "!\n";
+	std::cout << "Twoje statystki rosna:\n\n";
 
-	if (getClass().getName() == "Wojownik")
+	if (getClass().getClassType() == ClassType::Warrior)
 	{
 		int str = getStats().getStrength();
 		int con = getStats().getConsitution();
@@ -142,7 +143,7 @@ void MainGameCharacter::levelUp()
 		getStats().setConsitution(con + 1);
 		getStats().setCharisma(cha + 1);
 	}
-	else if (getClass().getName() == "Czarodziej")
+	else if (getClass().getClassType() == ClassType::Mage)
 	{
 		int int_ = getStats().getIntelligence();
 		int wis = getStats().getWisdom();
@@ -154,7 +155,7 @@ void MainGameCharacter::levelUp()
 		getStats().setWisdom(wis + 1);
 		getStats().setCharisma(cha + 1);
 	}
-	else if (getClass().getName() == "Lotrzyk")
+	else if (getClass().getClassType() == ClassType::Rogue)
 	{
 		int dex = getStats().getDexterity();
 		int int_ = getStats().getIntelligence();
@@ -166,14 +167,31 @@ void MainGameCharacter::levelUp()
 		getStats().setConsitution(con + 1);
 		getStats().setIntelligence(int_ + 1);
 	}
+	std::cout << std::endl;
+	if(getClass().getNumOfAvailableAbilities() > 0)
+	{
+		std::cout << "Wybierz nowa zdolnosc do nauki:\n" << getClass().getAbilities();
 
-	std::cout << "Wybierz nowa zdolnosc do nauki:\n" << getClass().getAbilities();
+		wybor = selectNumber(1, getClass().getNumOfAvailableAbilities());
 
-	std::cin >> wybor;
+		std::cout << "Odblokowano nowa zdolnosc: " << getClass().getAbility(wybor-1)->getName();
 
-	std::cout << "Odblokowano nowa zdolnosc: " << getClass().getAbility(wybor)->getName();
-	getClass().getAbility(wybor)->unlockAbility();
+		/*Ability* temp = getClass().getAbility(wybor - 1);
+		getClass().abilityUnlocked(temp);
+		std::cout << "\n\nODBLOKOWANA ZDOLNOSC:\t" << temp->getName();*/
+		getClass().abilityUnlocked(getClass().getAbility(wybor - 1)->unlockAbility());
+	}
+	else
+	{
+		std::cout << std::endl << getClass().getAbilities() << std::endl << "Brak umiejetnosci do odblokowania!\n\n";
+	}
+	
 	increaseExpCap();
+}
+
+bool MainGameCharacter::getEscaped()
+{
+	return escaped;
 }
 
 bool MainGameCharacter::operator==(MainGameCharacter& other)

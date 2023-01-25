@@ -5,8 +5,13 @@
 
 #include "Consumables.h"
 
+Evil_Mob::Evil_Mob(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats, int health, int mana, std::vector<Item*> items, unsigned lvl, DangerLvL danger_, int exp)
+	: Mob(name, race, characterClass, stats, Alignment::Evil, health, mana, items, lvl), danger_(danger_), exp(exp)
+{}
+
 bool Evil_Mob::run()
 {
+	escaped = true;
 	return true;
 }
 
@@ -46,15 +51,22 @@ void Evil_Mob::useItem()
 		Item* item;
 		std::mt19937 mt(time(nullptr));
 		int numberOfItem = (mt() % getItems().size());
-		std::cout << numberOfItem << "\n\n\n";
+		//std::cout << numberOfItem << "\n\n\n";
 		item = getItems()[numberOfItem];
 
 
 		if (dynamic_cast<Consumables*>(item))
 		{
 			Consumables* item_ = dynamic_cast<Consumables*>(item);
-			addEffect(item_->getEffect());
-			std::cout << this->getName() << " uzywa " << item_->getName() << " nakladajac na siebie efekt: " << enumEffectConversion(item_->getEffect()->getType()) << " +" << std::to_string(item_->getEffect()->getEffect()) << std::endl;
+			if(item_->getEffect() != nullptr && item_->getUsed() == false)
+			{
+				addEffect(item_->getEffect());
+
+				std::cout << this->getName() << " uzywa " << item_->getName() << " nakladajac na siebie efekt: " << enumEffectConversion(item_->getEffect()->getType()) << " +" << std::to_string(item_->getEffect()->getEffect()) << std::endl;
+
+				item_->useItem();
+				getItems().erase(getItems().begin() + numberOfItem - 1);
+			}
 		}
 
 		if (dynamic_cast<Weapon*>(item))
@@ -83,12 +95,6 @@ void Evil_Mob::useItem()
 	}
 }
 
-
-Evil_Mob::Evil_Mob(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats, int health, int mana, std::vector<Item*> items, unsigned lvl, DangerLvL danger_)
-	: Mob(name, race, characterClass, stats, Alignment::Evil, health, mana, items, lvl), danger_(danger_)
-{
-}
-
 int Evil_Mob::chooseAction(int numOfChoices)
 {
 	std::mt19937 mt(time(nullptr));
@@ -111,4 +117,30 @@ int Evil_Mob::chooseAction(int numOfChoices)
 
 	return mt() % numOfChoices;
 
+}
+
+DangerLvL Evil_Mob::getDanger() const
+{
+	return danger_;
+}
+
+int Evil_Mob::getExp()
+{
+	return this->exp;
+}
+
+bool Evil_Mob::getEscaped()
+{
+	return escaped;
+}
+
+void Evil_Mob::setExp(int exp)
+{
+	if (exp < 0) throw std::invalid_argument("Exp musi byc liczba dodatnia");
+	this->exp = exp;
+}
+
+void Evil_Mob::setDanger(DangerLvL danger)
+{
+	danger_ = danger;
 }

@@ -5,6 +5,8 @@ class MainGameCharacter :public GameCharacter
 {
 	int exp = 0;
 	int nextLvl = 50;
+	bool escaped = false;
+
 public:
 	MainGameCharacter(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats, Alignment alignment, int health, int mana, std::vector<Item*> items, unsigned int lvl);
 
@@ -19,6 +21,8 @@ public:
 	void defend() override;
 	void useItem() override;
 	void levelUp();
+
+	bool getEscaped();
 
 	bool operator==(MainGameCharacter& other);
 };

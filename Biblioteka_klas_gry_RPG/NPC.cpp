@@ -64,15 +64,16 @@ void NPC::SellItem(MainGameCharacter &character)
 	}
 	else
 	{
-		selectedItemId = forceNumberInput(answer);
+		//selectedItemId = forceNumberInput(answer);
+		selectedItemId = selectNumber(1, itemList.size());
 		while(selectedItemId > itemList.size() || selectedItemId < 1)
 		{
 			std::cout << "Latarnia twojego intelektu nie swieci zbyt jasno ?" << std::endl;
 			std::cout << "(Jesli chcesz cos kupic napisz numer obok przedmiotu, jezeli nic nie chcesz sprzedawac napisz zegnaj)" << std::endl << '\n' << '\n';
 			printItems(itemList);
 			std::cin >> answer;
-			selectedItemId = forceNumberInput(answer);
-
+			//selectedItemId = forceNumberInput(answer);
+			selectedItemId = selectNumber(1, itemList.size());
 		}
 		selectedItemId--;
 		
@@ -109,7 +110,8 @@ void NPC::BuyItem(MainGameCharacter &character)
 	}
 	else
 	{
-		selectedItemId=forceNumberInput(answer);
+		//selectedItemId=forceNumberInput(answer);
+		selectedItemId = selectNumber(1, itemList.size());
 		while ( selectedItemId > itemList.size() || selectedItemId < 1 )
 		{
 			
@@ -117,8 +119,8 @@ void NPC::BuyItem(MainGameCharacter &character)
 			std::cout << "(Jesli chcesz cos sprzedac napisz numer obok przedmiotu, jezeli nic nie chcesz sprzedawac napisz zegnaj)" << std::endl<<'\n'<<'\n';
 			printItems(itemList);
 			std::cin >> answer;
-			selectedItemId = forceNumberInput(answer);
-
+			//selectedItemId = forceNumberInput(answer);
+			selectedItemId = selectNumber(1, itemList.size());
 		}
 		selectedItemId--;
 		selectedItem = itemList[selectedItemId];

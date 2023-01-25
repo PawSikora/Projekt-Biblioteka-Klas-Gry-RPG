@@ -7,32 +7,16 @@ Encounter::Encounter() : d4(Dice(4)), d6(Dice(6)), d8(Dice(8)), d10(Dice(10)), d
 {
 }
 
-bool Encounter::isNumber(std::string& s)
-{
-	return s.find_first_not_of("0123456789-+") == std::string::npos;
-}
-
-int Encounter::forceNumberInput(std::string& answer)
-{
-
-	while (!isNumber(answer))
-	{
-		std::cout << "Prosze wprowadzic numer" << std::endl;
-		std::cin >> answer;
-
-	}
-	int result = std::stoi(answer);
-	return result;
-}
-
 void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_Mob*> enemies)
 {
-	int heroesInitiative = 0, enemiesInitiative = 0, heroDeathCounter = 0, enemyDeathCounter = 0, selectedAction, dmg, escape;
+	int heroesInitiative = 0, enemiesInitiative = 0, heroDeathCounter = 0, enemyDeathCounter = 0, selectedAction, escape;
 	std::string choice;
-	bool turn = false;
+	bool turn = false, escapeHero = false, escapeEnemy = false;
+	Ability* selectedAbility = nullptr;
+	Effect physicalDmg("Zwykle obrazenia", EffectType::PhysicalDmg, 0, 0);
 
 	std::sort(heroes.begin(), heroes.end(), [](MainGameCharacter* h1, MainGameCharacter* h2) { return h1->getInitiative() > h2->getInitiative(); });
-	std::sort(enemies.begin(), enemies.end(), [](Mob* e1, Mob* e2) { return e1->getInitiative() > e2->getInitiative(); });
+	std::sort(enemies.begin(), enemies.end(), [](Evil_Mob* e1, Evil_Mob* e2) { return e1->getInitiative() > e2->getInitiative(); });
 
 	for (auto hero : heroes)
 	{
@@ -68,58 +52,83 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 				std::cout << std::endl << hero->getName() << " rozpoczyna swoja ture!" << std::endl;
 				std::cout << "Jaki ruch wykona?\n" << "1. Atak\n" << "2. Obrona\n" << "3. Uzycie przedmiotu\n" << "4. Ucieczka" << std::endl;
 
-				std::cin >> choice;
-				selectedAction = forceNumberInput(choice);
+				selectedAction = selectNumber(1, 4);
 
 				switch (selectedAction)
 				{
 				case 1:
-					std::cout << "Ktorego przeciwnika chcesz zaatakowac?\n";
-					for (int i = 0; i < enemies.size(); i++)
-						std::cout << i+1 << ". " << enemies[i]->getName() << std::endl;
+					
+					if (hero->getClass().getNumOfUnlockedAbilities() > 0)
+					{
+						std::cout << "1. Zwykly atak\n";
+						std::cout << "2. Uzyj zdolnosci\n";
+						selectedAction = selectNumber(1, 2);
+					}
 
-					std::cin >> choice;
-					selectedAction = forceNumberInput(choice);
+					switch (selectedAction)
+					{
+						case 2:
+							std::cout << "Jakiej zdolnosci chcesz uzyc?\n" << hero->getClass().getUnlockedAbilities();
+							selectedAction = selectNumber(1, hero->getClass().getNumOfUnlockedAbilities());
+							selectedAbility = hero->getClass().getUnlockedAbility(selectedAction-1);
+							std::cout << "Ktorego przeciwnika chcesz zaatakowac?\n";
+							for (int i = 0; i < enemies.size(); i++)
+								std::cout << i + 1 << ". " << enemies[i]->getName() << std::endl;
 
-					enemies[selectedAction-1]->takeDamage(EffectType::PhysicalDmg,hero->attack());
-					std::cout << enemies[selectedAction - 1]->getName() << " obrywa za " << hero->attack() << std::endl;
+							selectedAction = selectNumber(1, enemies.size());
+
+							enemies[selectedAction - 1]->takeDamage(selectedAbility->getEffect(), selectedAbility->getDmg());
+							std::cout << hero->getName() << " uzywa " << selectedAbility->getName() << "!\n";
+							std::cout << enemies[selectedAction - 1]->getName() << " obrywa za " << selectedAbility->getDmg() << std::endl;
+							break;
+
+						default:
+							std::cout << "Ktorego przeciwnika chcesz zaatakowac?\n";
+							for (int i = 0; i < enemies.size(); i++)
+								std::cout << i + 1 << ". " << enemies[i]->getName() << std::endl;
+
+							selectedAction = selectNumber(1, enemies.size());
+
+							enemies[selectedAction - 1]->takeDamage(physicalDmg, hero->attack());
+							std::cout << enemies[selectedAction - 1]->getName() << " obrywa za " << hero->attack() << std::endl;
+							break;
+					}
 					break;
 
-				case 2: //Zabezpieczyc je¿eli bohater ju¿ siê broni??? -  Zrobione :D
+				case 2:
 					hero->defend();
+					std::cout << hero->getName() << " broni sie!\n\n";
 					break;
 
 				case 3:
 					hero->useItem();
 					break;
 
-				case 4: //Lepiej to dopracowaæ - Zrobione :D
+				case 4:
 					if(hero->run())
 					{
 						std::cout << std::endl << hero->getName() << " ucieka z pola bitwy!\n";
-						heroes.erase(std::remove(heroes.begin(), heroes.end(), hero), heroes.end());
+						escapeHero = true;
 					}
 					break;
 				}
 			}
 			
 		}
-		else
+		else if (enemyDeathCounter < enemies.size())
 		{
 			std::cout << "Tura przeciwnikow!\n\n";
 
 			for (auto enemy : enemies)
 			{
-				std::cout << enemy->getName() << " rozpoczyna swoja ture!" << std::endl;
+				std::cout << "\n" << enemy->getName() << " rozpoczyna swoja ture!" << std::endl;
 
 				if (enemy->getHp() > 30)
 				{
-					//std::cout << "dziala1\n\n";
-					selectedAction = 1; //enemy->chooseAction(3) + 1;
+					selectedAction = enemy->chooseAction(3) + 1;
 				}
 				else
 				{
-					//std::cout << "dziala2\n\n";
 					escape = d6.roll();
 					if (escape > 4)
 						selectedAction = 4;
@@ -129,66 +138,112 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 				switch (selectedAction)
 				{
 				case 1:
-					std::cout << enemy->getName() << " atakuje!\n";
+					if (enemy->getClass().getNumOfUnlockedAbilities() > 0)
+					{
+						selectedAction = enemy->chooseAction(2)+1;
+					}
 
-					selectedAction = enemy->chooseAction(heroes.size());
+					switch (selectedAction)
+					{
+					case 2:
+						selectedAbility = enemy->getClass().getAbility(enemy->chooseAction(enemy->getClass().getNumOfUnlockedAbilities()));
 
-					heroes[selectedAction]->takeDamage(EffectType::PhysicalDmg, enemy->attack());
-					std::cout << heroes[selectedAction]->getName() << " obrywa za " << enemy->attack() << std::endl;
+						selectedAction = enemy->chooseAction(heroes.size());
+
+						heroes[selectedAction]->takeDamage(selectedAbility->getEffect(), selectedAbility->getDmg());
+						std::cout << enemy->getName() << " uzywa " << selectedAbility->getName() << "!\n";
+						std::cout << heroes[selectedAction]->getName() << " obrywa za " << selectedAbility->getDmg() << std::endl;
+						break;
+
+					default:
+
+						std::cout << enemy->getName() << " atakuje!\n";
+
+						selectedAction = enemy->chooseAction(heroes.size());
+
+						heroes[selectedAction]->takeDamage(physicalDmg, enemy->attack());
+						std::cout << heroes[selectedAction]->getName() << " obrywa za " << enemy->attack() << std::endl;
+						break;
+					}
 					break;
 
 				case 2:
 					enemy->defend();
+					std::cout << enemy->getName() << " broni sie!\n\n";
 					break;
 
 				case 3:
-					enemy->useItem(); //Zrobic wyswietlanie komunikatu na temat wykorzystywango przedmiotu
+					enemy->useItem();
 					std::cout << enemy->getName() << " uzywa przedmiotu!\n";
 					break;
 
-				case 4: //Lepiej to dopracowaæ
-					if (enemy->run())
-					{
-						//heroes.erase(std::remove(heroes.begin(), heroes.end(), hero->getName()), heroes.end()); Cos nie tak z erasem
-						std::cout << std::endl << enemy->getName() << " ucieka z pola bitwy!\n";
-						enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
-					}
+				case 4:
+					enemy->run();
+					std::cout << std::endl << enemy->getName() << " ucieka z pola bitwy!\n";
+					escapeEnemy = true;
 					break;
 				}
 				
 			}
 		}
 
+		if(escapeHero)
+		{
+			heroes.erase(std::remove_if(heroes.begin(), heroes.end(), [](MainGameCharacter* otherHero) {return otherHero->getEscaped(); }), heroes.end());
+			escapeHero = false;
+		}
+
+		if(escapeEnemy)
+		{
+			enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [](Evil_Mob* otherEnemy) {return otherEnemy->getEscaped(); }), enemies.end());
+			escapeEnemy = false;
+		}
+
 		std::cout << std::endl;
 
-		for (auto hero : heroes)
+		for(auto it = heroes.begin(); it != heroes.end();)
 		{
-			if (!hero->getConsciousness())
-				heroDeathCounter++;
-			std::cout << hero->getName() << " ma jeszcze " << hero->getHp() << " hp!" << std::endl << std::endl;
-			if(hero->getEffects().size() > 0)
-				hero->effectsInfluence();
-			std::cerr << "Hero def: " << hero->getDefense() << std::endl;
+			if(!(*it)->getConsciousness())
+			{
+				//heroDeathCounter++;
+				std::cout << (*it)->getName() << " traci przytomnosc od obrazen!\n\n";
+				it = heroes.erase(it);
+			}
+			else
+			{
+				std::cout << (*it)->getName() << " ma jeszcze " << (*it)->getHp() << " hp!" << std::endl << std::endl;
+				if ((*it)->getEffects().size() > 0)
+					(*it)->effectsInfluence();
+				++it;
+			}
 		}
 
-		for (auto enemy : enemies)
+		for (auto it = enemies.begin(); it != enemies.end();)
 		{
-			if (!enemy->getConsciousness())
-				enemyDeathCounter++;
-			std::cout << enemy->getName() << " ma jeszcze " << enemy->getHp() << " hp!" << std::endl << std::endl;
-			if (enemy->getEffects().size() > 0)
-				enemy->effectsInfluence();
+			if (!(*it)->getConsciousness())
+			{
+				//enemyDeathCounter++;
+				std::cout << (*it)->getName() << " traci przytomnosc od obrazen!\n\n";
+				it = enemies.erase(it);
+			}
+			else
+			{
+				std::cout << (*it)->getName() << " ma jeszcze " << (*it)->getHp() << " hp!" << std::endl << std::endl;
+				if ((*it)->getEffects().size() > 0)
+					(*it)->effectsInfluence();
+				++it;
+			}
 		}
 
-		if (heroDeathCounter == heroes.size() || enemyDeathCounter == enemies.size())
+		if (heroes.empty() || enemies.empty())
 			break;
 		turn = !turn; // Blokuje przejscie do sprawdzenia warunku while i zaczyna kolejna ture mimo ze przeciwnik ma 0 hp!
 		std::cout << std::string(20,'=') << "\n\n";
 	}
-	while (heroDeathCounter < heroes.size() || enemyDeathCounter < enemies.size());
+	while (!heroes.empty() || !enemies.empty());
 
-	if (heroDeathCounter < heroes.size())
+	if (enemies.empty())
 		std::cout << "\nBOHATEROWIE ZWYCIEZYLI!\n";
-	if (enemyDeathCounter < enemies.size())
+	if (heroes.empty())
 		std::cout << "\nWROGOWIE ZWYCIEZYLI!\n";
 }
