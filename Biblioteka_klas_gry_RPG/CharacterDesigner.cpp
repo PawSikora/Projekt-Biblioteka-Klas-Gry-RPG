@@ -29,6 +29,24 @@ GameCharacterClass CharacterDesigner::classChoice()
 {
 	
 
+	//Wojownik
+	Ability* whirl = new Ability("Mlynek", AbilityType::Offensive, 65, Effect("Bleeding", EffectType::Bleeding, 1, 1));
+	Ability* rend = new Ability("Silne ciecie", AbilityType::Offensive, 80, Effect("Physical DMG", EffectType::PhysicalDmg, 1, 1));
+	std::vector<Ability*> warriorAbilities = { whirl, rend };
+	GameCharacterClass warrior(ClassType::Warrior, warriorAbilities);
+
+	//Mag
+	Ability* fireball = new Ability("Kula ognia", AbilityType::Offensive, 60, Effect("Burning", EffectType::Burning, 5, 4));
+	Ability* lightning = new Ability("Blyskawica", AbilityType::Offensive, 45, Effect("Shock", EffectType::Shocked, 4, 3));
+	std::vector<Ability*> mageAbilities = { fireball, lightning };
+	GameCharacterClass mage(ClassType::Mage, mageAbilities);
+
+	//£otrzyk
+	Ability* backstab = new Ability("Cios w plecy", AbilityType::Offensive, 1000, Effect("Bleed", EffectType::Bleeding, 2, 5));
+	Ability* poisonBlade = new Ability("Zatrute ostrze", AbilityType::Offensive, 60, Effect("Poison", EffectType::Poisoning, 4, 6));
+	std::vector<Ability*> rogueAbilities = { backstab, poisonBlade };
+	GameCharacterClass rogue(ClassType::Rogue, rogueAbilities);
+
 
 	system("cls");
 	std::cout << " Teraz wybierz klase " << '\n';
@@ -36,11 +54,6 @@ GameCharacterClass CharacterDesigner::classChoice()
 	std::cout << "2 Mage (+3 wisdom, +3 intelligence, -2 dexterity ,-2 consitution ,-3 strength" << '\n';
 	std::cout << "3 Rogue(+3 charisma, +3 dexterity, -1 strength, -1 consitution,  -1 wisdom, -1 intelligence " << '\n';
 
-	GameCharacterClass warrior(ClassType::Warrior, {});
-
-	GameCharacterClass mage(ClassType::Mage, {});
-
-	GameCharacterClass rogue(ClassType::Rogue, { });
 	switch (selectNumber(1, 3))
 	{
 	case 1:
@@ -189,5 +202,50 @@ void CharacterDesigner::statsDistribution(MainGameCharacter& character_t ) const
 	character_t.setMp(character_t.getStats().getWisdom() * 2);
 
 
+}
+
+MainGameCharacter CharacterDesigner::createCharacter()
+{
+	//Przedmioty Wojownika
+	Item* weaponWarrior = new Weapon("Miecz templariusza", 220, 16, 5);
+	Item* armorWarrior = new Armor("Zbroja templariusza", 450, 5, 3, Resistances(10, 10, 10, 10, 15));
+
+	//Przedmioty Maga
+	Item* weaponMage = new Weapon("Mrozna laska", 150, 15, 20);
+	Item* armorMage = new Armor("Szaty efliego maga", 50, 2, 0, Resistances(5, 5, 5, 20, 15));
+
+	//Przedmioty £otrzyka
+	Item* weaponRogue = new Weapon("Sztylety skrytobojcy", 120, 12, 15);
+	Item* armorRogue = new Armor("Plaszcz lotrzyka", 120, 3, 1, Resistances(5, 5, 5, 5, 15));
+
+	std::string name_t;
+	std::cout << "Jak sie nazywasz" << '\n';
+	std::cin >> name_t;
+	Alignment all_t = alignmentChoice();
+	GameCharacterRace race_t = raceChoice();
+	GameCharacterClass class_t = classChoice();
+
+	MainGameCharacter player_t =  MainGameCharacter(name_t, race_t, class_t,
+		Statistics(10, 10, 10, 10, 10, 10), all_t, 3, 3,
+		{}, 1);
+	statsDistribution(player_t);
+	switch (player_t.getClass().getClassType())
+	{
+	case ClassType::Mage:
+		player_t.addItem(weaponMage);
+		player_t.addItem(armorMage);
+		break;
+	case ClassType::Rogue:
+		player_t.addItem(weaponRogue);
+		player_t.addItem(armorRogue);
+		break;
+	case ClassType::Warrior:
+		player_t.addItem(weaponWarrior);
+		player_t.addItem(armorWarrior);
+		break;
+
+	}
+
+	return player_t;
 }
 

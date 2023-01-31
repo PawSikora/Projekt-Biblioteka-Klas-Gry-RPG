@@ -11,8 +11,9 @@
 #include "NPC.h"
 #include "Weapon.h"
 
-#define CombatMechanicTest
+//#define CombatMechanicTest
 //#define TradingMechanicTest
+#define CharacterCreationTest
 
 #ifdef CombatMechanicTest
 int main()
@@ -169,4 +170,17 @@ int main()
 
 }
 #endif
+#ifdef CharacterCreationTest
+int main()
+{
+	CharacterDesigner designer;
+	MainGameCharacter character=designer.createCharacter();
+	std::cout << character.getName();
+	std::cout << character.getClass().getName();
+	std::cout << character.getDefense();
+	std::cout << character.getStats().getStrength();
 
+}
+
+
+#endif
