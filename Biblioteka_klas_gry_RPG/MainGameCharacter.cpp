@@ -63,7 +63,8 @@ int MainGameCharacter::attack()
 
 void MainGameCharacter::defend()
 {
-	addEffect(new Effect("Defending", EffectType::Defending, 3, 3));
+	Effect effect("Defending", EffectType::Defending, 3, 3);
+	addEffect(effect);
 }
 
 void MainGameCharacter::useItem()
@@ -89,7 +90,7 @@ void MainGameCharacter::useItem()
 			Consumables* item_ = dynamic_cast<Consumables*>(item);
 			if (item_->getEffect() != nullptr && item_->getUsed() == false)
 			{
-				addEffect(item_->getEffect());
+				addEffect(*item_->getEffect());
 				std::cout << this->getName() << " uzywa " << item_->getName() << " nakladajac na siebie efekt: " << enumEffectConversion(item_->getEffect()->getType()) << " +" << std::to_string(item_->getEffect()->getEffect()) << std::endl;
 
 				item_->useItem();

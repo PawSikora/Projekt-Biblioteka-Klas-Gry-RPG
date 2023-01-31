@@ -16,6 +16,7 @@ public:
 	EffectType getType() const;
 	int getEffect() const;
 	int getTime() const;
+	void setTime(int time_of_effect);
 	bool passTime();
 
 };

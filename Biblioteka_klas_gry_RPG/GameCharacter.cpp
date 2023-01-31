@@ -89,7 +89,7 @@ GameCharacterClass& GameCharacter::getClass()
 	return characterClass;
 }
 
-std::vector<Effect*>& GameCharacter::getEffects()
+std::vector<Effect>& GameCharacter::getEffects()
 {
 	return effects;
 }
@@ -179,7 +179,7 @@ void GameCharacter::unequipArmor()
 }
 
 
-void GameCharacter::takeDamage(Effect& effectType, int dmg)
+int GameCharacter::takeDamage(Effect& effectType, int dmg)
 {
 	int dmgDealt = 0;
 	
@@ -188,32 +188,32 @@ void GameCharacter::takeDamage(Effect& effectType, int dmg)
 
 		case EffectType::Bleeding:
 		{
-			addEffect(&effectType);
+			addEffect(effectType);
 			dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getBleedResistance() : 0) - addModifiers(buffs.consitutionBuffs);
 			break;
 		}
 		case EffectType::Burning:
 		{
-			addEffect(&effectType);
+			addEffect(effectType);
 			dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getFireResistance() : 0) - addModifiers(buffs.fireResistanceBuffs);
 			break;
 		}
 		case EffectType::Poisoning:
 		{
-			addEffect(&effectType);
+			addEffect(effectType);
 			dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getPoisonResistance() : 0) - addModifiers(buffs.poisonResistanceBuffs);
 			break;
 		}
 		case EffectType::MagicDmg:
 		{
-			addEffect(&effectType);
+			addEffect(effectType);
 			dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getMagicResistance() : 0) - addModifiers(buffs.magicResistanceBuffs);
 			break;
 		}
 		case EffectType::Freezing:
 		{
 			
-			addEffect(&effectType);
+			addEffect(effectType);
 			dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getColdResistance() : 0) - addModifiers(buffs.coldResistanceBuffs);
 			break;
 		}
@@ -224,6 +224,7 @@ void GameCharacter::takeDamage(Effect& effectType, int dmg)
 
 	dmgDealt = dmgDealt > 0 ? dmgDealt : 5;
 	setHp(hp - dmgDealt);
+	return dmgDealt;
 }
 
 bool GameCharacter::useMP(int mpCost) const
@@ -231,21 +232,24 @@ bool GameCharacter::useMP(int mpCost) const
 	return  mp > mpCost;
 }
 
-void GameCharacter::addEffect(Effect* effect)
+void GameCharacter::addEffect(Effect& effect)
 {
-	Effect* effect_ = new Effect(*effect);
-	if(effect != nullptr)
+	//if(effect != nullptr)
 	{
 		bool effectAlreadyAdded = false;
 
-		for (auto eff : effects) {
-			if (eff->getType() == effect->getType()) {
+		for (auto& eff : effects) {
+			if (eff.getType() == effect.getType()) {
+				eff.setTime(effect.getTime());
 				effectAlreadyAdded = true;
 			}
 		}
 
 		if (!effectAlreadyAdded)
-			effects.push_back(effect_);
+		{
+			//Effect* effect_ = new Effect(*effect);
+			effects.push_back(effect);
+		}
 	}
 }
 
@@ -267,112 +271,109 @@ void GameCharacter::addItem(Item* item)
 
 void GameCharacter::effectsInfluence()
 {
-	for (auto effect : effects)
+	for (auto& effect : effects)
 	{
-		switch (effect->getType())
+		switch (effect.getType())
 		{
 		case EffectType::Bleeding:
-			takeDamage(*effect,4);
-			buffs.strengthBuffs.insert({effect->getType(), effect->getEffect()});
-			buffs.consitutionBuffs.insert({ effect->getType(), effect->getEffect() });
+			takeDamage(effect,4);
+			buffs.strengthBuffs.insert({effect.getType(), effect.getEffect()});
+			buffs.consitutionBuffs.insert({ effect.getType(), effect.getEffect() });
 			std::cout << this->getName() << " cierpi z powodu krwawienia! Traci " << -4 << "hp! I otrzymje kare do sily oraz wytrzymalosci!\n\n";
 			break;
 
 		case  EffectType::Poisoning:
-			takeDamage(*effect,5);
-			buffs.strengthBuffs.insert({ effect->getType(), effect->getEffect() });
-			buffs.consitutionBuffs.insert({ effect->getType(), effect->getEffect() });
-			buffs.intelligenceBuffs.insert({effect->getType(), effect->getEffect()});
+			takeDamage(effect,5);
+			buffs.strengthBuffs.insert({ effect.getType(), effect.getEffect() });
+			buffs.consitutionBuffs.insert({ effect.getType(), effect.getEffect() });
+			buffs.intelligenceBuffs.insert({effect.getType(), effect.getEffect()});
 			std::cout << this->getName() << " cierpi z powodu zatrucia! Traci " << -5 << "hp! I otrzymje kare do sily, wytrzymalosci oraz inteligencji!\n\n";
 			break;
 
 		case  EffectType::Healing:
-			hp += effect->getEffect();
-			std::cout << this->getName() << " odzysukuje " << effect->getEffect() << "hp!\n\n";
+			hp += effect.getEffect();
+			std::cout << this->getName() << " odzysukuje " << effect.getEffect() << "hp!\n\n";
 			break;
 
 		case EffectType::Defending:
 			
-			buffs.defenseBuffs.insert({ effect->getType(), effect->getEffect() });
-			std::cout << this->getName() << " zyskuje bonus +" << effect->getEffect() << " do obrony dzieki swojej postawie!\n\n";
+			buffs.defenseBuffs.insert({ effect.getType(), effect.getEffect() });
+			std::cout << this->getName() << " zyskuje bonus +" << effect.getEffect() << " do obrony dzieki swojej postawie!\n\n";
 			break;
 
 		case EffectType::Burning:
-			takeDamage(*effect,5);
-			buffs.intelligenceBuffs.insert({ effect->getType(), effect->getEffect() });
-			buffs.wisdomBuffs.insert({ effect->getType(), effect->getEffect() });
+			takeDamage(effect,5);
+			buffs.intelligenceBuffs.insert({ effect.getType(), effect.getEffect() });
+			buffs.wisdomBuffs.insert({ effect.getType(), effect.getEffect() });
 			std::cout << this->getName() << " cierpi z powodu podpalenia! Traci " << -5 << "hp! I otrzymje kare do inteligencji oraz madrosci!\n\n";
 			break;
 
 		case EffectType::Shocked:
-			takeDamage(*effect,3);
-			buffs.dexterityBuffs.insert({ effect->getType(), effect->getEffect() });
-			buffs.wisdomBuffs.insert({ effect->getType(), effect->getEffect() });
+			takeDamage(effect,3);
+			buffs.dexterityBuffs.insert({ effect.getType(), effect.getEffect() });
+			buffs.wisdomBuffs.insert({ effect.getType(), effect.getEffect() });
 			std::cout << this->getName() << " cierpi z powodu porazenia! Traci " << -3 << "hp! I otrzymje kare do zrecznosci oraz madrosci!\n\n";
 			break;
 
 		case EffectType::Freezing:
-			takeDamage(*effect,3);
-			buffs.strengthBuffs.insert({ effect->getType(), effect->getEffect() });
-			buffs.dexterityBuffs.insert({ effect->getType(), effect->getEffect() });
+			takeDamage(effect,3);
+			buffs.strengthBuffs.insert({ effect.getType(), effect.getEffect() });
+			buffs.dexterityBuffs.insert({ effect.getType(), effect.getEffect() });
 			std::cout << this->getName() << " cierpi z powodu zamrozenia! Traci " << -3 << "hp! I otrzymje kare do sily oraz zrecznosci!\n\n";
 			break;
 
 		case EffectType::FireResistBoost:
-			buffs.fireResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
-			std::cout << this->getName() << " zyskuje bonus +" << effect->getEffect() << " do odpornosci na ogien!\n\n";
+			buffs.fireResistanceBuffs.insert({ effect.getType(), effect.getEffect() });
+			std::cout << this->getName() << " zyskuje bonus +" << effect.getEffect() << " do odpornosci na ogien!\n\n";
 			break;
 
 		case EffectType::ColdResistBoost:
-			buffs.coldResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
-			std::cout << this->getName() << " zyskuje bonus +" << effect->getEffect() << " do odpornosci na mroz!\n\n";
+			buffs.coldResistanceBuffs.insert({ effect.getType(), effect.getEffect() });
+			std::cout << this->getName() << " zyskuje bonus +" << effect.getEffect() << " do odpornosci na mroz!\n\n";
 			break;
 
 		case EffectType::PoisonResistBoost:
-			buffs.poisonResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
-			std::cout << this->getName() << " zyskuje bonus +" << effect->getEffect() << " do odpornosci na trucizne!\n\n";
+			buffs.poisonResistanceBuffs.insert({ effect.getType(), effect.getEffect() });
+			std::cout << this->getName() << " zyskuje bonus +" << effect.getEffect() << " do odpornosci na trucizne!\n\n";
 			break;
 
 		case EffectType::MagicResistBoost:
-			buffs.magicResistanceBuffs.insert({ effect->getType(), effect->getEffect() });
-			std::cout << this->getName() << " zyskuje bonus +" << effect->getEffect() << " do odpornosci na magie!\n\n";
+			buffs.magicResistanceBuffs.insert({ effect.getType(), effect.getEffect() });
+			std::cout << this->getName() << " zyskuje bonus +" << effect.getEffect() << " do odpornosci na magie!\n\n";
 			break;
 		}
 
-		if(effect->passTime())
+		if(effect.passTime())
 		{
-			buffs.strengthBuffs.erase(effect->getType());
-			buffs.dexterityBuffs.erase(effect->getType());
-			buffs.consitutionBuffs.erase(effect->getType());
-			buffs.intelligenceBuffs.erase(effect->getType());
-			buffs.wisdomBuffs.erase(effect->getType());
-			buffs.charismaBuffs.erase(effect->getType());
+			buffs.strengthBuffs.erase(effect.getType());
+			buffs.dexterityBuffs.erase(effect.getType());
+			buffs.consitutionBuffs.erase(effect.getType());
+			buffs.intelligenceBuffs.erase(effect.getType());
+			buffs.wisdomBuffs.erase(effect.getType());
+			buffs.charismaBuffs.erase(effect.getType());
 
-			buffs.defenseBuffs.erase(effect->getType());
-			buffs.fireResistanceBuffs.erase(effect->getType());
-			buffs.coldResistanceBuffs.erase(effect->getType());
-			buffs.poisonResistanceBuffs.erase(effect->getType());
-			buffs.magicResistanceBuffs.erase(effect->getType());
+			buffs.defenseBuffs.erase(effect.getType());
+			buffs.fireResistanceBuffs.erase(effect.getType());
+			buffs.coldResistanceBuffs.erase(effect.getType());
+			buffs.poisonResistanceBuffs.erase(effect.getType());
+			buffs.magicResistanceBuffs.erase(effect.getType());
 
 			
 			int i = 0;
 			bool effectAlreadyAdded = false;
 
-			for (auto eff : effects) {
-				if (eff->getType() == effect->getType()) {
+			for (auto& eff : effects) {
+				if (eff.getType() == effect.getType()) {
 					effectAlreadyAdded = true;
 				}
 				else 
 					i++;
 			}
 
-
 			if (effectAlreadyAdded)
 			{
-				delete effects.at(i);
 				effects.erase(effects.begin()+i);
 			}
-				
 		}
 	}
 }

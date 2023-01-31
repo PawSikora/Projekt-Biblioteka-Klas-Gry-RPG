@@ -39,7 +39,7 @@ class GameCharacter : public IActions
 	int mp;
 	int initiative;
 	int defense;
-	std::vector<Effect*> effects;
+	std::vector<Effect> effects;
 	std::vector<Item*> items;
 	unsigned int lvl;
 	bool consciousness = true;
@@ -70,16 +70,16 @@ public:
 	int getInitiative();
 	unsigned int getLvl() const;
 	GameCharacterClass& getClass();
-	std::vector<Effect*>& getEffects();
+	std::vector<Effect>& getEffects();
 	std::vector<Item*>& getItems();
 
 	void equipWeapon(Weapon* weapon);
 	void unequipWeapon();
 	void equipArmor(Armor* armor);
 	void unequipArmor();
-	void takeDamage(Effect& effectType,int dmg);
+	int takeDamage(Effect& effectType,int dmg);
 	bool useMP(int mpCost) const;
-	void addEffect(Effect* effect);
+	void addEffect(Effect& effect);
 	int addModifiers(std::map<EffectType, int> buffs_);
 	void addItem(Item* item);
 	void effectsInfluence();

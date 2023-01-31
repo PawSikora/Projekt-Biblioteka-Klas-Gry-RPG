@@ -22,8 +22,8 @@ int main()
 		Alignment::Neutral, 100, 100, { new Weapon("Aerodnight",1000,2107,100), new Armor ("Wiedzminski rynsztunek szkoly wilka", 20, 20, 0, Resistances(20, 20, 20, 20, 20))}, 1);*/
 
 	//Wojownik
-	Ability* whirl = new Ability("Mlynek", AbilityType::Offensive, 65, Effect("None", EffectType::Bleeding, 0, 0));
-	Ability* rend = new Ability("Silne ciecie", AbilityType::Offensive, 80, Effect("None", EffectType::PhysicalDmg, 0, 0));
+	Ability* whirl = new Ability("Mlynek", AbilityType::Offensive, 65, Effect("Bleeding", EffectType::Bleeding, 1, 1));
+	Ability* rend = new Ability("Silne ciecie", AbilityType::Offensive, 80, Effect("Physical DMG", EffectType::PhysicalDmg, 1, 1));
 	std::vector<Ability*> warriorAbilities = { whirl, rend };
 	GameCharacterClass warrior(ClassType::Warrior, warriorAbilities);
 

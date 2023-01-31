@@ -1,15 +1,84 @@
 #include "Encounter.h"
 #include <iostream>
 
-#include "Evil_Mob.h"
-
 Encounter::Encounter() : d4(Dice(4)), d6(Dice(6)), d8(Dice(8)), d10(Dice(10)), d12(Dice(12)), d20(Dice(20))
 {
 }
 
+void Encounter::updateUnitState(std::vector<MainGameCharacter*>& heroes, std::vector<Evil_Mob*>& enemies)
+{
+	std::cout << std::endl;
+
+	for(auto it = heroes.begin(); it != heroes.end();)
+	{
+		if (!(*it)->getEffects().empty())
+			(*it)->effectsInfluence();
+		if (!(*it)->getConsciousness())
+		{
+			std::cout << (*it)->getName() << " traci przytomnosc od obrazen!\n\n";
+			it = heroes.erase(it);
+		}
+		else
+		{
+			std::cout << (*it)->getName() << " ma jeszcze " << (*it)->getHp() << " hp!\n\n";
+			++it;
+		}
+	}
+
+	for (auto it = enemies.begin(); it != enemies.end();)
+	{
+
+		if (!(*it)->getEffects().empty())
+			(*it)->effectsInfluence();
+		if (!(*it)->getConsciousness())
+		{
+			std::cout << (*it)->getName() << " traci przytomnosc od obrazen!\n\n";
+			it = enemies.erase(it);
+		}
+		else
+		{
+			std::cout << (*it)->getName() << " ma jeszcze " << (*it)->getHp() << " hp!\n\n";
+			++it;
+		}
+	}
+	system("pause");
+}
+
+int Encounter::criticalHit(GameCharacter& unit, int dmg)
+{
+	switch (unit.getClass().getClassType())
+	{
+		case ClassType::Warrior:
+			if (d12.roll() >= 11)
+			{
+				std::cout << unit.getName() << " wykonuje krytyczne obrazenia!\n";
+				return dmg * 2;
+			}
+			return dmg;
+
+		case ClassType::Rogue:
+			if (d6.roll() >= 4)
+			{
+				std::cout << unit.getName() << " wykonuje krytyczne obrazenia!\n";
+				return dmg * 2;
+			}
+			return dmg;
+		case ClassType::Mage:
+			if (d20.roll() == 20)
+			{
+				std::cout << unit.getName() << " wykonuje krytyczne obrazenia!\n";
+				return dmg * 2;
+			}
+			return dmg;
+	default:
+		throw std::invalid_argument("Nieznany typ klasy");
+	}
+}
+
+
 void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_Mob*> enemies)
 {
-	int heroesInitiative = 0, enemiesInitiative = 0, selectedAction;
+	int heroesInitiative = 0, enemiesInitiative = 0, selectedAction, dmgDealt = 0;
 	std::string choice;
 	bool turn = false, escapeHero = false, escapeEnemy = false;
 	Ability* selectedAbility = nullptr;
@@ -75,10 +144,9 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 							std::cout << i + 1 << ". " << enemies[i]->getName() << std::endl;
 
 						selectedAction = selectNumber(1, enemies.size());
-
-						enemies[selectedAction - 1]->takeDamage(selectedAbility->getEffect(), selectedAbility->getDmg());
+						dmgDealt = enemies[selectedAction - 1]->takeDamage(selectedAbility->getEffect(), criticalHit(*hero, selectedAbility->getDmg()));
 						std::cout << hero->getName() << " uzywa " << selectedAbility->getName() << "!\n";
-						std::cout << enemies[selectedAction - 1]->getName() << " obrywa za " << selectedAbility->getDmg() << "\n\n";
+						std::cout << enemies[selectedAction - 1]->getName() << " obrywa za " <<dmgDealt << "\n\n";
 						break;
 
 					default:
@@ -88,8 +156,8 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 
 						selectedAction = selectNumber(1, enemies.size());
 
-						enemies[selectedAction - 1]->takeDamage(physicalDmg, hero->attack());
-						std::cout << enemies[selectedAction - 1]->getName() << " obrywa za " << hero->attack() << "\n\n";
+						dmgDealt = enemies[selectedAction - 1]->takeDamage(physicalDmg, criticalHit(*hero, hero->attack()));
+						std::cout << enemies[selectedAction - 1]->getName() << " obrywa za " << dmgDealt << "\n\n";
 						break;
 				}
 				break;
@@ -112,8 +180,15 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 				break;
 			}
 		}
-		
-	
+
+		if (escapeHero)
+		{
+			heroes.erase(std::remove_if(heroes.begin(), heroes.end(), [](MainGameCharacter* otherHero) {return otherHero->getEscaped(); }), heroes.end());
+			escapeHero = false;
+		}
+
+		updateUnitState(heroes, enemies);
+
 		std::cout << "Tura przeciwnikow!\n\n";
 
 		for (auto enemy : enemies)
@@ -147,9 +222,9 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 
 					selectedAction = enemy->chooseAction(heroes.size());
 
-					heroes[selectedAction]->takeDamage(selectedAbility->getEffect(), selectedAbility->getDmg());
+					dmgDealt =heroes[selectedAction]->takeDamage(selectedAbility->getEffect(), criticalHit(*enemy, selectedAbility->getDmg()));
 					std::cout << enemy->getName() << " uzywa " << selectedAbility->getName() << "!\n";
-					std::cout << heroes[selectedAction]->getName() << " obrywa za " << selectedAbility->getDmg() << "\n\n";
+					std::cout << heroes[selectedAction]->getName() << " obrywa za " << dmgDealt << "\n\n";
 					break;
 
 				default:
@@ -158,8 +233,8 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 
 					selectedAction = enemy->chooseAction(heroes.size());
 
-					heroes[selectedAction]->takeDamage(physicalDmg, enemy->attack());
-					std::cout << heroes[selectedAction]->getName() << " obrywa za " << enemy->attack() << "\n\n";
+					dmgDealt = heroes[selectedAction]->takeDamage(physicalDmg, criticalHit(*enemy, enemy->attack()));
+					std::cout << heroes[selectedAction]->getName() << " obrywa za " << dmgDealt << "\n\n";
 					break;
 				}
 				break;
@@ -183,51 +258,13 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 			
 		}
 
-		if(escapeHero)
-		{
-			heroes.erase(std::remove_if(heroes.begin(), heroes.end(), [](MainGameCharacter* otherHero) {return otherHero->getEscaped(); }), heroes.end());
-			escapeHero = false;
-		}
-
 		if(escapeEnemy)
 		{
 			enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [](Evil_Mob* otherEnemy) {return otherEnemy->getEscaped(); }), enemies.end());
 			escapeEnemy = false;
 		}
 
-		std::cout << std::endl;
-
-		for(auto it = heroes.begin(); it != heroes.end();)
-		{
-			if(!(*it)->getConsciousness())
-			{
-				std::cout << (*it)->getName() << " traci przytomnosc od obrazen!\n\n";
-				it = heroes.erase(it);
-			}
-			else
-			{
-				std::cout << (*it)->getName() << " ma jeszcze " << (*it)->getHp() << " hp!\n\n";
-				if (!(*it)->getEffects().empty())
-					(*it)->effectsInfluence();
-				++it;
-			}
-		}
-
-		for (auto it = enemies.begin(); it != enemies.end();)
-		{
-			if (!(*it)->getConsciousness())
-			{
-				std::cout << (*it)->getName() << " traci przytomnosc od obrazen!\n\n";
-				it = enemies.erase(it);
-			}
-			else
-			{
-				std::cout << (*it)->getName() << " ma jeszcze " << (*it)->getHp() << " hp!\n\n";
-				if (!(*it)->getEffects().empty())
-					(*it)->effectsInfluence();
-				++it;
-			}
-		}
+		updateUnitState(heroes, enemies);
 
 		std::cout << std::string(20,'=') << "\n\n";
 	}

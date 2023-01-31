@@ -25,6 +25,12 @@ int Effect::getTime() const
 	return timeOfEffect;
 }
 
+void Effect::setTime(int time_of_effect)
+{
+	if (time_of_effect < 0) throw std::invalid_argument("Czas musi byc liczba dodatnia");
+	timeOfEffect = time_of_effect;
+}
+
 bool Effect::passTime()
 {
 	if (timeOfEffect > 0)
