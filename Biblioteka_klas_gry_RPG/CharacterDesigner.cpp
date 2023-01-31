@@ -30,20 +30,20 @@ GameCharacterClass CharacterDesigner::classChoice()
 	
 
 	//Wojownik
-	Ability* whirl = new Ability("Mlynek", AbilityType::Offensive, 65, Effect("Bleeding", EffectType::Bleeding, 1, 1));
-	Ability* rend = new Ability("Silne ciecie", AbilityType::Offensive, 80, Effect("Physical DMG", EffectType::PhysicalDmg, 1, 1));
+	Ability* whirl = new Ability("Mlynek", AbilityType::Offensive, 65, 20, Effect("Bleeding", EffectType::Bleeding, 1, 1));
+	Ability* rend = new Ability("Silne ciecie", AbilityType::Offensive, 80, 20, Effect("Physical DMG", EffectType::PhysicalDmg, 1, 1));
 	std::vector<Ability*> warriorAbilities = { whirl, rend };
 	GameCharacterClass warrior(ClassType::Warrior, warriorAbilities);
 
 	//Mag
-	Ability* fireball = new Ability("Kula ognia", AbilityType::Offensive, 60, Effect("Burning", EffectType::Burning, 5, 4));
-	Ability* lightning = new Ability("Blyskawica", AbilityType::Offensive, 45, Effect("Shock", EffectType::Shocked, 4, 3));
+	Ability* fireball = new Ability("Kula ognia", AbilityType::Offensive, 60, 20, Effect("Burning", EffectType::Burning, 5, 4));
+	Ability* lightning = new Ability("Blyskawica", AbilityType::Offensive, 45, 20, Effect("Shock", EffectType::Shocked, 4, 3));
 	std::vector<Ability*> mageAbilities = { fireball, lightning };
 	GameCharacterClass mage(ClassType::Mage, mageAbilities);
 
 	//£otrzyk
-	Ability* backstab = new Ability("Cios w plecy", AbilityType::Offensive, 1000, Effect("Bleed", EffectType::Bleeding, 2, 5));
-	Ability* poisonBlade = new Ability("Zatrute ostrze", AbilityType::Offensive, 60, Effect("Poison", EffectType::Poisoning, 4, 6));
+	Ability* backstab = new Ability("Cios w plecy", AbilityType::Offensive, 1000, 20, Effect("Bleed", EffectType::Bleeding, 2, 5));
+	Ability* poisonBlade = new Ability("Zatrute ostrze", AbilityType::Offensive, 60, 20, Effect("Poison", EffectType::Poisoning, 4, 6));
 	std::vector<Ability*> rogueAbilities = { backstab, poisonBlade };
 	GameCharacterClass rogue(ClassType::Rogue, rogueAbilities);
 

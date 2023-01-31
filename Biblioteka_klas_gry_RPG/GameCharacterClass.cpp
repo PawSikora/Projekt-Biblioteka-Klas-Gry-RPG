@@ -102,7 +102,7 @@ std::string GameCharacterClass::getUnlockedAbilities()
 			if (ability->getStatus())
 			{
 				count++;
-				abilitiesList += std::to_string(count) + ". " + ability->getName() + '\n';
+				abilitiesList += std::to_string(count) + ". " + ability->getName() + " (" + std::to_string(ability->getMpCost()) + " mp)" + '\n';
 			}
 		}
 		return abilitiesList;

@@ -2,16 +2,22 @@
 
 #include <stdexcept>
 
+Ability::Ability(std::string name, AbilityType type, int damage, int mpCost, Effect effect)
+    :name(name), type(type), mpCost(mpCost), effect(effect)
+{
+    setDmg(damage);
+}
+
 void Ability::setDmg(int dmg)
 {
     if (dmg < 0) throw std::invalid_argument("Obrazenia nie moga byc ujemne");
     this->damage = dmg;
 }
 
-Ability::Ability(std::string name, AbilityType type, int damage, Effect effect)
-	:name(name),type(type),effect(effect)
+void Ability::setMpCost(int mpCost)
 {
-    setDmg(damage);
+    if (mpCost < 0) throw std::invalid_argument("Koszt many nie moze byc ujemny");
+    this->mpCost = mpCost;
 }
 
 std::string Ability::getName()
@@ -28,6 +34,12 @@ int Ability::getDmg() const
 {
     return damage;
 }
+
+int Ability::getMpCost() const
+{
+    return mpCost;
+}
+
 
 Effect& Ability::getEffect()
 {

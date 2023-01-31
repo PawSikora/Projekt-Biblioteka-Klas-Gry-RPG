@@ -227,29 +227,30 @@ int GameCharacter::takeDamage(Effect& effectType, int dmg)
 	return dmgDealt;
 }
 
-bool GameCharacter::useMP(int mpCost) const
+bool GameCharacter::useMP(int mpCost)
 {
+	if(mp > mpCost)
+	{
+		mp -= mpCost;
+		return true;
+	}
 	return  mp > mpCost;
 }
 
 void GameCharacter::addEffect(Effect& effect)
 {
-	//if(effect != nullptr)
+	bool effectAlreadyAdded = false;
+
+	for (auto& eff : effects) {
+		if (eff.getType() == effect.getType()) {
+			eff.setTime(effect.getTime());
+			effectAlreadyAdded = true;
+		}
+	}
+
+	if (!effectAlreadyAdded)
 	{
-		bool effectAlreadyAdded = false;
-
-		for (auto& eff : effects) {
-			if (eff.getType() == effect.getType()) {
-				eff.setTime(effect.getTime());
-				effectAlreadyAdded = true;
-			}
-		}
-
-		if (!effectAlreadyAdded)
-		{
-			//Effect* effect_ = new Effect(*effect);
-			effects.push_back(effect);
-		}
+		effects.push_back(effect);
 	}
 }
 

@@ -78,7 +78,7 @@ public:
 	void equipArmor(Armor* armor);
 	void unequipArmor();
 	int takeDamage(Effect& effectType,int dmg);
-	bool useMP(int mpCost) const;
+	bool useMP(int mpCost);
 	void addEffect(Effect& effect);
 	int addModifiers(std::map<EffectType, int> buffs_);
 	void addItem(Item* item);

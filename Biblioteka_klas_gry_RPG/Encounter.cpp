@@ -135,20 +135,40 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 
 				switch (selectedAction)
 				{
-					case 2:
-						std::cout << "Jakiej zdolnosci chcesz uzyc?\n" << hero->getClass().getUnlockedAbilities();
-						selectedAction = selectNumber(1, hero->getClass().getNumOfUnlockedAbilities());
-						selectedAbility = hero->getClass().getUnlockedAbility(selectedAction-1);
-						std::cout << "Ktorego przeciwnika chcesz zaatakowac?\n";
-						for (int i = 0; i < enemies.size(); i++)
-							std::cout << i + 1 << ". " << enemies[i]->getName() << std::endl;
+			case 2:
+				choice.clear();
+						do
+						{
+							std::cout << "Jakiej zdolnosci chcesz uzyc?\n" << hero->getClass().getUnlockedAbilities();
+							selectedAction = selectNumber(1, hero->getClass().getNumOfUnlockedAbilities());
+							selectedAbility = hero->getClass().getUnlockedAbility(selectedAction - 1);
+							if (hero->useMP(selectedAbility->getMpCost()))
+							{
+								std::cout << "Ktorego przeciwnika chcesz zaatakowac?\n";
+								for (int i = 0; i < enemies.size(); i++)
+									std::cout << i + 1 << ". " << enemies[i]->getName() << std::endl;
 
-						selectedAction = selectNumber(1, enemies.size());
-						dmgDealt = enemies[selectedAction - 1]->takeDamage(selectedAbility->getEffect(), criticalHit(*hero, selectedAbility->getDmg()));
-						std::cout << hero->getName() << " uzywa " << selectedAbility->getName() << "!\n";
-						std::cout << enemies[selectedAction - 1]->getName() << " obrywa za " <<dmgDealt << "\n\n";
-						break;
+								selectedAction = selectNumber(1, enemies.size());
+								dmgDealt = enemies[selectedAction - 1]->takeDamage(selectedAbility->getEffect(), criticalHit(*hero, selectedAbility->getDmg()));
+								std::cout << hero->getName() << " uzywa " << selectedAbility->getName() << " kosztem " << selectedAbility->getMpCost() << " swojej many!\n";
+								std::cout << enemies[selectedAction - 1]->getName() << " obrywa za " << dmgDealt << "\n\n";
+								break;
+							}
+							std::cout << "Nie masz wystarczajacej many na uzycie " << selectedAbility->getName() << "!\n";
+							std::cout << "Aktualna mana: " << hero->getMp() << std::endl;
 
+							std::cout << "Czy chcesz uzyc innej zdolnosci?[t/n]";
+							std::cin.clear();
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+							std::getline(std::cin, choice);
+						}
+						while ((choice.find('n') == std::string::npos));
+						
+						if ((choice.find('n') == std::string::npos))
+							break;
+
+						std::cout << "\n" << hero->getName() << " Atakuje normalnie!" << std::endl;
+						
 					default:
 						std::cout << "Ktorego przeciwnika chcesz zaatakowac?\n";
 						for (int i = 0; i < enemies.size(); i++)
@@ -218,13 +238,35 @@ void Encounter::combat(std::vector<MainGameCharacter*> heroes, std::vector<Evil_
 				switch (selectedAction)
 				{
 				case 2:
-					selectedAbility = enemy->getClass().getAbility(enemy->chooseAction(enemy->getClass().getNumOfUnlockedAbilities()));
+					choice.clear();
+					do
+					{
+						selectedAbility = enemy->getClass().getAbility(enemy->chooseAction(enemy->getClass().getNumOfUnlockedAbilities()));
+
+						if (enemy->useMP(selectedAbility->getMpCost()))
+						{
+							selectedAction = enemy->chooseAction(heroes.size());
+							dmgDealt = heroes[selectedAction]->takeDamage(selectedAbility->getEffect(), criticalHit(*enemy, selectedAbility->getDmg()));
+							std::cout << enemy->getName() << " uzywa " << selectedAbility->getName() << "!\n";
+							std::cout << heroes[selectedAction]->getName() << " obrywa za " << dmgDealt << "\n\n";
+							break;
+						}
+
+						choice = std::to_string(enemy->chooseAction(2));
+					} while ((choice.find('1') == std::string::npos));
+
+					if ((choice.find('1') == std::string::npos))
+						break;
+
+					std::cout << "\n" << enemy->getName() << " Atakuje normalnie!" << std::endl;
+
+					/*selectedAbility = enemy->getClass().getAbility(enemy->chooseAction(enemy->getClass().getNumOfUnlockedAbilities()));
 
 					selectedAction = enemy->chooseAction(heroes.size());
 
 					dmgDealt =heroes[selectedAction]->takeDamage(selectedAbility->getEffect(), criticalHit(*enemy, selectedAbility->getDmg()));
 					std::cout << enemy->getName() << " uzywa " << selectedAbility->getName() << "!\n";
-					std::cout << heroes[selectedAction]->getName() << " obrywa za " << dmgDealt << "\n\n";
+					std::cout << heroes[selectedAction]->getName() << " obrywa za " << dmgDealt << "\n\n";*/
 					break;
 
 				default:

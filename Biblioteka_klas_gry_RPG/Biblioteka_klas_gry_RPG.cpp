@@ -11,9 +11,9 @@
 #include "NPC.h"
 #include "Weapon.h"
 
-//#define CombatMechanicTest
+#define CombatMechanicTest
 //#define TradingMechanicTest
-#define CharacterCreationTest
+//#define CharacterCreationTest
 
 #ifdef CombatMechanicTest
 int main()
@@ -23,20 +23,20 @@ int main()
 		Alignment::Neutral, 100, 100, { new Weapon("Aerodnight",1000,2107,100), new Armor ("Wiedzminski rynsztunek szkoly wilka", 20, 20, 0, Resistances(20, 20, 20, 20, 20))}, 1);*/
 
 	//Wojownik
-	Ability* whirl = new Ability("Mlynek", AbilityType::Offensive, 65, Effect("Bleeding", EffectType::Bleeding, 1, 1));
-	Ability* rend = new Ability("Silne ciecie", AbilityType::Offensive, 80, Effect("Physical DMG", EffectType::PhysicalDmg, 1, 1));
+	Ability* whirl = new Ability("Mlynek", AbilityType::Offensive, 65, 20, Effect("Bleeding", EffectType::Bleeding, 1, 1));
+	Ability* rend = new Ability("Silne ciecie", AbilityType::Offensive, 80, 20, Effect("Physical DMG", EffectType::PhysicalDmg, 1, 1));
 	std::vector<Ability*> warriorAbilities = { whirl, rend };
 	GameCharacterClass warrior(ClassType::Warrior, warriorAbilities);
 
 	//Mag
-	Ability* fireball = new Ability("Kula ognia", AbilityType::Offensive, 60, Effect("Burning", EffectType::Burning, 5, 4));
-	Ability* lightning = new Ability("Blyskawica", AbilityType::Offensive, 45, Effect("Shock", EffectType::Shocked, 4, 3));
+	Ability* fireball = new Ability("Kula ognia", AbilityType::Offensive, 60, 20, Effect("Burning", EffectType::Burning, 5, 4));
+	Ability* lightning = new Ability("Blyskawica", AbilityType::Offensive, 45, 20, Effect("Shock", EffectType::Shocked, 4, 3));
 	std::vector<Ability*> mageAbilities = { fireball, lightning };
 	GameCharacterClass mage(ClassType::Mage, mageAbilities);
 
 	//Łotrzyk
-	Ability* backstab = new Ability("Cios w plecy", AbilityType::Offensive, 1000, Effect("Bleed", EffectType::Bleeding, 2, 5));
-	Ability* poisonBlade = new Ability("Zatrute ostrze", AbilityType::Offensive, 60, Effect("Poison", EffectType::Poisoning, 4, 6));
+	Ability* backstab = new Ability("Cios w plecy", AbilityType::Offensive, 1000, 20, Effect("Bleed", EffectType::Bleeding, 2, 5));
+	Ability* poisonBlade = new Ability("Zatrute ostrze", AbilityType::Offensive, 60, 20, Effect("Poison", EffectType::Poisoning, 4, 6));
 	std::vector<Ability*> rogueAbilities = { backstab, poisonBlade };
 	GameCharacterClass rogue(ClassType::Rogue, rogueAbilities);
 
@@ -79,9 +79,9 @@ int main()
 
 	//Postacie testowe
 
-	MainGameCharacter player1("Alistair", GameCharacterRace::Human, warrior, Statistics(14, 10, 12, 10, 10, 12), Alignment::Good, 120, 0, heroItems1, 1);
+	MainGameCharacter player1("Alistair", GameCharacterRace::Human, warrior, Statistics(14, 10, 12, 10, 10, 12), Alignment::Good, 120, 100, heroItems1, 1);
 	 MainGameCharacter player2("Solas", GameCharacterRace::Elf, mage, Statistics(10, 10, 10, 16, 12, 12), Alignment::Neutral, 80, 120, heroItems2, 1);
-	 MainGameCharacter player3("Varric", GameCharacterRace::Dwarf, rogue, Statistics(10, 16, 12, 14, 10, 10), Alignment::Good, 90, 0, heroItems3, 1);
+	 MainGameCharacter player3("Varric", GameCharacterRace::Dwarf, rogue, Statistics(10, 16, 12, 14, 10, 10), Alignment::Good, 90, 30, heroItems3, 1);
 	 std::vector<MainGameCharacter*> heroes = { &player1, &player2, &player3};
 
 	 //Testowanie wpływu przedmiotow na postać
@@ -132,9 +132,9 @@ int main()
 
 	//Przeciwnicy testowi
 	//Evil_Mob CyklopSmokCzarnoksieznika("UluMulu", GameCharacterRace::Orc, warrior, Statistics(20, 8, 14, 4, 4, 0), 150, 0, { new Weapon("Orkowy topor", 300, 5, 10), new Armor("Naramiennik orkow", 50, 1, 0, Resistances(0, 0, 0, 0,0)) }, 5, DangerLvL::Boss);
-	Evil_Mob enemy1("Grasant", GameCharacterRace::Human, warrior, Statistics(14, 10, 140, 10, 10, 8), 120, 50, enemyItems1, 5, DangerLvL::Medium, 60);
-	Evil_Mob enemy2("Drugi Grasant", GameCharacterRace::Human, warrior, Statistics(14, 10, 140, 10, 10, 8), 120, 50, enemyItems2, 5, DangerLvL::Medium, 60);
-	Evil_Mob enemy3("Herszt", GameCharacterRace::Orc, warrior, Statistics(20, 8, 16, 10, 8, 12), 200, 0, enemyItems3, 10, DangerLvL::Boss, 200);
+	Evil_Mob enemy1("Grasant", GameCharacterRace::Human, warrior, Statistics(14, 10, 140, 10, 10, 8), 120, 30, enemyItems1, 5, DangerLvL::Medium, 60);
+	Evil_Mob enemy2("Drugi Grasant", GameCharacterRace::Human, warrior, Statistics(14, 10, 140, 10, 10, 8), 120, 30, enemyItems2, 5, DangerLvL::Medium, 60);
+	Evil_Mob enemy3("Herszt", GameCharacterRace::Orc, warrior, Statistics(20, 8, 16, 10, 8, 12), 200, 30, enemyItems3, 10, DangerLvL::Boss, 200);
 	std::vector<Evil_Mob*> enemies = { &enemy1, &enemy2, &enemy3 };
 
 	std::cout << "\nKontynuowac do modulu walki?\n";
