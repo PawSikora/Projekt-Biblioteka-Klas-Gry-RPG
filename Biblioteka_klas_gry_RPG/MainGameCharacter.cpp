@@ -8,7 +8,7 @@ MainGameCharacter::MainGameCharacter(std::string name, GameCharacterRace race, G
 	:GameCharacter(name,race,characterClass,stats,alignment,health,mana,items,lvl)
 {}
 
-int MainGameCharacter::getExp()
+int MainGameCharacter::getExp() const
 {
 	return exp;
 }
@@ -68,7 +68,7 @@ void MainGameCharacter::defend()
 
 void MainGameCharacter::useItem()
 {
-	if (getItems().size() <= 0)
+	if (getItems().empty())
 		std::cout << "Nie masz zadnych przedmiotow!\n";
 	else
 	{
@@ -125,7 +125,7 @@ void MainGameCharacter::useItem()
 
 void MainGameCharacter::levelUp()
 {
-	int wybor, lvl = getLvl();
+	int lvl = getLvl();
 	setLvl(lvl++);
 
 	std::cout << "Zdobyles nowy poziom klasy: " + getClass().getName() + "!\n";
@@ -170,15 +170,13 @@ void MainGameCharacter::levelUp()
 	std::cout << std::endl;
 	if(getClass().getNumOfAvailableAbilities() > 0)
 	{
+		int wybor;
 		std::cout << "Wybierz nowa zdolnosc do nauki:\n" << getClass().getAbilities();
 
 		wybor = selectNumber(1, getClass().getNumOfAvailableAbilities());
 
 		std::cout << "Odblokowano nowa zdolnosc: " << getClass().getAbility(wybor-1)->getName();
 
-		/*Ability* temp = getClass().getAbility(wybor - 1);
-		getClass().abilityUnlocked(temp);
-		std::cout << "\n\nODBLOKOWANA ZDOLNOSC:\t" << temp->getName();*/
 		getClass().abilityUnlocked(getClass().getAbility(wybor - 1)->unlockAbility());
 	}
 	else
@@ -189,7 +187,7 @@ void MainGameCharacter::levelUp()
 	increaseExpCap();
 }
 
-bool MainGameCharacter::getEscaped()
+bool MainGameCharacter::getEscaped() const
 {
 	return escaped;
 }

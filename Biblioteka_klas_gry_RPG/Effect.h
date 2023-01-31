@@ -13,9 +13,9 @@ public:
 	Effect(std::string name, EffectType effect, int valueOfEffect, int timeOfEffect);
 
 	std::string getName();
-	EffectType getType();
-	int getEffect();
-	int getTime();
+	EffectType getType() const;
+	int getEffect() const;
+	int getTime() const;
 	bool passTime();
 
 };

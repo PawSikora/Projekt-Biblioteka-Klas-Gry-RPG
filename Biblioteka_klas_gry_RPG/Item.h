@@ -11,7 +11,7 @@ protected:
 	Item(std::string name, int value);
 public:
 	std::string getName();
-	int getValue();
+	int getValue() const;
 
 	virtual ~Item(){}
 };

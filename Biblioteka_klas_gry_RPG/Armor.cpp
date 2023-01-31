@@ -21,17 +21,17 @@ void Armor::setMobilityPenalty(int mobilityPenalty)
 	this->mobilityPenalty = mobilityPenalty;
 }
 
-int Armor::getDefense()
+int Armor::getDefense() const
 {
 	return defense;
 }
 
-int Armor::getMobilityPenalty()
+int Armor::getMobilityPenalty() const
 {
 	return mobilityPenalty;
 }
 
-Resistances Armor::getResistances()
+Resistances Armor::getResistances() const
 {
 	return resistances;
 }
@@ -50,7 +50,7 @@ bool Armor::unequipArmor()
 	return equip;
 }
 
-bool Armor::isEquipped()
+bool Armor::isEquipped() const
 {
 	return equip;
 }

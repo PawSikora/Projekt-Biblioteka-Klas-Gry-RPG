@@ -19,7 +19,7 @@ std::string Item::getName()
 	return name;
 }
 
-int Item::getValue()
+int Item::getValue() const
 {
 	return value;
 }

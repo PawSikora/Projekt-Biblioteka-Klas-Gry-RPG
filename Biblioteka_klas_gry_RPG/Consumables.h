@@ -9,10 +9,10 @@ class Consumables : public Item
 
 public:
 	Consumables(std::string name, int value, Effect* effect);
-	Effect* getEffect();
+	Effect* getEffect() const;
 
 	void useItem();
-	bool getUsed();
+	bool getUsed() const;
 
 	~Consumables();
 };

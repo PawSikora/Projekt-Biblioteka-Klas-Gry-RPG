@@ -14,12 +14,12 @@ public:
 	void setDefense(int defense);
 	void setMobilityPenalty(int MobilityPenalty);
 
-	int getDefense();
-	int getMobilityPenalty();
-	Resistances getResistances();
+	int getDefense() const;
+	int getMobilityPenalty() const;
+	Resistances getResistances() const;
 
 	bool equipArmor();
 	bool unequipArmor();
-	bool isEquipped();
+	bool isEquipped() const;
 };
 

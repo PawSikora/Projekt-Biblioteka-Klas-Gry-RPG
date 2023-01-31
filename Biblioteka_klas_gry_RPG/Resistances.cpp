@@ -41,27 +41,27 @@ void Resistances::setBleedResistance(int bleedResistance)
 	this->bleedResistance = bleedResistance;
 }
 
-int Resistances::getFireResistance()
+int Resistances::getFireResistance() const
 {
 	return fireResistance;
 }
 
-int Resistances::getColdResistance()
+int Resistances::getColdResistance() const
 {
 	return coldResistance;
 }
 
-int Resistances::getPoisonResistance()
+int Resistances::getPoisonResistance() const
 {
 	return poisonResistance;
 }
 
-int Resistances::getMagicResistance()
+int Resistances::getMagicResistance() const
 {
 	return magicResistance;
 }
 
-int Resistances::getBleedResistance()
+int Resistances::getBleedResistance() const
 {
 	return bleedResistance;
 }

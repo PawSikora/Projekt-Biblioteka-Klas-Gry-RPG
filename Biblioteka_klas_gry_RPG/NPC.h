@@ -11,7 +11,7 @@ class NPC : public Mob
 	void BuyItem(MainGameCharacter &character);
 	void Dialog(MainGameCharacter &character);
 	void DialogInnKeeper(MainGameCharacter &character);
-	std::string myRole();
+	std::string myRole() const;
 
 public:
 	NPC(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats

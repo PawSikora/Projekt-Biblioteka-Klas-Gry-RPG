@@ -15,10 +15,10 @@ class Ability
 public:
 	Ability(std::string name, AbilityType type, int damage, Effect effect);
 	std::string getName();
-	AbilityType getType();
-	int getDmg();
+	AbilityType getType() const;
+	int getDmg() const;
 	Effect& getEffect();
-	bool getStatus();
+	bool getStatus() const;
 
 	Ability* unlockAbility();
 };

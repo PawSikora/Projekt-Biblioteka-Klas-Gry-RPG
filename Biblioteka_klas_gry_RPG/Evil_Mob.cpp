@@ -6,7 +6,7 @@
 #include "Consumables.h"
 
 Evil_Mob::Evil_Mob(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats, int health, int mana, std::vector<Item*> items, unsigned lvl, DangerLvL danger_, int exp)
-	: Mob(name, race, characterClass, stats, Alignment::Evil, health, mana, items, lvl), danger_(danger_), exp(exp)
+	: Mob(name, race, characterClass, stats, Alignment::Evil, health, mana, items, lvl), exp(exp), danger_(danger_)
 {}
 
 bool Evil_Mob::run()
@@ -44,16 +44,12 @@ void Evil_Mob::defend()
 
 void Evil_Mob::useItem()
 {
-	if (getItems().size() <= 0);
+	if (getItems().empty());
 	else
 	{
-
-		Item* item;
 		std::mt19937 mt(time(nullptr));
 		int numberOfItem = (mt() % getItems().size());
-		//std::cout << numberOfItem << "\n\n\n";
-		item = getItems()[numberOfItem];
-
+		Item* item = getItems()[numberOfItem];
 
 		if (dynamic_cast<Consumables*>(item))
 		{
@@ -98,25 +94,8 @@ void Evil_Mob::useItem()
 int Evil_Mob::chooseAction(int numOfChoices)
 {
 	std::mt19937 mt(time(nullptr));
-	/*if(mt()%4==0)
-	{
-		run();
-	}
-	if (mt() % 4 == 1)
-	{
-		attack();
-	}
-	if (mt() % 4 == 2)
-	{
-		defend();
-	}
-	if (mt() % 4 == 3)
-	{
-		
-	}*/
 
 	return mt() % numOfChoices;
-
 }
 
 DangerLvL Evil_Mob::getDanger() const
@@ -124,12 +103,12 @@ DangerLvL Evil_Mob::getDanger() const
 	return danger_;
 }
 
-int Evil_Mob::getExp()
+int Evil_Mob::getExp() const
 {
 	return this->exp;
 }
 
-bool Evil_Mob::getEscaped()
+bool Evil_Mob::getEscaped() const
 {
 	return escaped;
 }

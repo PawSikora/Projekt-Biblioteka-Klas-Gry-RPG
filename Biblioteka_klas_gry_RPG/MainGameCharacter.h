@@ -12,7 +12,7 @@ public:
 
 	MainGameCharacter() = default;
 
-	int getExp();
+	int getExp() const;
 	void increaseExp(int exp);
 	void increaseExpCap();
 
@@ -22,7 +22,7 @@ public:
 	void useItem() override;
 	void levelUp();
 
-	bool getEscaped();
+	bool getEscaped() const;
 
 	bool operator==(MainGameCharacter& other);
 };

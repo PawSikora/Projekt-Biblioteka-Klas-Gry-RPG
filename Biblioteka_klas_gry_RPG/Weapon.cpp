@@ -14,7 +14,7 @@ void Weapon::setArmorPenetration(int armorPenetration)
 	this->armorPenetration = armorPenetration;
 }
 
-int Weapon::getDmg()
+int Weapon::getDmg() const
 {
 	return dmg;
 }
@@ -33,7 +33,7 @@ bool Weapon::unequipWeapon()
 	return equip;
 }
 
-bool Weapon::isEquipped()
+bool Weapon::isEquipped() const
 {
 	return equip;
 }

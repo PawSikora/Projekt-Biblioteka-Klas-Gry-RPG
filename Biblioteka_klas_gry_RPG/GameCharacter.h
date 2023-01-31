@@ -51,7 +51,7 @@ protected:
 	Armor* armor = nullptr;
 
 public:
-	bool getConsciousness();
+	bool getConsciousness() const;
 	void deleteItem(int i);
 
 	void setHp(int hp);
@@ -61,14 +61,14 @@ public:
 	void setDefense(int defense);
 	void setGold(int gold);
 
-	int getGold();
+	int getGold() const;
 	std::string getName();
-	int getHp();
-	int getMp();
+	int getHp() const;
+	int getMp() const;
 	int getDefense();
 	Statistics& getStats();
 	int getInitiative();
-	unsigned int getLvl();
+	unsigned int getLvl() const;
 	GameCharacterClass& getClass();
 	std::vector<Effect*>& getEffects();
 	std::vector<Item*>& getItems();
@@ -78,7 +78,7 @@ public:
 	void equipArmor(Armor* armor);
 	void unequipArmor();
 	void takeDamage(Effect& effectType,int dmg);
-	bool useMP(int mpCost);
+	bool useMP(int mpCost) const;
 	void addEffect(Effect* effect);
 	int addModifiers(std::map<EffectType, int> buffs_);
 	void addItem(Item* item);

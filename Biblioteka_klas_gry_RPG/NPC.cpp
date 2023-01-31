@@ -7,7 +7,7 @@ NPC::NPC(std::string name, GameCharacterRace race, GameCharacterClass characterC
 	itemList(items), role_(role)
 {
 }
-std::string NPC::myRole()
+std::string NPC::myRole() const
 {
 	switch (role_)
 	{
@@ -51,7 +51,6 @@ void NPC::greet()
 
 void NPC::SellItem(MainGameCharacter &character)
 {
-	Item *selectedItem = nullptr;
 	int selectedItemId;
 	std::string answer;
 	printItems(itemList);
@@ -64,7 +63,7 @@ void NPC::SellItem(MainGameCharacter &character)
 	}
 	else
 	{
-		//selectedItemId = forceNumberInput(answer);
+		Item *selectedItem = nullptr;
 		selectedItemId = selectNumber(1, itemList.size());
 		while(selectedItemId > itemList.size() || selectedItemId < 1)
 		{
@@ -72,7 +71,6 @@ void NPC::SellItem(MainGameCharacter &character)
 			std::cout << "(Jesli chcesz cos kupic napisz numer obok przedmiotu, jezeli nic nie chcesz sprzedawac napisz zegnaj)" << std::endl << '\n' << '\n';
 			printItems(itemList);
 			std::cin >> answer;
-			//selectedItemId = forceNumberInput(answer);
 			selectedItemId = selectNumber(1, itemList.size());
 		}
 		selectedItemId--;
@@ -97,7 +95,6 @@ void NPC::SellItem(MainGameCharacter &character)
 }
 void NPC::BuyItem(MainGameCharacter &character)
 {
-	Item* selectedItem = nullptr;
 	std::string answer;
 	int selectedItemId;
 	printItems(character.getItems());
@@ -110,7 +107,7 @@ void NPC::BuyItem(MainGameCharacter &character)
 	}
 	else
 	{
-		//selectedItemId=forceNumberInput(answer);
+		Item* selectedItem = nullptr;
 		selectedItemId = selectNumber(1, itemList.size());
 		while ( selectedItemId > itemList.size() || selectedItemId < 1 )
 		{
@@ -119,7 +116,6 @@ void NPC::BuyItem(MainGameCharacter &character)
 			std::cout << "(Jesli chcesz cos sprzedac napisz numer obok przedmiotu, jezeli nic nie chcesz sprzedawac napisz zegnaj)" << std::endl<<'\n'<<'\n';
 			printItems(itemList);
 			std::cin >> answer;
-			//selectedItemId = forceNumberInput(answer);
 			selectedItemId = selectNumber(1, itemList.size());
 		}
 		selectedItemId--;

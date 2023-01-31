@@ -38,12 +38,12 @@ GameCharacter::GameCharacter(std::string name, GameCharacterRace race, GameChara
 	}
 }
 
-int GameCharacter::getHp()
+int GameCharacter::getHp() const
 {
 	return hp;
 }
 
-int GameCharacter::getMp()
+int GameCharacter::getMp() const
 {
 	return mp;
 }
@@ -62,7 +62,7 @@ Statistics& GameCharacter::getStats()
 	return stats;
 }
 
-unsigned int GameCharacter::getLvl()
+unsigned int GameCharacter::getLvl() const
 {
 	return lvl;
 }
@@ -99,14 +99,14 @@ std::vector<Item*>& GameCharacter::getItems()
 	return items;
 }
 
-bool GameCharacter::getConsciousness()
+bool GameCharacter::getConsciousness() const
 {
 	return consciousness;
 }
 
 void GameCharacter::deleteItem(int i)
 {
-	if(items.size() > 0)
+	if(!items.empty())
 		items.erase(items.begin() + i);
 }
 
@@ -138,7 +138,7 @@ void GameCharacter::setDefense(int defense)
 	this->defense = defense;
 }
 
-int GameCharacter::getGold()
+int GameCharacter::getGold() const
 {
 	return gold;
 }
@@ -155,7 +155,6 @@ void GameCharacter::equipWeapon(Weapon* weapon)
 		this->weapon = weapon;
 		this->weapon->equipWeapon();
 	}
-	
 }
 
 void GameCharacter::unequipWeapon()
@@ -171,7 +170,6 @@ void GameCharacter::equipArmor(Armor* armor)
 		this->armor = armor;
 		this->armor->equipArmor();
 	}
-	
 }
 
 void GameCharacter::unequipArmor()
@@ -184,81 +182,42 @@ void GameCharacter::unequipArmor()
 void GameCharacter::takeDamage(Effect& effectType, int dmg)
 {
 	int dmgDealt = 0;
-	//if(true)
+	
+	switch (effectType.getType())
 	{
-		switch (effectType.getType())
-		{
-			//dmgDealt > 0 ? dmgDealt : 5;
-			
-			case EffectType::Bleeding:
-			{
-				addEffect(&effectType);
-				dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getBleedResistance() : 0) - addModifiers(buffs.consitutionBuffs);
-				break;
-			}
-			case EffectType::Burning:
-			{
-				addEffect(&effectType);
-				dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getFireResistance() : 0) - addModifiers(buffs.fireResistanceBuffs);
-				break;
-			}
-			case EffectType::Poisoning:
-			{
-				addEffect(&effectType);
-				dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getPoisonResistance() : 0) - addModifiers(buffs.poisonResistanceBuffs);
-				break;
-			}
-			case EffectType::MagicDmg:
-			{
-				addEffect(&effectType);
-				dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getMagicResistance() : 0) - addModifiers(buffs.magicResistanceBuffs);
-				break;
-			}
-			case EffectType::Freezing:
-			{
-				
-				addEffect(&effectType);
-				dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getColdResistance() : 0) - addModifiers(buffs.coldResistanceBuffs);
-				break;
-			}
-		}
-	}
-	/*else
-	{
-		switch (effectType.getType())
-		{
+
 		case EffectType::Bleeding:
 		{
 			addEffect(&effectType);
-			dmgDealt = dmg - addModifiers(buffs.consitutionBuffs);
+			dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getBleedResistance() : 0) - addModifiers(buffs.consitutionBuffs);
 			break;
 		}
 		case EffectType::Burning:
 		{
 			addEffect(&effectType);
-			dmgDealt = dmg - addModifiers(buffs.fireResistanceBuffs);
+			dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getFireResistance() : 0) - addModifiers(buffs.fireResistanceBuffs);
 			break;
 		}
 		case EffectType::Poisoning:
 		{
 			addEffect(&effectType);
-			dmgDealt = dmg - addModifiers(buffs.poisonResistanceBuffs);
+			dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getPoisonResistance() : 0) - addModifiers(buffs.poisonResistanceBuffs);
 			break;
 		}
 		case EffectType::MagicDmg:
 		{
 			addEffect(&effectType);
-			dmgDealt = dmg - addModifiers(buffs.magicResistanceBuffs);
+			dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getMagicResistance() : 0) - addModifiers(buffs.magicResistanceBuffs);
 			break;
 		}
 		case EffectType::Freezing:
 		{
+			
 			addEffect(&effectType);
-			dmgDealt = dmg - addModifiers(buffs.coldResistanceBuffs);
+			dmgDealt = dmg - (armor != nullptr ? armor->getResistances().getColdResistance() : 0) - addModifiers(buffs.coldResistanceBuffs);
 			break;
 		}
-		}
-	}*/
+	}
 
 	if(effectType.getType() == EffectType::PhysicalDmg)
 		dmgDealt = dmg - getDefense();
@@ -267,7 +226,7 @@ void GameCharacter::takeDamage(Effect& effectType, int dmg)
 	setHp(hp - dmgDealt);
 }
 
-bool GameCharacter::useMP(int mpCost)
+bool GameCharacter::useMP(int mpCost) const
 {
 	return  mp > mpCost;
 }

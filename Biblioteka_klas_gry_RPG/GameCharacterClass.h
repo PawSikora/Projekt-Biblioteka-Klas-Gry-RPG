@@ -16,13 +16,13 @@ public:
 	void addAbility(Ability* ability);
 	void abilityUnlocked(Ability* ability);
 
-	std::string getName();
-	ClassType getClassType();
-	Ability* getAbility(int index);
-	Ability* getUnlockedAbility(int index);
+	std::string getName() const;
+	ClassType getClassType() const;
+	Ability* getAbility(int index) const;
+	Ability* getUnlockedAbility(int index) const;
 	std::string getAbilities();
 	std::string getUnlockedAbilities();
-	int getNumOfAvailableAbilities();
-	int getNumOfUnlockedAbilities();
+	int getNumOfAvailableAbilities() const;
+	int getNumOfUnlockedAbilities() const;
 };
 

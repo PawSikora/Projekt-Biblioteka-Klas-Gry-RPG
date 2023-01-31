@@ -9,18 +9,18 @@ std::string Effect::getName()
 	return name;
 }
 
-EffectType Effect::getType()
+EffectType Effect::getType() const
 {
 	return effectType;
 }
 
 
-int Effect::getEffect()
+int Effect::getEffect() const
 {
 	return valueOfEffect;
 }
 
-int Effect::getTime()
+int Effect::getTime() const
 {
 	return timeOfEffect;
 }

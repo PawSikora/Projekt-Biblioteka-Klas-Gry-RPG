@@ -10,12 +10,12 @@ class Statistics
 
 public:
 	Statistics(int strength, int dexterity, int consitution, int intelligence, int wisdom, int charisma);
-	int getStrength();
-	int getDexterity();
-	int getConsitution();
-	int getIntelligence();
-	int getWisdom();
-	int getCharisma();
+	int getStrength() const;
+	int getDexterity() const;
+	int getConsitution() const;
+	int getIntelligence() const;
+	int getWisdom() const;
+	int getCharisma() const;
 	void setStrength(int strength);
 	void setDexterity(int dexterity);
 	void setConsitution(int consitution);

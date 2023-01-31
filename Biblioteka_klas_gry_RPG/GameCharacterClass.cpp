@@ -7,7 +7,7 @@ GameCharacterClass::GameCharacterClass(ClassType classType, std::vector<Ability*
 {
 }
 
-std::string GameCharacterClass::getName()
+std::string GameCharacterClass::getName() const
 {
 	switch(classType)
 	{
@@ -18,7 +18,7 @@ std::string GameCharacterClass::getName()
 	}
 }
 
-ClassType GameCharacterClass::getClassType()
+ClassType GameCharacterClass::getClassType() const
 {
 	return classType;
 }
@@ -35,7 +35,7 @@ void GameCharacterClass::abilityUnlocked(Ability* ability)
 		unlockedAbilities.push_back(ability);
 }
 
-Ability* GameCharacterClass::getAbility(int index)
+Ability* GameCharacterClass::getAbility(int index) const
 {
 	if(index >= 0 && index < abilities.size())
 	{
@@ -44,7 +44,7 @@ Ability* GameCharacterClass::getAbility(int index)
 	throw std::out_of_range("Przekroczono rozmiar tablicy");
 }
 
-Ability* GameCharacterClass::getUnlockedAbility(int index)
+Ability* GameCharacterClass::getUnlockedAbility(int index) const
 {
 	if (index >= 0 && index < unlockedAbilities.size())
 	{
@@ -55,7 +55,7 @@ Ability* GameCharacterClass::getUnlockedAbility(int index)
 
 std::string GameCharacterClass::getAbilities()
 {
-	if(abilities.size() > 0)
+	if(!abilities.empty())
 	{
 		std::string abilitiesList = "";
 		int count = 0;
@@ -112,7 +112,7 @@ std::string GameCharacterClass::getUnlockedAbilities()
 	
 }
 
-int GameCharacterClass::getNumOfAvailableAbilities()
+int GameCharacterClass::getNumOfAvailableAbilities() const
 {
 	int i = 0;
 	for (auto ability : abilities)
@@ -121,7 +121,7 @@ int GameCharacterClass::getNumOfAvailableAbilities()
 	return i;
 }
 
-int GameCharacterClass::getNumOfUnlockedAbilities()
+int GameCharacterClass::getNumOfUnlockedAbilities() const
 {
 	int i = 0;
 	for (auto ability : abilities)

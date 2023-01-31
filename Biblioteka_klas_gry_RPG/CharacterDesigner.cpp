@@ -2,7 +2,6 @@
 
 GameCharacterRace CharacterDesigner::raceChoice()
 {
-
 	std::cout << " Oto rasy do wyboru" << '\n';
 	std::cout << "1 Czlowiek (  )" << '\n';
 	std::cout << "2 Elf (+1 wisdom, +1 intelligence, +1 dexterity ,-2 consitution ,-1 strength" << '\n';
@@ -23,12 +22,7 @@ GameCharacterRace CharacterDesigner::raceChoice()
 	case 4:
 		race = GameCharacterRace::Orc;
 		return GameCharacterRace::Orc;
-
 	}
-
-	
-
-
 }
 
 GameCharacterClass CharacterDesigner::classChoice()
@@ -81,17 +75,17 @@ Alignment CharacterDesigner::alignmentChoice()
 	}
 }
 
-void CharacterDesigner::statsDistribution(MainGameCharacter& character_t )
+void CharacterDesigner::statsDistribution(MainGameCharacter& character_t ) const
 {
 	
 	int strength=10;
 	int dexterity=10;
-	int consitution=10;
+	int constitution=10;
 	int intelligence=10;
 	int wisdom=10;
 	int charisma=10;
 	character_t.getStats().setCharisma(charisma);
-	character_t.getStats().setConsitution(consitution);
+	character_t.getStats().setConsitution(constitution);
 	character_t.getStats().setDexterity(dexterity);
 	character_t.getStats().setStrength(strength);
 	character_t.getStats().setIntelligence(intelligence);
@@ -106,7 +100,7 @@ void CharacterDesigner::statsDistribution(MainGameCharacter& character_t )
 		wisdom += 3;
 		intelligence += 3;
 		dexterity -= 2;
-		consitution -= 2;
+		constitution -= 2;
 		strength -= 3;
 
 	}
@@ -114,7 +108,7 @@ void CharacterDesigner::statsDistribution(MainGameCharacter& character_t )
 		charisma += 3;
 		dexterity += 3;
 		strength -= 1;
-		consitution -= 1;
+		constitution -= 1;
 		intelligence -= 1;
 		wisdom -= 1;
 	}
@@ -129,19 +123,19 @@ void CharacterDesigner::statsDistribution(MainGameCharacter& character_t )
 		wisdom += 1;
 		intelligence =+ 1;
 		dexterity =+ 1;
-		consitution -= 2;
+		constitution -= 2;
 		strength -= 1;
 		break;
 	case GameCharacterRace::Dwarf:
 		wisdom -=2;
 		dexterity -= 3;
-		consitution += 3;
+		constitution += 3;
 		strength += 1;
 		charisma += 1;
 		break;
 	case GameCharacterRace::Orc: 
 		strength += 5;
-		consitution += 3;
+		constitution += 3;
 		intelligence -= 4;
 		charisma -= 3;
 		wisdom -= 2;
@@ -154,7 +148,7 @@ void CharacterDesigner::statsDistribution(MainGameCharacter& character_t )
 		std::cout << "Masz do rozdania " << i << " punktow" <<" (Wpisz numer przy punkcie aby dodac 1 (UWAGA ZMIAN NIE MOZNA COFNAC!)" << '\n';
 		std::cout << "1 Sila :" << strength << '\n';
 		std::cout << "2 Zrecznosc :" << dexterity << '\n';
-		std::cout << "3 Wytrzymalosc :" << consitution << '\n';
+		std::cout << "3 Wytrzymalosc :" << constitution << '\n';
 		std::cout << "4 Intelekt :" << intelligence << '\n';
 		std::cout << "5 Madrosc :" << wisdom << '\n';
 		std::cout << "6 Charyzma :" << charisma << '\n';
@@ -168,7 +162,7 @@ void CharacterDesigner::statsDistribution(MainGameCharacter& character_t )
 			dexterity++;
 			break;
 		case 3:
-			consitution++;
+			constitution++;
 			break;
 		case 4:
 			intelligence++;
@@ -186,7 +180,7 @@ void CharacterDesigner::statsDistribution(MainGameCharacter& character_t )
 	}
 	
 	character_t.getStats().setCharisma(charisma);
-	character_t.getStats().setConsitution(consitution);
+	character_t.getStats().setConsitution(constitution);
 	character_t.getStats().setDexterity(dexterity);
 	character_t.getStats().setStrength(strength);
 	character_t.getStats().setIntelligence(intelligence);

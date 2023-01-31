@@ -5,7 +5,7 @@ Consumables::Consumables(std::string name, int value, Effect* effect)
 {
 }
 
-Effect* Consumables::getEffect()
+Effect* Consumables::getEffect() const
 {
     return effect;
 }
@@ -15,7 +15,7 @@ void Consumables::useItem()
 	used = true;
 }
 
-bool Consumables::getUsed()
+bool Consumables::getUsed() const
 {
 	return used;
 }

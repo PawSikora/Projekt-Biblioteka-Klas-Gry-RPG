@@ -17,10 +17,10 @@ public:
 	void setPhysicalResistance(int physicalResistance);
 	
 
-	int getFireResistance();
-	int getColdResistance();
-	int getPoisonResistance();
-	int getMagicResistance();
-	int getBleedResistance();
+	int getFireResistance() const;
+	int getColdResistance() const;
+	int getPoisonResistance() const;
+	int getMagicResistance() const;
+	int getBleedResistance() const;
 };
 

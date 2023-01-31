@@ -10,10 +10,10 @@ public:
 	Weapon(std::string name, int value, int dmg, int armorPenetration);
 	void setDmg(int dmg);
 	void setArmorPenetration(int armorPenetration);
-	int getDmg();
+	int getDmg() const;
 
 	bool equipWeapon();
 	bool unequipWeapon();
-	bool isEquipped();
+	bool isEquipped() const;
 };
 

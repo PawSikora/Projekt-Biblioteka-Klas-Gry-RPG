@@ -19,12 +19,12 @@ std::string Ability::getName()
     return name;
 }
 
-AbilityType Ability::getType()
+AbilityType Ability::getType() const
 {
     return type;
 }
 
-int Ability::getDmg()
+int Ability::getDmg() const
 {
     return damage;
 }
@@ -34,7 +34,7 @@ Effect& Ability::getEffect()
     return effect;
 }
 
-bool Ability::getStatus()
+bool Ability::getStatus() const
 {
     return unlocked;
 }

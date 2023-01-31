@@ -12,32 +12,32 @@ Statistics::Statistics(int strength, int dexterity, int consitution, int intelli
 	setCharisma(charisma);
 }
 
-int Statistics::getStrength()
+int Statistics::getStrength() const
 {
 	return strength;
 }
 
-int Statistics::getDexterity()
+int Statistics::getDexterity() const
 {
 	return dexterity;
 }
 
-int Statistics::getConsitution()
+int Statistics::getConsitution() const
 {
 	return consitution;
 }
 
-int Statistics::getIntelligence()
+int Statistics::getIntelligence() const
 {
 	return intelligence;
 }
 
-int Statistics::getWisdom()
+int Statistics::getWisdom() const
 {
 	return wisdom;
 }
 
-int Statistics::getCharisma()
+int Statistics::getCharisma() const
 {
 	return charisma;
 }

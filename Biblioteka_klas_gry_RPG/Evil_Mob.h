@@ -17,8 +17,8 @@ public:
 	int chooseAction(int numOfChoices);
 
 	DangerLvL getDanger() const;
-	int getExp();
-	bool getEscaped();
+	int getExp() const;
+	bool getEscaped() const;
 
 	void setDanger(DangerLvL danger);
 	void setExp(int exp);

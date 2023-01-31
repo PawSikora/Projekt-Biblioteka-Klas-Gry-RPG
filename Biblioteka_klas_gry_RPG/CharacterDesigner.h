@@ -7,7 +7,7 @@ class CharacterDesigner
 	GameCharacterRace raceChoice();
 	GameCharacterClass classChoice();
 	Alignment alignmentChoice();
-	void statsDistribution(MainGameCharacter& temp);
+	void statsDistribution(MainGameCharacter& temp) const;
 	GameCharacterRace race;
 
 public:
