@@ -85,6 +85,7 @@ void NPC::SellItem(MainGameCharacter &character)
 		{
 			std::cout << "Interesy z toba to przyjemnosc" << std::endl;
 			character.setGold(character.getGold() - selectedItem->getValue());
+			this->setGold(this->getGold() + selectedItem->getValue());
 			this->deleteItem(selectedItemId);
 			character.addItem(selectedItem);
 
@@ -129,6 +130,7 @@ void NPC::BuyItem(MainGameCharacter &character)
 		{
 			std::cout << "Interesy z toba to przyjemnosc" << std::endl;
 			character.setGold(int(((double)character.getGold() + double(selectedItem->getValue())) * 0.8));
+			this->setGold(int(((double)this->getGold() - double(selectedItem->getValue())) * 0.8));
 			this->addItem(selectedItem);
 			character.deleteItem(selectedItemId);
 		

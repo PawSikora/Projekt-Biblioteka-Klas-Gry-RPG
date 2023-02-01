@@ -161,9 +161,19 @@ int main()
 	GameCharacterClass mage(ClassType::Mage, { new Ability("Fireball", AbilityType::Offensive, 340, 50, Effect("Burning", EffectType::Burning, 5, 4))});
 	GameCharacterClass rogue(ClassType::Rogue, { new Ability("Backstab", AbilityType::Offensive, 1000, 60, Effect("Bleed", EffectType::Bleeding, 2, 5))});
 	MainGameCharacter player1("Alistair", GameCharacterRace::Human, warrior, Statistics(14, 10, 12, 10, 10, 12), Alignment::Good, 120, 0, { new Weapon("Miecz templariusza", 220, 16, 5), new Armor("Zbroja templariusza", 450, 5, 3, Resistances(10, 10, 10, 10,10)) }, 1);
-	player1.setGold(1000000);
+	player1.setGold(10000);
 	NPC WeponSmith("Alistair", GameCharacterRace::Human, warrior, Statistics(14, 10, 12, 10, 10, 12), 120, 0, { new Weapon("Miecz templariusza", 220, 16, 5), new Armor("Zbroja templariusza", 450, 5, 3, Resistances(10, 10, 10, 10,10)) }, 1, Role::ArmorSmith);
+	WeponSmith.setGold(3000);
+	std::cout << "Zloto postaci przed " << '\n';
+	std::cout << player1.getGold() << '\n';
+	std::cout << "Zloto kupca przed " << '\n';
+	std::cout << WeponSmith.getGold() << '\n';
 	WeponSmith.whatCanIDo(player1);
+	std::cout << "Zloto postaci po " << '\n';
+	std::cout << player1.getGold() << '\n';
+	std::cout << "Zloto kupca po " << '\n';
+	std::cout << WeponSmith.getGold() << '\n';
+	
 
 	/*NPC(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats
 		, int health, int mana, std::vector<Item*> items, unsigned lvl, std::vector<Item*> item_list, Role role);*/
