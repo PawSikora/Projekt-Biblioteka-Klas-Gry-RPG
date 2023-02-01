@@ -11,9 +11,9 @@
 #include "NPC.h"
 #include "Weapon.h"
 
-#define CombatMechanicTest
+//#define CombatMechanicTest
 //#define TradingMechanicTest
-//#define CharacterCreationTest
+#define CharacterCreationTest
 
 #ifdef CombatMechanicTest
 int main()
@@ -175,11 +175,17 @@ int main()
 {
 	CharacterDesigner designer;
 	MainGameCharacter character=designer.createCharacter();
-	std::cout << character.getName();
-	std::cout << character.getClass().getName();
-	std::cout << character.getDefense();
-	std::cout << character.getStats().getStrength();
-
+	system("cls");
+	std::cout << "Podsumowanie kreatora postaci: \n";
+	std::cout << "Nazwa postaci: " << character.getName() << std::endl;
+	std::cout << "Nazwa klasy: " <<character.getClass().getName() << std::endl;
+	std::cout << "Obrona: " << character.getDefense() << std::endl;
+	std::cout << "Sila: " << character.getStats().getStrength() << std::endl;
+	std::cout << "Zrecznosc: " << character.getStats().getDexterity() << std::endl;
+	std::cout << "Wytrzymalosc: " << character.getStats().getConsitution() << std::endl;
+	std::cout << "Inteligencja: " << character.getStats().getIntelligence() << std::endl;
+	std::cout << "Madrosc: " << character.getStats().getWisdom() << std::endl;
+	std::cout << "Charyzma: " << character.getStats().getCharisma() << std::endl;
 }
 
 
