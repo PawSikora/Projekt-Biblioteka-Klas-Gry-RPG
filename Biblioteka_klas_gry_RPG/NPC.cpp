@@ -142,8 +142,7 @@ void NPC::Dialog(MainGameCharacter &character)
 {
 	std::string anwser;
 	std::cin >> anwser;
-	std::cerr << anwser;
-	
+
 	while (anwser.find("tak") != 0 && anwser.find("zegnaj") != 0)
 	{
 		std::cout << "Nie zrozumialem czy mozesz powtorzyc ? (napisz tak lub zegnaj zeby przejsc dalej)"; 
@@ -284,4 +283,22 @@ void NPC::whatCanIDo(MainGameCharacter &character)
 	}
 
 
+}
+
+bool NPC::run()
+{
+	return true;
+}
+
+int NPC::attack()
+{
+	return 0;
+}
+
+void NPC::defend()
+{
+}
+
+void NPC::useItem()
+{
 }

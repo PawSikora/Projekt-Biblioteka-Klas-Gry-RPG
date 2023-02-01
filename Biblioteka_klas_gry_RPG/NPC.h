@@ -17,6 +17,9 @@ public:
 	NPC(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats
 		, int health, int mana, std::vector<Item*> items, unsigned lvl,Role role);
 	void whatCanIDo(MainGameCharacter &character);
-
+	bool run() override;
+	int attack() override;
+	void defend() override;
+	void useItem() override;
 };
 

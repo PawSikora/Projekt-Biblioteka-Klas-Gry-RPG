@@ -12,8 +12,8 @@
 #include "Weapon.h"
 
 //#define CombatMechanicTest
-//#define TradingMechanicTest
-#define CharacterCreationTest
+#define TradingMechanicTest
+//#define CharacterCreationTest
 
 #ifdef CombatMechanicTest
 int main()
@@ -152,14 +152,14 @@ int main()
 int main()
 {
 	MainGameCharacter player("Gerwant", GameCharacterRace::Human,
-		GameCharacterClass(ClassType::Warrior, { new Ability("Whirl",AbilityType::Offensive,691, Effect("Bleed", EffectType::Bleeding, 2, 4)) }),
+		GameCharacterClass(ClassType::Warrior, { new Ability("Whirl",AbilityType::Offensive,691,30, Effect("Bleed", EffectType::Bleeding, 2, 4)) }),
 		Statistics(10, 10, 10, 10, 10, 10),
 		Alignment::Neutral, 100, 100, { new Weapon("Aerodnight",1000,2107,100) }, 1);
 
-	GameCharacterClass warrior(ClassType::Warrior, { new Ability("Whirl", AbilityType::Offensive, 550, Effect("None", EffectType::None, 0, 0)), new Ability("Rend", AbilityType::Offensive, 1100, Effect("None", EffectType::None, 0, 0)) });
+	GameCharacterClass warrior(ClassType::Warrior, { new Ability("Whirl", AbilityType::Offensive, 550,40, Effect("None", EffectType::None, 0, 0))});
 
-	GameCharacterClass mage(ClassType::Mage, { new Ability("Fireball", AbilityType::Offensive, 340, Effect("Burning", EffectType::Burning, 5, 4)), new Ability("Lightning", AbilityType::Offensive, 310, Effect("Shock", EffectType::Shocked, 4, 3)) });
-	GameCharacterClass rogue(ClassType::Rogue, { new Ability("Backstab", AbilityType::Offensive, 1000, Effect("Bleed", EffectType::Bleeding, 2, 5)), new Ability("Poison Blade", AbilityType::Offensive, 700, Effect("Poison", EffectType::PoisonResistBoost, 4, 6)) });
+	GameCharacterClass mage(ClassType::Mage, { new Ability("Fireball", AbilityType::Offensive, 340, 50, Effect("Burning", EffectType::Burning, 5, 4))});
+	GameCharacterClass rogue(ClassType::Rogue, { new Ability("Backstab", AbilityType::Offensive, 1000, 60, Effect("Bleed", EffectType::Bleeding, 2, 5))});
 	MainGameCharacter player1("Alistair", GameCharacterRace::Human, warrior, Statistics(14, 10, 12, 10, 10, 12), Alignment::Good, 120, 0, { new Weapon("Miecz templariusza", 220, 16, 5), new Armor("Zbroja templariusza", 450, 5, 3, Resistances(10, 10, 10, 10,10)) }, 1);
 	player1.setGold(1000000);
 	NPC WeponSmith("Alistair", GameCharacterRace::Human, warrior, Statistics(14, 10, 12, 10, 10, 12), 120, 0, { new Weapon("Miecz templariusza", 220, 16, 5), new Armor("Zbroja templariusza", 450, 5, 3, Resistances(10, 10, 10, 10,10)) }, 1, Role::ArmorSmith);
@@ -167,7 +167,6 @@ int main()
 
 	/*NPC(std::string name, GameCharacterRace race, GameCharacterClass characterClass, Statistics stats
 		, int health, int mana, std::vector<Item*> items, unsigned lvl, std::vector<Item*> item_list, Role role);*/
-
 }
 #endif
 #ifdef CharacterCreationTest
