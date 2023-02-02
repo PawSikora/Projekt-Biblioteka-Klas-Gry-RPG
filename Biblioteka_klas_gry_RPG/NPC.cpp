@@ -185,7 +185,7 @@ void NPC::DialogInnKeeper(MainGameCharacter& character)
 	std::cin >> anwser;
 	while (anwser.find("nocleg") != 0 && anwser.find("handel") != 0 && anwser.find("zegnaj") != 0)
 	{
-		std::cout << "Nie zrozumialem czy mozesz powtorzyc ? (napisz tak lub zegnaj zeby przejsc dalej)"; //zlleeeeee
+		std::cout << "Nie zrozumialem czy mozesz powtorzyc ? (napisz tak lub zegnaj zeby przejsc dalej)";
 		std::cin >> anwser;
 	}
 	if (anwser.find("zegnaj") == 0)
@@ -205,8 +205,7 @@ void NPC::DialogInnKeeper(MainGameCharacter& character)
 			{
 				if(character.getGold()>50)
 				{
-					character.setGold(character.getGold() - 50);//zaimplementowac resest hp i innych punktów
-					
+					character.setGold(character.getGold() - 50);
 				}
 				else
 				{

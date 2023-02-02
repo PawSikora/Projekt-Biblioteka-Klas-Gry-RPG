@@ -11,8 +11,8 @@
 #include "NPC.h"
 #include "Weapon.h"
 
-//#define CombatMechanicTest
-#define TradingMechanicTest
+#define CombatMechanicTest
+//#define TradingMechanicTest
 //#define CharacterCreationTest
 
 #ifdef CombatMechanicTest
@@ -83,6 +83,7 @@ int main()
 	 MainGameCharacter player2("Solas", GameCharacterRace::Elf, mage, Statistics(10, 10, 10, 16, 12, 12), Alignment::Neutral, 80, 120, heroItems2, 1);
 	 MainGameCharacter player3("Varric", GameCharacterRace::Dwarf, rogue, Statistics(10, 16, 12, 14, 10, 10), Alignment::Good, 90, 30, heroItems3, 1);
 	 std::vector<MainGameCharacter*> heroes = { &player1, &player2, &player3};
+	 //std::vector<MainGameCharacter*> heroes = { &player1, &player2};
 
 	 //Testowanie wpływu przedmiotow na postać
 	/*std::cout << "\n\nObrazenia przed zalozeniem broni: " << player1.attack() << std::endl << std::endl;
